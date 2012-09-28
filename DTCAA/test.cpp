@@ -12,6 +12,7 @@ test::test() {
 	//HELLO there namae
 	// shirley testing
 	//namae testing
+	//kenneth gwapo
 }
 
 test::~test() {
