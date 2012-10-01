@@ -10,11 +10,7 @@
 test::test() {
 	// TODO Auto-generated constructor stub
 	//HELLO there namae
-	// shirley testing
-	//namae testing
-	//kenneth gwapo
-	//dean
-	// conflict test
+
 }
 
 test::~test() {
