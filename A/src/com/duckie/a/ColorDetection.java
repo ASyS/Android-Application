@@ -53,8 +53,8 @@ public class ColorDetection {
 		Mat c2 = new Mat();
 		Imgproc.cvtColor(src,dst,Imgproc.COLOR_YUV420sp2RGB);
     	Imgproc.cvtColor(dst,dst, Imgproc.COLOR_RGB2HSV);
-    	Core.inRange(dst, new Scalar(100, 100, 100), new Scalar(120, 255, 255), c1);
-    	Core.inRange(dst, new Scalar(100, 100, 100), new Scalar(120, 255, 255), c2);
+    	Core.inRange(dst, new Scalar(0, 130, 179), new Scalar(6, 255, 255), c1);
+    	Core.inRange(dst, new Scalar(177, 200, 120), new Scalar(183, 255, 255), c2);
     	Core.add(c1,c2,dst);
 	}
 
