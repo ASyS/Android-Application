@@ -1,11 +1,11 @@
 package com.duckie.a;
 
 import org.opencv.android.Utils;
-import org.opencv.core.Core;
+//import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
+//import org.opencv.core.Point;
+//import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import android.content.Context;
@@ -31,7 +31,7 @@ class Sample1View extends SampleViewBase {
 	private Bitmap mBitmap;
 	private int mViewMode;
 	
-	private Mat mMattemp, hsv, bw;
+//	private Mat mMattemp, hsv, bw;
 
     public Sample1View(Context context) {
         super(context);
@@ -52,9 +52,9 @@ class Sample1View extends SampleViewBase {
         	
         	
         	
-        	mMattemp = new Mat();
-        	hsv = new Mat();
-        	bw = new Mat();
+//        	mMattemp = new Mat();
+//        	hsv = new Mat();
+//        	bw = new Mat();
     	    }
 	}
 
@@ -80,9 +80,9 @@ class Sample1View extends SampleViewBase {
             mGraySubmat = null;
             mIntermediateMat = null;
             
-            mMattemp = null;
-        	hsv = null;
-        	bw = null;
+//            mMattemp = null;
+//        	hsv = null;
+//        	bw = null;
             
             
         }
