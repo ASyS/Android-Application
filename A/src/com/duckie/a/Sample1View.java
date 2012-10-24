@@ -111,6 +111,8 @@ class Sample1View extends SampleViewBase {
             break;
         case VIEW_MODE_YELLOW:
         	ColorDetection.getYellowMat(mYuv,mRgba);
+        	ColorDetection.detectSingleBlob(mYuv, mRgba);
+        	Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
             break;
         case VIEW_MODE_BLUE:
         	ColorDetection.getBlueMat(mYuv,mRgba);
@@ -119,6 +121,7 @@ class Sample1View extends SampleViewBase {
 //        	ColorDetection.getRedMat1(mYuv,mRgba);
         	ColorDetection.getGreenMat(mYuv,mRgba);
 //        	ColorDetection.getGreenMat_YCRCB(mYuv,mRgba);
+        	
             break;
         case VIEW_MODE_CYAN:
         	ColorDetection.getCyanMat(mYuv,mRgba);

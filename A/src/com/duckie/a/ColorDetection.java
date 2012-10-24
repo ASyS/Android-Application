@@ -1,6 +1,7 @@
 package com.duckie.a;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -11,43 +12,91 @@ import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
-import org.opencv.core.Rect;
 import org.opencv.core.*;
+
+import android.util.Log;
 
 
 
 public class ColorDetection {
-//	Mat detectSingleBlob(Mat orig, Mat image)
-//	{
-//		
+	private static final String TAG = "CD";
+	
+	
+	public static Mat detectSingleBlob(Mat src, Mat image) //, Mat dst)
+	{
+		
+
 //		//Mat image, List<MatOfPoint> contours, Mat hierarchy, int mode, int method, Point offset
-//		List<MatOfPoint> contours = new ArrayList<MatOfPoint>(); //vector<vector<Point> > contours;
-//		Mat hierarchy = new Mat();
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>(); //vector<vector<Point> > contours;
+		Mat hierarchy = new Mat();
+		Mat tempMat = new Mat();
+		image.copyTo(tempMat);
+		
+		
+		Imgproc.findContours(tempMat, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        // Find max contour area
+        double maxArea = 0;
+        Iterator<MatOfPoint> each = contours.iterator();
+        int j = 0;
+        int k = -1;
+        while (each.hasNext())
+        {
+        	MatOfPoint wrapper = each.next();
+        	double area = Imgproc.contourArea(wrapper);
+        	if (area > maxArea){
+        		maxArea = area;
+        		k = j;
+        	}
+        	j++;
+        }
+        
+        Log.i(TAG, "k="+k+" area="+maxArea);
+//        Point center = new Point();
+//        float[] radius = new float[1];
+        
+        Rect boundRect = new Rect();
+        each = contours.iterator();
+        j = 0;
+        while (each.hasNext())
+        {
+        	MatOfPoint wrapper = each.next();
+
+        	if (j==k){
+        		 
+        		 boundRect = Imgproc.boundingRect( wrapper );
+        		 
+//        		 MatOfPoint2f  y = new MatOfPoint2f( wrapper.toArray() );
+//        		 Imgproc.minEnclosingCircle(y, center, radius);
+        	}
+        	j++;
+        }
+       
+//        Core.circle(src, center, 1, new Scalar(255, 255, 255), -1, 8, 0 );
+        Core.rectangle(src, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
+        
+        Log.i(TAG, "x="+boundRect.tl().x+" y="+boundRect.tl().y);
 //		Mat temp = new Mat();
 //		image.copyTo(temp);
-//
 //		Imgproc.findContours(temp, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0) );
 //
 //		Rect boundRect = new Rect();//( contours.size() );
-////		vector<Point2f>center( contours.size() );
-////		vector<float>radius( contours.size() );
+//		Point center = new Point();
+//		float[] radius = new float[1];
 //
-//		Core.Rec
+//		int i = 0;//getBiggestContour(contours);
+//		boundRect = Imgproc.boundingRect( contours.get(i) );
+//		Core.rectangle(orig, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 255), 2, 8, 0 );
 //		
-//		
-//		int i = getBiggestContour(contours);
-//		boundRect[i] = boundingRect( Mat(contours[i]) );
-//		rectangle(orig, boundRect[i].tl(), boundRect[i].br(), Scalar(255, 255, 255), 2, 8, 0 );
-//		minEnclosingCircle( contours[i], center[i], radius[i] );
-//		circle(orig, center[i], 1, Scalar(255, 255, 255), -1, 8, 0 );
+//		MatOfPoint2f x = new MatOfPoint2f();
+//		contours.get(i).convertTo(x,CvType.CV_32FC2);
+//		Imgproc.minEnclosingCircle( x /*contours.get(i)*/, center, radius );
+//		Core.circle(orig, center, 1, new Scalar(255, 255, 255), -1, 8, 0 );
 //
-//		System.out.println((i+1) + ": (" + center[i].x + ", " + center[i].y + ")");
-//
-//		namedWindow( "Border", CV_WINDOW_AUTOSIZE );
-//		imshow( "Border", orig);
-//
-//		return orig;
-//	}
+//		System.out.println((i+1) + ": (" + center.x + ", " + center.y + ")");
+
+		return src;
+	}
 	
 	
 	
