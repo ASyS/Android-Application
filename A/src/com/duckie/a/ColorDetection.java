@@ -11,7 +11,7 @@ public class ColorDetection {
 	public static void getVioletMat(Mat src, Mat dst){
 		Imgproc.cvtColor(src,dst,Imgproc.COLOR_YUV420sp2RGB);
     	Imgproc.cvtColor(dst,dst, Imgproc.COLOR_RGB2HSV);
-    	Core.inRange(dst, new Scalar(131, 170, 108), new Scalar(142, 255, 255), dst);
+    	Core.inRange(dst, new Scalar(130, 50, 50), new Scalar(150, 255, 255), dst);	//131-170-108---142-255-255
 	}
 	
 	public static void getCyanMat(Mat src, Mat dst){
@@ -23,7 +23,7 @@ public class ColorDetection {
 	public static void getGreenMat(Mat src, Mat dst){
 		Imgproc.cvtColor(src,dst,Imgproc.COLOR_YUV420sp2RGB);
     	Imgproc.cvtColor(dst,dst, Imgproc.COLOR_RGB2HSV);
-    	Core.inRange(dst, new Scalar(49, 109, 61), new Scalar(70, 255, 255), dst);
+    	Core.inRange(dst, new Scalar(40, 80, 100), new Scalar(80, 255, 255), dst);	//49-109-61---70-255-255
 	}
 	
 	public static void getBlueMat(Mat src, Mat dst){
@@ -53,9 +53,9 @@ public class ColorDetection {
 		Mat c2 = new Mat();
 		Imgproc.cvtColor(src,dst,Imgproc.COLOR_YUV420sp2RGB);
     	Imgproc.cvtColor(dst,dst, Imgproc.COLOR_RGB2HSV);
-    	Core.inRange(dst, new Scalar(0, 130, 179), new Scalar(6, 255, 255), c1);
-    	Core.inRange(dst, new Scalar(177, 200, 120), new Scalar(183, 255, 255), c2);
-    	Core.add(c1,c2,dst);
+    	Core.inRange(dst, new Scalar(0, 100, 100), new Scalar(10, 255, 255), c1); //0-130-179---6-255-255
+    	Core.inRange(dst, new Scalar(170, 100, 100), new Scalar(180, 255, 255), c2); //177-200-120---183-255-255
+    	Core.bitwise_or(c1,c2,dst);
 	}
 
 //	public static Mat getRedMat(Mat m){
