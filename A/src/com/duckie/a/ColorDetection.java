@@ -21,21 +21,8 @@ import android.util.Log;
 public class ColorDetection {
 	private static final String TAG = "CD";
 	
-	
-	public static Mat detectSingleBlob(Mat src, Mat image) //, Mat dst)
-	{
-		
-
-//		//Mat image, List<MatOfPoint> contours, Mat hierarchy, int mode, int method, Point offset
-		List<MatOfPoint> contours = new ArrayList<MatOfPoint>(); //vector<vector<Point> > contours;
-		Mat hierarchy = new Mat();
-		Mat tempMat = new Mat();
-		image.copyTo(tempMat);
-		
-		
-		Imgproc.findContours(tempMat, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-
-        // Find max contour area
+	public static int getBiggestContourIndex(List<MatOfPoint> contours){
+		// Find max contour area
         double maxArea = 0;
         Iterator<MatOfPoint> each = contours.iterator();
         int j = 0;
@@ -50,31 +37,73 @@ public class ColorDetection {
         	}
         	j++;
         }
-        
         Log.i(TAG, "k="+k+" area="+maxArea);
-//        Point center = new Point();
-//        float[] radius = new float[1];
-        
-        Rect boundRect = new Rect();
-        each = contours.iterator();
-        j = 0;
-        while (each.hasNext())
-        {
+        return k;
+	}
+	
+	public static Rect setContourRect(List<MatOfPoint> contours,int k){
+		Rect boundRect = new Rect();
+		Iterator<MatOfPoint> each = contours.iterator();
+        int j = 0;
+        while (each.hasNext()){
         	MatOfPoint wrapper = each.next();
-
+        	
         	if (j==k){
         		 
-        		 boundRect = Imgproc.boundingRect( wrapper );
-        		 
+//        		 boundRect = Imgproc.boundingRect( wrapper );
+        		return Imgproc.boundingRect( wrapper );
 //        		 MatOfPoint2f  y = new MatOfPoint2f( wrapper.toArray() );
 //        		 Imgproc.minEnclosingCircle(y, center, radius);
         	}
         	j++;
         }
+        return boundRect;
+	}
+	
+	public static Mat detectSingleBlob(Mat src, Mat image) //, Mat dst)
+	{
+		
+
+//		//Mat image, List<MatOfPoint> contours, Mat hierarchy, int mode, int method, Point offset
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>(); //vector<vector<Point> > contours;
+		Mat hierarchy = new Mat();
+		Mat tempMat = new Mat();
+		image.copyTo(tempMat);
+		
+		Imgproc.findContours(tempMat, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        int k = getBiggestContourIndex(contours);
+        
+//        Rect boundRect = new Rect();
+        Rect boundRect = setContourRect(contours, k);
+//        setContourRect(boundRect,contours,k);
+        
+        
+//        Iterator<MatOfPoint> each = contours.iterator();
+//        int j = 0;
+//        while (each.hasNext())
+//        {
+//        	MatOfPoint wrapper = each.next();
+//
+//        	if (j==k){
+//        		 
+//        		 boundRect = Imgproc.boundingRect( wrapper );
+////        		 MatOfPoint2f  y = new MatOfPoint2f( wrapper.toArray() );
+////        		 Imgproc.minEnclosingCircle(y, center, radius);
+//        	}
+//        	j++;
+//        }
        
+        Point center = new Point();
+        getCenterPoint(boundRect.tl(), boundRect.br(), center);
+        
 //        Core.circle(src, center, 1, new Scalar(255, 255, 255), -1, 8, 0 );
         Core.rectangle(src, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
+        Core.putText(src, center.x+"|"+center.y, new Point(10, 200), 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+
         
+        
+        Core.putText(src, "Y", boundRect.tl(), 0/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
         Log.i(TAG, "x="+boundRect.tl().x+" y="+boundRect.tl().y);
 //		Mat temp = new Mat();
 //		image.copyTo(temp);
@@ -98,28 +127,9 @@ public class ColorDetection {
 		return src;
 	}
 	
-	
-	
-	
-//	MatOfPoint2f getCentroidPoint(Mat contours) {
-//		Moments mu;
-//		mu = Imgproc.moments(contours,false);
-//		
-//		MatOfPoint2f mc;
-//		mc = MatOfPoint2f(mu.get_m10() / mu.get_m00(), mu.get_m01() / mu.get_m00());
-//		return mc;
-//	}
-	
-	int getBiggestContour(List<List<Point> > contours) {
-		int indexOfBiggestContour = -1;
-		int sizeOfBiggestContour = 0;
-		for (int i = 0; i < contours.size(); i++) {
-			if (contours.get(i).size() > sizeOfBiggestContour) {
-				sizeOfBiggestContour = contours.get(i).size();
-				indexOfBiggestContour = i;
-			}
-		}
-		return indexOfBiggestContour;
+	public static void getCenterPoint(Point tl, Point br, Point dst){
+		dst.x = (tl.x + br.x)/2;
+		dst.y = (tl.y + br.y)/2;
 	}
 	
 	
@@ -191,6 +201,7 @@ public class ColorDetection {
     	Core.inRange(dst, new Scalar(170, 100, 100), new Scalar(180, 255, 255), c2); //177-200-120---183-255-255
     	Core.bitwise_or(c1,c2,dst);
 	}
+}
 
 //	public static Mat getRedMat(Mat m){
 //		Mat mRgb = new Mat();
@@ -207,4 +218,26 @@ public class ColorDetection {
 //		Core.add(c1,c2,colorFiltered);
 //		return colorFiltered;
 //	}
-}
+	
+//	MatOfPoint2f getCentroidPoint(Mat contours) {
+//	Moments mu;
+//	mu = Imgproc.moments(contours,false);
+//	
+//	MatOfPoint2f mc;
+//	mc = MatOfPoint2f(mu.get_m10() / mu.get_m00(), mu.get_m01() / mu.get_m00());
+//	return mc;
+//}
+
+//int getBiggestContour(List<List<Point> > contours) {
+//	int indexOfBiggestContour = -1;
+//	int sizeOfBiggestContour = 0;
+//	for (int i = 0; i < contours.size(); i++) {
+//		if (contours.get(i).size() > sizeOfBiggestContour) {
+//			sizeOfBiggestContour = contours.get(i).size();
+//			indexOfBiggestContour = i;
+//		}
+//	}
+//	return indexOfBiggestContour;
+//}
+	
+
