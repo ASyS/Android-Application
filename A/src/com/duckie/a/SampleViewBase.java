@@ -7,7 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ImageFormat;
-//import android.graphics.SurfaceTexture;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
 import android.os.Build;
@@ -43,9 +43,9 @@ public abstract class SampleViewBase extends SurfaceView implements SurfaceHolde
     }
 
     public void setPreview() throws IOException {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-//            mCamera.setPreviewTexture( new SurfaceTexture(10) );
-//        else
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            mCamera.setPreviewTexture( new SurfaceTexture(10) );
+        else
         	mCamera.setPreviewDisplay(null);
         
 	}
@@ -109,10 +109,10 @@ public abstract class SampleViewBase extends SurfaceView implements SurfaceHolde
                 params.setPreviewSize(getFrameWidth(), getFrameHeight());
                 
                 List<String> FocusModes = params.getSupportedFocusModes();
-//                if (FocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO))
-//                {
-//                	params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-//                }            
+                if (FocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO))
+                {
+                	params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+                }            
                 
                 mCamera.setParameters(params);
                 

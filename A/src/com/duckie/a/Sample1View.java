@@ -116,7 +116,9 @@ class Sample1View extends SampleViewBase {
         	ColorDetection.getBlueMat(mYuv,mRgba);
             break;
         case VIEW_MODE_GREEN:
+//        	ColorDetection.getRedMat1(mYuv,mRgba);
         	ColorDetection.getGreenMat(mYuv,mRgba);
+//        	ColorDetection.getGreenMat_YCRCB(mYuv,mRgba);
             break;
         case VIEW_MODE_CYAN:
         	ColorDetection.getCyanMat(mYuv,mRgba);
