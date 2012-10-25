@@ -25,6 +25,7 @@ public class Sample1Java extends Activity {
     private MenuItem			mItemPreviewGreen;
     private MenuItem			mItemPreviewCyan;
     private MenuItem			mItemPreviewViolet;
+    private MenuItem			mItemPreviewAll;
     
     
     private Sample1View         mView;
@@ -113,12 +114,13 @@ public class Sample1Java extends Activity {
 //        mItemPreviewCanny = menu.add("Canny");
         
         mItemPreviewRGBA = menu.add("RGBA");
-        mItemPreviewRed = menu.add("Red");
-        mItemPreviewYellow = menu.add("Yel");
-        mItemPreviewBlue = menu.add("Blu");
-        mItemPreviewGreen = menu.add("Gre");
-        mItemPreviewCyan = menu.add("Cya");
-        mItemPreviewViolet = menu.add("Vio");
+        mItemPreviewAll = menu.add("A");
+        mItemPreviewBlue = menu.add("B");        
+        mItemPreviewYellow = menu.add("Y");    
+        mItemPreviewRed = menu.add("R");
+        mItemPreviewGreen = menu.add("G");
+        mItemPreviewCyan = menu.add("C");
+        mItemPreviewViolet = menu.add("V");
         
         return true;
     }
@@ -128,12 +130,14 @@ public class Sample1Java extends Activity {
         Log.i(TAG, "Menu Item selected " + item);
         if (item == mItemPreviewRGBA) {
         	mView.setViewMode(Sample1View.VIEW_MODE_RGBA);
-        } else if (item == mItemPreviewRed) {
-        	mView.setViewMode(Sample1View.VIEW_MODE_RED);
-        } else if (item == mItemPreviewYellow) {
-        	mView.setViewMode(Sample1View.VIEW_MODE_YELLOW);
+        } else if (item == mItemPreviewAll){
+        	mView.setViewMode(Sample1View.VIEW_MODE_ALL);
         } else if (item == mItemPreviewBlue) {
         	mView.setViewMode(Sample1View.VIEW_MODE_BLUE);
+        } else if (item == mItemPreviewYellow) {
+        	mView.setViewMode(Sample1View.VIEW_MODE_YELLOW);
+        } else if (item == mItemPreviewRed) {
+        	mView.setViewMode(Sample1View.VIEW_MODE_RED);
         } else if (item == mItemPreviewGreen) {
         	mView.setViewMode(Sample1View.VIEW_MODE_GREEN);
         } else if (item == mItemPreviewCyan) {
