@@ -11,12 +11,13 @@ import org.opencv.imgproc.Imgproc;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.TimingLogger;
 
 class Sample1View extends SampleViewBase {
 
+	private static final String TAG = "View";
+	
     public static final int     VIEW_MODE_RGBA  	= 0;
-//    public static final int     VIEW_MODE_GRAY  = 1;
-//    public static final int     VIEW_MODE_CANNY = 2;
     public static final int		VIEW_MODE_ALL		= 1;
     public static final int		VIEW_MODE_BLUE		= 2; 
     public static final int		VIEW_MODE_YELLOW	= 3;
@@ -32,7 +33,13 @@ class Sample1View extends SampleViewBase {
 	private Bitmap mBitmap;
 	private int mViewMode;
 	
-//	private Mat mMattemp, hsv, bw;
+	private Mat mColor,mYellow,mBlue,mRed,mGreen,mCyan,mViolet;
+	private Mat mResult;
+	
+	private Mat mRgb;
+	private Mat mHsv;
+	
+	TimingLogger timings;
 
     public Sample1View(Context context) {
         super(context);
@@ -52,10 +59,18 @@ class Sample1View extends SampleViewBase {
         	mBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Bitmap.Config.ARGB_8888); 
         	
         	
+        	/* 10/27/X2edit:*/
+        	mRgb = new Mat();
+        	mHsv = new Mat();
         	
-//        	mMattemp = new Mat();
-//        	hsv = new Mat();
-//        	bw = new Mat();
+        	mColor = new Mat();
+        	mBlue = new Mat();
+        	mYellow = new Mat();
+        	mRed = new Mat();
+        	mGreen = new Mat();
+        	mCyan = new Mat();
+        	mViolet = new Mat();
+        	mResult = new Mat();
     	    }
 	}
 
@@ -81,19 +96,49 @@ class Sample1View extends SampleViewBase {
             mGraySubmat = null;
             mIntermediateMat = null;
             
-//            mMattemp = null;
-//        	hsv = null;
-//        	bw = null;
+            /* 10/27/X2edit:*/
+            if (mBlue != null)
+            	mBlue.release();
+            if (mYellow != null)
+            	mYellow.release();
+            if (mRed != null)
+            	mRed.release();
+            if (mGreen != null)
+            	mGreen.release();
+            if (mCyan != null)
+            	mCyan.release();
+            if (mViolet != null)
+            	mViolet.release();
+            if (mResult != null)
+            	mResult.release();
+            if (mRgb != null)
+            	mRgb.release();
+            if (mHsv != null)
+            	mHsv.release();
+            if (mColor != null)
+            	mColor.release();
             
-            
+            mColor = null;
+            mBlue = null;
+        	mYellow = null;
+        	mRed = null;
+        	mGreen =null;
+        	mCyan = null;
+        	mViolet = null;
+        	mResult = null;
+        	mRgb = null;
+        	mHsv = null;
         }
     }
 
     @Override
     protected Bitmap processFrame(byte[] data) {
-    	Mat mYellow,mBlue,mRed,mGreen,mCyan,mViolet;
-    	Mat mResult;
+    	/* 10/24/X2edit:
+    	 * Mat mYellow,mBlue,mRed,mGreen,mCyan,mViolet;
+		Mat mResult;*/
         mYuv.put(0, 0, data);
+        
+//        ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
         
         final int viewMode = mViewMode;
 
@@ -103,91 +148,132 @@ class Sample1View extends SampleViewBase {
 //            Core.putText(mRgba, "OpenCV + Android", new Point(10, 100), 3/* CV_FONT_HERSHEY_COMPLEX */, 2, new Scalar(255, 0, 0, 255), 3);
             break;
         case VIEW_MODE_RED:
-//        	ColorDetection.getRedMat(mYuv,mRgba);
+        	/*	10/22/X2edit: 	ColorDetection.XgetRedMat(mYuv,mRgba);*/
         	
-        	mRed = new Mat();
-        	mResult = new Mat();
-        	ColorDetection.getRedMat(mYuv,mRed);
-        	ColorDetection.detectSingleBlob(mYuv, mRed, "R", mResult);
+        	/* 10/24/X2edit:
+        	 * mRed = new Mat();
+        	mResult = new Mat();*/
+        	
+        	/* 10/27/X2edit:
+        	 */
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	
+        	ColorDetection.getRedMat(mHsv,mColor);
+        	ColorDetection.detectSingleBlob(mYuv, mColor, "R", mResult);
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
             break;
         case VIEW_MODE_YELLOW:
-        	mYellow = new Mat();
-        	mResult = new Mat();
-        	ColorDetection.getYellowMat(mYuv,mYellow);
-        	ColorDetection.detectSingleBlob(mYuv, mYellow, "Y", mResult);
+        	
+        	
+        	/* 10/24/X2edit:
+        	 * mYellow = new Mat();
+        	mResult = new Mat();*/
+//        	ColorDetection.XgetYellowMat(mYuv,mYellow);  
+        	timings = new TimingLogger("TopicLogTag","preparePicturesFromList");
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	ColorDetection.getYellowMat(mHsv,mColor);
+
+        	ColorDetection.detectSingleBlob(mYuv, mColor, "Y", mResult);
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+        	timings.dumpToLog();
             break;
         case VIEW_MODE_BLUE:
-//        	ColorDetection.getBlueMat(mYuv,mRgba);
+        	/* 10/22/X2edit:
+        	ColorDetection.getBlueMat(mYuv,mRgba); */
         	
-        	mBlue = new Mat();
-        	mResult = new Mat();
-        	ColorDetection.getBlueMat(mYuv,mBlue);
-        	ColorDetection.detectSingleBlob(mYuv, mBlue, "B", mResult);
+        	/* 10/24/X2edit:
+        	 * mBlue = new Mat();
+        	mResult = new Mat();*/
+//        	ColorDetection.XgetBlueMat(mYuv,mBlue);
+        	
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	ColorDetection.getBlueMat(mHsv,mColor);   
+        	
+        	ColorDetection.detectSingleBlob(mYuv, mColor, "B", mResult);
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
             break;
         case VIEW_MODE_GREEN:
-//        	ColorDetection.getGreenMat(mYuv,mRgba);
+        	/*	10/22/X2edit: 	ColorDetection.getGreenMat(mYuv,mRgba); */
         	
-        	mGreen = new Mat();
-        	mResult = new Mat();
-        	ColorDetection.getGreenMat(mYuv,mGreen);
-        	ColorDetection.detectSingleBlob(mYuv, mGreen, "G", mResult);
+        	/* 10/24/X2edit:
+        	 * mGreen = new Mat();
+        	mResult = new Mat(); */
+//        	ColorDetection.XgetGreenMat(mYuv,mGreen);
+        	
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	ColorDetection.getGreenMat(mHsv,mColor);
+        	ColorDetection.detectSingleBlob(mYuv, mColor, "G", mResult);
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
 
         	
             break;
         case VIEW_MODE_CYAN:
-//        	ColorDetection.getCyanMat(mYuv,mRgba); 
+        	/*	10/22/X2edit: 	ColorDetection.getCyanMat(mYuv,mRgba); */
         	
-        	mCyan = new Mat();
-        	mResult = new Mat();
-        	ColorDetection.getCyanMat(mYuv,mCyan);
-        	ColorDetection.detectSingleBlob(mYuv, mCyan, "C", mResult);
+        	/* 10/24/X2edit:
+        	 * mCyan = new Mat();
+        	mResult = new Mat();*/
+//        	ColorDetection.XgetCyanMat(mYuv,mCyan);
+        	
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	ColorDetection.getCyanMat(mHsv,mColor);
+        	ColorDetection.detectSingleBlob(mYuv, mColor, "C", mResult);
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
         	
         	
         	break;
         case VIEW_MODE_VIOLET:
-//        	ColorDetection.getVioletMat(mYuv,mRgba);
+        	/*	10/22/X2edit: 	ColorDetection.getVioletMat(mYuv,mRgba); */
         	
-        	mViolet = new Mat();
-        	mResult = new Mat();
-        	ColorDetection.getVioletMat(mYuv,mViolet);
-        	ColorDetection.detectSingleBlob(mYuv, mViolet, "V", mResult);
+        	/* 10/24/X2edit:
+        	 * mViolet = new Mat();
+        	mResult = new Mat();*/
+//        	ColorDetection.XgetVioletMat(mYuv,mViolet);
+        	
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	ColorDetection.getVioletMat(mHsv,mColor);
+        	ColorDetection.detectSingleBlob(mYuv, mColor, "V", mResult);
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
             break;
             
             
         case VIEW_MODE_ALL:
-        	mBlue = new Mat();
+        	/* 10/24/X2edit:
+        	 * mBlue = new Mat();
         	mYellow = new Mat();
         	mRed = new Mat();
         	mGreen = new Mat();
         	mCyan = new Mat();
         	mViolet = new Mat();
-        	mResult = new Mat();
+        	mResult = new Mat();*/
+        
         	
-        	ColorDetection.getBlueMat(mYuv,mBlue);
+        	long startTime = System.currentTimeMillis();
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	
+        	ColorDetection.getBlueMat(mHsv,mBlue);
         	ColorDetection.detectSingleBlob(mYuv, mBlue, "B", mResult);
         	
-        	ColorDetection.getYellowMat(mYuv,mYellow);
+        	ColorDetection.getYellowMat(mHsv,mYellow);
         	ColorDetection.detectSingleBlob(mResult, mYellow, "Y", mResult);
         	
-        	ColorDetection.getRedMat(mYuv,mRed);
+        	ColorDetection.getRedMat(mHsv,mRed);
         	ColorDetection.detectSingleBlob(mResult, mRed, "R", mResult);
         	
-        	ColorDetection.getGreenMat(mYuv,mGreen);
+        	ColorDetection.getGreenMat(mHsv,mGreen);
         	ColorDetection.detectSingleBlob(mResult, mGreen, "G", mResult);
         	
-        	ColorDetection.getCyanMat(mYuv,mCyan);
+        	ColorDetection.getCyanMat(mHsv,mCyan);
         	ColorDetection.detectSingleBlob(mResult, mCyan, "C", mResult);
         	
-        	ColorDetection.getVioletMat(mYuv,mViolet);
+        	ColorDetection.getVioletMat(mHsv,mViolet);
         	ColorDetection.detectSingleBlob(mResult, mViolet, "V", mResult);
         	
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+        	long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
+            Log.i(TAG, "time="+elapsedTime);
+            
         	
             break;
             

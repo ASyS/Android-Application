@@ -41,36 +41,49 @@ public class ColorDetection {
 //		mRgba = mResult;
 	}
 	
+	/* 10/27/X2edit: added */
+	public static void cvt_YUVtoRGBtoHSV(Mat src, Mat dst){
+		mSrc = new Mat();
+		src.copyTo(mSrc); 
+		Imgproc.cvtColor(mSrc,dst,Imgproc.COLOR_YUV420sp2RGB);
+    	Imgproc.cvtColor(dst,dst, Imgproc.COLOR_RGB2HSV);
+	}
 	
-	public static void detectSingleBlob(Mat src, Mat image, String text, Mat dst){
-		List<MatOfPoint> contours = new ArrayList<MatOfPoint>(); //vector<vector<Point> > contours;
-		Mat hierarchy = new Mat();
-//		Mat tempMat = new Mat();
-		src.copyTo(dst);
+	public static void getRedMat(Mat src, Mat dst){
+//		mSrc = new Mat(); // added: oct25 11am
+//		src.copyTo(mSrc); // added: oct25 11am
 		
-		Imgproc.findContours(image, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-
-        int k = getBiggestContourIndex(contours);
-        Rect boundRect = setContourRect(contours, k);
-
-        Point center = new Point();
-        getCenterPoint(boundRect.tl(), boundRect.br(), center);
-        Core.rectangle(dst, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
-//        Core.putText(dst, center.x+"|"+center.y, new Point(10, 200), 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
-        
-        Core.putText(dst, text, boundRect.tl(), 0/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
-        Log.i(TAG, "x="+boundRect.tl().x+" y="+boundRect.tl().y);
-//		return src;
+		Mat c1 = new Mat();
+		Mat c2 = new Mat();
+    	Core.inRange(src, new Scalar(0, 100, 100), new Scalar(10, 255, 255), c1); //0-130-179---6-255-255
+    	Core.inRange(src, new Scalar(170, 100, 100), new Scalar(180, 255, 255), c2); //177-200-120---183-255-255
+    	Core.bitwise_or(c1,c2,dst);
 	}
-	
-	public static void getCenterPoint(Point tl, Point br, Point dst){
-		dst.x = (tl.x + br.x)/2;
-		dst.y = (tl.y + br.y)/2;
-	}
-	
-	
 	
 	public static void getVioletMat(Mat src, Mat dst){
+    	Core.inRange(src, new Scalar(130, 40, 40), new Scalar(150, 255, 255), dst);	//131-170-108---142-255-255
+	}
+	
+	public static void getCyanMat(Mat src, Mat dst){
+    	Core.inRange(src, new Scalar(85, 131, 125), new Scalar(98, 255, 255), dst);
+	}
+	
+	public static void getGreenMat(Mat src, Mat dst){
+    	Core.inRange(src, new Scalar(50, 145, 90), new Scalar(75, 255, 255), dst);	//49-109-61---70-255-255
+	}
+	
+	public static void getBlueMat(Mat src, Mat dst){
+    	Core.inRange(src, new Scalar(100, 100, 100), new Scalar(120, 255, 255), dst);
+	}
+	
+	
+	public static void getYellowMat(Mat src, Mat dst){
+    	Core.inRange(src, new Scalar(20, 100, 100), new Scalar(30, 255, 255), dst);
+	}
+	
+	
+	
+	public static void XgetVioletMat(Mat src, Mat dst){
 		mSrc = new Mat(); // added: oct25 11am
 		src.copyTo(mSrc); // added: oct25 11am
 		
@@ -79,7 +92,7 @@ public class ColorDetection {
     	Core.inRange(dst, new Scalar(130, 40, 40), new Scalar(150, 255, 255), dst);	//131-170-108---142-255-255
 	}
 	
-	public static void getCyanMat(Mat src, Mat dst){
+	public static void XgetCyanMat(Mat src, Mat dst){
 		mSrc = new Mat(); // added: oct25 11am
 		src.copyTo(mSrc); // added: oct25 11am
 		
@@ -88,7 +101,7 @@ public class ColorDetection {
     	Core.inRange(dst, new Scalar(85, 131, 125), new Scalar(98, 255, 255), dst);
 	}
 	
-	public static void getGreenMat(Mat src, Mat dst){
+	public static void XgetGreenMat(Mat src, Mat dst){
 		mSrc = new Mat(); // added: oct25 11am
 		src.copyTo(mSrc); // added: oct25 11am
 		
@@ -97,7 +110,7 @@ public class ColorDetection {
     	Core.inRange(dst, new Scalar(50, 145, 90), new Scalar(75, 255, 255), dst);	//49-109-61---70-255-255
 	}
 	
-	public static void getBlueMat(Mat src, Mat dst){
+	public static void XgetBlueMat(Mat src, Mat dst){
 		mSrc = new Mat(); // added: oct25 11am
 		src.copyTo(mSrc); // added: oct25 11am
 		
@@ -107,21 +120,13 @@ public class ColorDetection {
 	}
 	
 	
-	public static void getYellowMat(Mat src, Mat dst){
+	public static void XgetYellowMat(Mat src, Mat dst){
 		mSrc = new Mat();
 		src.copyTo(mSrc);
 		
-//		Mat mMattemp = new Mat();
 		Imgproc.cvtColor(mSrc,dst,Imgproc.COLOR_YUV420sp2RGB);
     	Imgproc.cvtColor(dst,dst, Imgproc.COLOR_RGB2HSV);
     	Core.inRange(dst, new Scalar(20, 100, 100), new Scalar(30, 255, 255), dst);
-//		Mat mMattemp_rgb = new Mat();
-//		Mat mMattemp_hsv = new Mat();
-//		Mat mMattemp_ir = new Mat();
-//		Imgproc.cvtColor(m,mMattemp_rgb,Imgproc.COLOR_YUV420sp2RGB);
-//    	Imgproc.cvtColor(mMattemp_rgb,mMattemp_hsv, Imgproc.COLOR_RGB2HSV);
-//    	Core.inRange(mMattemp_hsv, new Scalar(20, 100, 100), new Scalar(30, 255, 255), mMattemp_ir);
-//		return mMattemp_ir;
 	}
 	
 	public static void getRedMat_YCRCB(Mat src, Mat dst){
@@ -143,7 +148,7 @@ public class ColorDetection {
 	}
 	
 	
-	public static void getRedMat(Mat src, Mat dst){
+	public static void XgetRedMat(Mat src, Mat dst){
 		mSrc = new Mat(); // added: oct25 11am
 		src.copyTo(mSrc); // added: oct25 11am
 		
@@ -156,6 +161,32 @@ public class ColorDetection {
     	Core.bitwise_or(c1,c2,dst);
 	}
 	
+	
+	public static void detectSingleBlob(Mat src, Mat image, String text, Mat dst){
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>(); //vector<vector<Point> > contours;
+		Mat hierarchy = new Mat();
+//		Mat tempMat = new Mat();
+		src.copyTo(dst);
+		
+		Imgproc.findContours(image, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        int k = getBiggestContourIndex(contours);
+        Rect boundRect = setContourRect(contours, k);
+
+        Point center = new Point();
+        getCenterPoint(boundRect.tl(), boundRect.br(), center);
+        Core.rectangle(dst, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
+//        Core.putText(dst, center.x+"|"+center.y, new Point(10, 200), 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        
+        Core.putText(dst, text, boundRect.tl(), 0/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+//        Log.i(TAG, "x="+boundRect.tl().x+" y="+boundRect.tl().y);
+
+	}
+	
+	public static void getCenterPoint(Point tl, Point br, Point dst){
+		dst.x = (tl.x + br.x)/2;
+		dst.y = (tl.y + br.y)/2;
+	}
 	
 	public static int getBiggestContourIndex(List<MatOfPoint> contours){
         double maxArea = 0;
@@ -172,7 +203,7 @@ public class ColorDetection {
         	}
         	j++;
         }
-        Log.i(TAG, "k="+k+" area="+maxArea);
+//        Log.i(TAG, "k="+k+" area="+maxArea);
         return k;
 	}
 	
@@ -321,6 +352,23 @@ public class ColorDetection {
         	j++;
         }
         return boundRect;
+	}
+	
+		public static void getYellowMat(Mat src, Mat dst){
+		mSrc = new Mat();
+		src.copyTo(mSrc);
+		
+//		Mat mMattemp = new Mat();
+		Imgproc.cvtColor(mSrc,dst,Imgproc.COLOR_YUV420sp2RGB);
+    	Imgproc.cvtColor(dst,dst, Imgproc.COLOR_RGB2HSV);
+    	Core.inRange(dst, new Scalar(20, 100, 100), new Scalar(30, 255, 255), dst);
+//		Mat mMattemp_rgb = new Mat();
+//		Mat mMattemp_hsv = new Mat();
+//		Mat mMattemp_ir = new Mat();
+//		Imgproc.cvtColor(m,mMattemp_rgb,Imgproc.COLOR_YUV420sp2RGB);
+//    	Imgproc.cvtColor(mMattemp_rgb,mMattemp_hsv, Imgproc.COLOR_RGB2HSV);
+//    	Core.inRange(mMattemp_hsv, new Scalar(20, 100, 100), new Scalar(30, 255, 255), mMattemp_ir);
+//		return mMattemp_ir;
 	}
 
 
