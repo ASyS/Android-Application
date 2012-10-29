@@ -26,7 +26,6 @@ public abstract class SampleViewBase extends SurfaceView implements SurfaceHolde
     private boolean             mThreadRun;
     private byte[]              mBuffer;
 
-
     public SampleViewBase(Context context) {
         super(context);
         mHolder = getHolder();

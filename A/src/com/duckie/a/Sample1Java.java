@@ -17,8 +17,6 @@ public class Sample1Java extends Activity {
     private static final String TAG = "Sample::Activity";
 
     private MenuItem            mItemPreviewRGBA;
-//    private MenuItem            mItemPreviewGray;
-//    private MenuItem            mItemPreviewCanny;
     private MenuItem			mItemPreviewRed;
     private MenuItem			mItemPreviewYellow;
     private MenuItem			mItemPreviewBlue;
@@ -26,7 +24,6 @@ public class Sample1Java extends Activity {
     private MenuItem			mItemPreviewCyan;
     private MenuItem			mItemPreviewViolet;
     private MenuItem			mItemPreviewAll;
-    
     
     private Sample1View         mView;
 
@@ -109,10 +106,6 @@ public class Sample1Java extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.i(TAG, "onCreateOptionsMenu");
-//        mItemPreviewRGBA = menu.add("Preview RGBA");
-//        mItemPreviewGray = menu.add("Preview GRAY");
-//        mItemPreviewCanny = menu.add("Canny");
-        
         mItemPreviewRGBA = menu.add("RGBA");
         mItemPreviewAll = menu.add("A");
         mItemPreviewBlue = menu.add("B");        
@@ -121,7 +114,6 @@ public class Sample1Java extends Activity {
         mItemPreviewGreen = menu.add("G");
         mItemPreviewCyan = menu.add("C");
         mItemPreviewViolet = menu.add("V");
-        
         return true;
     }
 
@@ -145,13 +137,6 @@ public class Sample1Java extends Activity {
         } else if (item == mItemPreviewViolet) {
         	mView.setViewMode(Sample1View.VIEW_MODE_VIOLET);
         }
-        
-        
-//        else if (item == mItemPreviewGray) {
-//        	mView.setViewMode(Sample1View.VIEW_MODE_GRAY);
-//        } else if (item == mItemPreviewCanny) {
-//        	mView.setViewMode(Sample1View.VIEW_MODE_CANNY);
-//        }
         return true;
     }
 }

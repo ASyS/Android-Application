@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -13,9 +12,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.opencv.core.*;
-
 import android.util.Log;
-
 
 
 public class ColorDetection {
@@ -27,18 +24,8 @@ public class ColorDetection {
 		mYellow = new Mat();
 		mSrc = new Mat();
 		
-//		src.copyTo(mSrc);
-		
-//		Mat mResult = new Mat();
 		getYellowMat(src, mYellow);
-		
 		dst = mYellow;
-		
-//		src.copyTo(mSrc);
-		
-//		detectSingleBlob(src, mYellow, "Y", dst);
-		
-//		mRgba = mResult;
 	}
 	
 	/* 10/27/X2edit: added */
@@ -80,6 +67,78 @@ public class ColorDetection {
 	public static void getYellowMat(Mat src, Mat dst){
     	Core.inRange(src, new Scalar(20, 100, 100), new Scalar(30, 255, 255), dst);
 	}
+	
+	
+	
+	
+	
+	
+	
+	public static boolean isVisible(Point p){
+		if (p.x == 0 & p.y ==0){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * "of" is reference point
+	 * is "is" East of "of"?
+	 */	
+	public static boolean isEastOf(Point is, Point of){
+		if (is.x > of.x){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * "of" is reference point
+	 * is "is" West of "of"?
+	 */	
+	public static boolean isWestOf(Point is, Point of){
+		if (is.x < of.x){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * "of" is reference point
+	 * is "is" North of "of"?
+	 */	
+	public static boolean isNorthOf(Point is, Point of){
+		if (is.y < of.y){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * "of" is reference point
+	 * is "is" South of "of"?
+	 */	
+	public static boolean isSouthOf(Point is, Point of){
+		if (is.y > of.y){
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isNorthEastOf(Point is, Point of){return isNorthOf(is,of) & isEastOf(is,of);}
+	public static boolean isNorthWestOf(Point is, Point of){return isNorthOf(is,of) & isWestOf(is,of);}
+	public static boolean isSouthEastOf(Point is, Point of){return isSouthOf(is,of) & isEastOf(is,of);}
+	public static boolean isSouthWestOf(Point is, Point of){return isSouthOf(is,of) & isWestOf(is,of);}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
