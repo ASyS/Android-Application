@@ -20,55 +20,22 @@ public class ColorDetection {
 //	private static Mat mYellow;
 	private static Mat mSrc;
 	
-	public static void detectAllBlobs(Mat mYuv, Mat mHsv, Mat dst) {
-		Mat mColor = new Mat();
-		Mat mResult = new Mat();
-		
-		getBlueMat(mHsv,mColor);
-		detectSingleBlob(mYuv, mColor, "B", mResult);
-		
-		getYellowMat(mHsv,mColor);
-		detectSingleBlob(mResult, mColor, "Y", mResult);
-		
-		getRedMat(mHsv,mColor);
-		detectSingleBlob(mResult, mColor, "R", mResult);
-		
-		getGreenMat(mHsv,mColor);
-		detectSingleBlob(mResult, mColor, "G", mResult);
-		
-		getCyanMat(mHsv,mColor);
-		detectSingleBlob(mResult, mColor, "C", mResult);
-		
-		getVioletMat(mHsv,mColor);
-		detectSingleBlob(mResult, mColor, "V", dst);
-
-//    	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
-		
-		
-	}
 	
 	
-	public static void detectSingleBlob(Mat src, Mat image, String text, Point center, Mat dst){
+	
+	
+	
+	
+	
+	public static void detectSinglePoint(Mat src, Point center){
 		List<MatOfPoint> contours = new ArrayList<MatOfPoint>(); //vector<vector<Point> > contours;
 		Mat hierarchy = new Mat();
-		src.copyTo(dst);
-		
-		Imgproc.findContours(image, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+		Imgproc.findContours(src, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
 
         int k = getBiggestContourIndex(contours);
         Rect boundRect = setContourRect(contours, k);
-
-//        Point center = new Point();
         getCenterPoint(boundRect.tl(), boundRect.br(), center);
-        Core.rectangle(dst, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
-
-        Core.putText(dst, text, boundRect.tl(), 0, 1, new Scalar(255, 0, 0, 255), 3);
 	}
-	
-	
-	
-	
-	
 	
 	
 	
@@ -96,7 +63,7 @@ public class ColorDetection {
 	}
 	
 	public static void getCyanMat(Mat src, Mat dst){
-    	Core.inRange(src, new Scalar(85, 131, 125), new Scalar(98, 255, 255), dst);
+    	Core.inRange(src, new Scalar(85, 131, 125), new Scalar(105, 255, 255), dst); //[85-98],[131-255],[125-255]
 	}
 	
 	public static void getGreenMat(Mat src, Mat dst){
@@ -104,7 +71,7 @@ public class ColorDetection {
 	}
 	
 	public static void getBlueMat(Mat src, Mat dst){
-    	Core.inRange(src, new Scalar(100, 100, 100), new Scalar(120, 255, 255), dst);
+    	Core.inRange(src, new Scalar(106, 100, 100), new Scalar(125, 255, 255), dst); //[100-120],[100-255],[100-255]
 	}
 	
 	
@@ -112,6 +79,28 @@ public class ColorDetection {
     	Core.inRange(src, new Scalar(20, 100, 100), new Scalar(30, 255, 255), dst);
 	}
 	
+	public static void detectAllBlobs(Mat mYuv, Mat mHsv, Mat dst) {
+		Mat mColor = new Mat();
+		Mat mResult = new Mat();
+		
+		getBlueMat(mHsv,mColor);
+		detectSingleBlob(mYuv, mColor, "B", mResult);
+		
+		getYellowMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "Y", mResult);
+		
+		getRedMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "R", mResult);
+		
+		getGreenMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "G", mResult);
+		
+		getCyanMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "C", mResult);
+		
+		getVioletMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "V", dst);		
+	}
 	
 	
 	
@@ -125,11 +114,22 @@ public class ColorDetection {
 		return false;
 	}
 	
+	public static boolean isNotVisible(Point p){
+		return !(isVisible(p));
+	}
+	
+	
 	/**
 	 * "of" is reference point
 	 * is "is" East of "of"?
 	 */	
 	public static boolean isEastOf(Point is, Point of){
+		if (isNotVisible(is))	// temporary dirty code
+			return false;		// temporary dirty code
+		if (isNotVisible(of))	// temporary dirty code
+			return false;		// temporary dirty code
+		
+		
 		if (is.x > of.x){
 			return true;
 		}
@@ -141,6 +141,12 @@ public class ColorDetection {
 	 * is "is" West of "of"?
 	 */	
 	public static boolean isWestOf(Point is, Point of){
+		if (isNotVisible(is))	// temporary dirty code
+			return false;		// temporary dirty code
+		if (isNotVisible(of))	// temporary dirty code
+			return false;		// temporary dirty code
+		
+		
 		if (is.x < of.x){
 			return true;
 		}
@@ -152,6 +158,12 @@ public class ColorDetection {
 	 * is "is" North of "of"?
 	 */	
 	public static boolean isNorthOf(Point is, Point of){
+		if (isNotVisible(is))	// temporary dirty code
+			return false;		// temporary dirty code
+		if (isNotVisible(of))	// temporary dirty code
+			return false;		// temporary dirty code
+		
+		
 		if (is.y < of.y){
 			return true;
 		}
@@ -163,6 +175,12 @@ public class ColorDetection {
 	 * is "is" South of "of"?
 	 */	
 	public static boolean isSouthOf(Point is, Point of){
+		if (isNotVisible(is))	// temporary dirty code
+			return false;		// temporary dirty code
+		if (isNotVisible(of))	// temporary dirty code
+			return false;		// temporary dirty code
+		
+		
 		if (is.y > of.y){
 			return true;
 		}

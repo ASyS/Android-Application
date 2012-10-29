@@ -2,8 +2,11 @@ package com.duckie.a;
 
 import org.opencv.android.Utils;
 //import org.opencv.core.Core;
+import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 //import org.opencv.core.Point;
 //import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -40,9 +43,11 @@ class Sample1View extends SampleViewBase {
 	private Mat mRgb;
 	private Mat mHsv;
 	
-	long startTime;
-	long stopTime;
-	long elapsedTime;
+
+	private Point p_yellow, p_blue, p_red, p_green, p_cyan;
+	
+	char letter;
+	
 
     public Sample1View(Context context) {
         super(context);
@@ -74,6 +79,14 @@ class Sample1View extends SampleViewBase {
         	mCyan = new Mat();
         	mViolet = new Mat();
         	mResult = new Mat();
+        	
+        	
+        	p_yellow = new Point();
+        	p_blue = new Point();
+        	p_red = new Point();
+        	p_green = new Point();
+        	p_cyan = new Point();
+        	
     	    }
 	}
 
@@ -152,25 +165,86 @@ class Sample1View extends SampleViewBase {
             break;
             
         case VIEW_MODE_FINGERS:
-        	startTime = System.currentTimeMillis();
+        	
+        	/**  // simplified detect all colors
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	ColorDetection.detectAllBlobs(mYuv, mHsv, mResult);
+        	stopTime = System.currentTimeMillis();
+        	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+        	 */
+        	
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	ColorDetection.getGreenMat(mHsv,mColor);
+        	ColorDetection.detectSinglePoint(mColor,p_green);
+        	
+        	ColorDetection.getRedMat(mHsv,mColor);
+        	ColorDetection.detectSinglePoint(mColor,p_red);
+        	
+        	ColorDetection.getYellowMat(mHsv,mColor);
+        	ColorDetection.detectSinglePoint(mColor,p_yellow);
+        	
+        	ColorDetection.getBlueMat(mHsv,mColor);
+        	ColorDetection.detectSinglePoint(mColor,p_blue);
+        	
+        	ColorDetection.getCyanMat(mHsv,mColor);
+        	ColorDetection.detectSinglePoint(mColor,p_cyan);
+        	
+        	Core.putText(mYuv, "G", p_green, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        	Core.putText(mYuv, "R", p_red, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        	Core.putText(mYuv, "B", p_blue, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        	Core.putText(mYuv, "Y", p_yellow, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        	Core.putText(mYuv, "C", p_cyan, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
         	
         	
-//        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
-//        	ColorDetection.detectAllBlobs(mYuv, mHsv, mResult);
-//        	stopTime = System.currentTimeMillis();
-//        	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+        	if ( ColorDetection.isEastOf(p_yellow, p_green) &
+        			ColorDetection.isEastOf(p_green, p_blue) &
+        			ColorDetection.isEastOf(p_blue, p_red) &
+        			ColorDetection.isEastOf(p_red, p_cyan)){
+        		Core.putText(mYuv, "A", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
+        	}
+        	
+        	else if (ColorDetection.isEastOf(p_green, p_blue) &
+        			ColorDetection.isEastOf(p_blue, p_red) &
+        			ColorDetection.isEastOf(p_red, p_cyan) &
+        			
+        			(ColorDetection.isSouthOf(p_yellow,p_cyan) &
+        					ColorDetection.isSouthOf(p_yellow,p_green) &
+        					ColorDetection.isSouthOf(p_yellow,p_red) &
+        					ColorDetection.isSouthOf(p_yellow,p_blue) )
+        			
+        			){
+        		Core.putText(mYuv, "B", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
+        	}
         	
         	
         	
         	
+
         	
         	
         	
-        	
-            elapsedTime = stopTime - startTime;
-            Log.i(TAG, "time="+elapsedTime);
+        	Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
         	break;
-            
+        	
+        	
+        case VIEW_MODE_RED:
+        	/*	10/22/X2edit: 	ColorDetection.XgetRedMat(mYuv,mRgba);*/
+        	
+        	/* 10/24/X2edit:
+        	 * mRed = new Mat();
+        	mResult = new Mat();*/
+        	
+        	/* 10/27/X2edit:
+        	 */
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+
+        	ColorDetection.getRedMat(mHsv,mColor);
+        	ColorDetection.detectSingleBlob(mYuv, mColor, "R", mResult);
+        	
+        	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+            break;
+        	
+        	
         case VIEW_MODE_ALL:
         	/* 10/24/X2edit:
         	 * mBlue = new Mat();
@@ -182,7 +256,7 @@ class Sample1View extends SampleViewBase {
         	mResult = new Mat();*/
         
         	
-        	startTime = System.currentTimeMillis();
+        	long startTime = System.currentTimeMillis();
         	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
         	
         	ColorDetection.getBlueMat(mHsv,mBlue);
@@ -204,29 +278,13 @@ class Sample1View extends SampleViewBase {
         	ColorDetection.detectSingleBlob(mResult, mViolet, "V", mResult);
         	
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
-        	stopTime = System.currentTimeMillis();
-            elapsedTime = stopTime - startTime;
+        	long stopTime = System.currentTimeMillis();
+        	long elapsedTime = stopTime - startTime;
             Log.i(TAG, "time="+elapsedTime);
             
         	
             break;
-            
-        case VIEW_MODE_RED:
-        	/*	10/22/X2edit: 	ColorDetection.XgetRedMat(mYuv,mRgba);*/
-        	
-        	/* 10/24/X2edit:
-        	 * mRed = new Mat();
-        	mResult = new Mat();*/
-        	
-        	/* 10/27/X2edit:
-        	 */
-        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
-
-        	ColorDetection.getRedMat(mHsv,mColor);
-        	ColorDetection.detectSingleBlob(mYuv, mColor, "R", mResult);
-        	
-        	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
-            break;
+          
         case VIEW_MODE_YELLOW:
         	
         	
