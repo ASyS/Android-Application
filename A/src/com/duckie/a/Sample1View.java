@@ -19,12 +19,13 @@ class Sample1View extends SampleViewBase {
 	
     public static final int     VIEW_MODE_RGBA  	= 0;
     public static final int		VIEW_MODE_ALL		= 1;
-    public static final int		VIEW_MODE_BLUE		= 2; 
-    public static final int		VIEW_MODE_YELLOW	= 3;
-    public static final int		VIEW_MODE_RED		= 4;
-    public static final int		VIEW_MODE_GREEN		= 5;
-    public static final int		VIEW_MODE_CYAN		= 6;
-    public static final int		VIEW_MODE_VIOLET	= 7;
+    public static final int		VIEW_MODE_FINGERS	= 2;
+    public static final int		VIEW_MODE_BLUE		= 3; 
+    public static final int		VIEW_MODE_YELLOW	= 4;
+    public static final int		VIEW_MODE_RED		= 5;
+    public static final int		VIEW_MODE_GREEN		= 6;
+    public static final int		VIEW_MODE_CYAN		= 7;
+    public static final int		VIEW_MODE_VIOLET	= 8;
 
     private Mat mYuv;
     private Mat mRgba;
@@ -39,7 +40,9 @@ class Sample1View extends SampleViewBase {
 	private Mat mRgb;
 	private Mat mHsv;
 	
-	TimingLogger timings;
+	long startTime;
+	long stopTime;
+	long elapsedTime;
 
     public Sample1View(Context context) {
         super(context);
@@ -147,6 +150,67 @@ class Sample1View extends SampleViewBase {
             Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
 //            Core.putText(mRgba, "OpenCV + Android", new Point(10, 100), 3/* CV_FONT_HERSHEY_COMPLEX */, 2, new Scalar(255, 0, 0, 255), 3);
             break;
+            
+        case VIEW_MODE_FINGERS:
+        	startTime = System.currentTimeMillis();
+        	
+        	
+//        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+//        	ColorDetection.detectAllBlobs(mYuv, mHsv, mResult);
+//        	stopTime = System.currentTimeMillis();
+//        	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+            elapsedTime = stopTime - startTime;
+            Log.i(TAG, "time="+elapsedTime);
+        	break;
+            
+        case VIEW_MODE_ALL:
+        	/* 10/24/X2edit:
+        	 * mBlue = new Mat();
+        	mYellow = new Mat();
+        	mRed = new Mat();
+        	mGreen = new Mat();
+        	mCyan = new Mat();
+        	mViolet = new Mat();
+        	mResult = new Mat();*/
+        
+        	
+        	startTime = System.currentTimeMillis();
+        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
+        	
+        	ColorDetection.getBlueMat(mHsv,mBlue);
+        	ColorDetection.detectSingleBlob(mYuv, mBlue, "B", mResult);
+        	
+        	ColorDetection.getYellowMat(mHsv,mYellow);
+        	ColorDetection.detectSingleBlob(mResult, mYellow, "Y", mResult);
+        	
+        	ColorDetection.getRedMat(mHsv,mRed);
+        	ColorDetection.detectSingleBlob(mResult, mRed, "R", mResult);
+        	
+        	ColorDetection.getGreenMat(mHsv,mGreen);
+        	ColorDetection.detectSingleBlob(mResult, mGreen, "G", mResult);
+        	
+        	ColorDetection.getCyanMat(mHsv,mCyan);
+        	ColorDetection.detectSingleBlob(mResult, mCyan, "C", mResult);
+        	
+        	ColorDetection.getVioletMat(mHsv,mViolet);
+        	ColorDetection.detectSingleBlob(mResult, mViolet, "V", mResult);
+        	
+        	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+        	stopTime = System.currentTimeMillis();
+            elapsedTime = stopTime - startTime;
+            Log.i(TAG, "time="+elapsedTime);
+            
+        	
+            break;
+            
         case VIEW_MODE_RED:
         	/*	10/22/X2edit: 	ColorDetection.XgetRedMat(mYuv,mRgba);*/
         	
@@ -157,9 +221,10 @@ class Sample1View extends SampleViewBase {
         	/* 10/27/X2edit:
         	 */
         	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
-        	
+
         	ColorDetection.getRedMat(mHsv,mColor);
         	ColorDetection.detectSingleBlob(mYuv, mColor, "R", mResult);
+        	
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
             break;
         case VIEW_MODE_YELLOW:
@@ -169,13 +234,13 @@ class Sample1View extends SampleViewBase {
         	 * mYellow = new Mat();
         	mResult = new Mat();*/
 //        	ColorDetection.XgetYellowMat(mYuv,mYellow);  
-        	timings = new TimingLogger("TopicLogTag","preparePicturesFromList");
+
         	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
         	ColorDetection.getYellowMat(mHsv,mColor);
 
         	ColorDetection.detectSingleBlob(mYuv, mColor, "Y", mResult);
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
-        	timings.dumpToLog();
+
             break;
         case VIEW_MODE_BLUE:
         	/* 10/22/X2edit:
@@ -235,48 +300,6 @@ class Sample1View extends SampleViewBase {
         	ColorDetection.detectSingleBlob(mYuv, mColor, "V", mResult);
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
             break;
-            
-            
-        case VIEW_MODE_ALL:
-        	/* 10/24/X2edit:
-        	 * mBlue = new Mat();
-        	mYellow = new Mat();
-        	mRed = new Mat();
-        	mGreen = new Mat();
-        	mCyan = new Mat();
-        	mViolet = new Mat();
-        	mResult = new Mat();*/
-        
-        	
-        	long startTime = System.currentTimeMillis();
-        	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
-        	
-        	ColorDetection.getBlueMat(mHsv,mBlue);
-        	ColorDetection.detectSingleBlob(mYuv, mBlue, "B", mResult);
-        	
-        	ColorDetection.getYellowMat(mHsv,mYellow);
-        	ColorDetection.detectSingleBlob(mResult, mYellow, "Y", mResult);
-        	
-        	ColorDetection.getRedMat(mHsv,mRed);
-        	ColorDetection.detectSingleBlob(mResult, mRed, "R", mResult);
-        	
-        	ColorDetection.getGreenMat(mHsv,mGreen);
-        	ColorDetection.detectSingleBlob(mResult, mGreen, "G", mResult);
-        	
-        	ColorDetection.getCyanMat(mHsv,mCyan);
-        	ColorDetection.detectSingleBlob(mResult, mCyan, "C", mResult);
-        	
-        	ColorDetection.getVioletMat(mHsv,mViolet);
-        	ColorDetection.detectSingleBlob(mResult, mViolet, "V", mResult);
-        	
-        	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
-        	long stopTime = System.currentTimeMillis();
-            long elapsedTime = stopTime - startTime;
-            Log.i(TAG, "time="+elapsedTime);
-            
-        	
-            break;
-            
         }
 
         Bitmap bmp = mBitmap;

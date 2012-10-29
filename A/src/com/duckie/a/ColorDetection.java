@@ -17,16 +17,60 @@ import android.util.Log;
 
 public class ColorDetection {
 	private static final String TAG = "CD";
-	private static Mat mYellow;
+//	private static Mat mYellow;
 	private static Mat mSrc;
 	
-	public static void detectAllBlobs(Mat src, Mat dst) {
-		mYellow = new Mat();
-		mSrc = new Mat();
+	public static void detectAllBlobs(Mat mYuv, Mat mHsv, Mat dst) {
+		Mat mColor = new Mat();
+		Mat mResult = new Mat();
 		
-		getYellowMat(src, mYellow);
-		dst = mYellow;
+		getBlueMat(mHsv,mColor);
+		detectSingleBlob(mYuv, mColor, "B", mResult);
+		
+		getYellowMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "Y", mResult);
+		
+		getRedMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "R", mResult);
+		
+		getGreenMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "G", mResult);
+		
+		getCyanMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "C", mResult);
+		
+		getVioletMat(mHsv,mColor);
+		detectSingleBlob(mResult, mColor, "V", dst);
+
+//    	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+		
+		
 	}
+	
+	
+	public static void detectSingleBlob(Mat src, Mat image, String text, Point center, Mat dst){
+		List<MatOfPoint> contours = new ArrayList<MatOfPoint>(); //vector<vector<Point> > contours;
+		Mat hierarchy = new Mat();
+		src.copyTo(dst);
+		
+		Imgproc.findContours(image, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
+
+        int k = getBiggestContourIndex(contours);
+        Rect boundRect = setContourRect(contours, k);
+
+//        Point center = new Point();
+        getCenterPoint(boundRect.tl(), boundRect.br(), center);
+        Core.rectangle(dst, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
+
+        Core.putText(dst, text, boundRect.tl(), 0, 1, new Scalar(255, 0, 0, 255), 3);
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	/* 10/27/X2edit: added */
 	public static void cvt_YUVtoRGBtoHSV(Mat src, Mat dst){

@@ -17,13 +17,15 @@ public class Sample1Java extends Activity {
     private static final String TAG = "Sample::Activity";
 
     private MenuItem            mItemPreviewRGBA;
+    private MenuItem			mItemPreviewAll;
+    private MenuItem			mItemPreviewFingers;
     private MenuItem			mItemPreviewRed;
     private MenuItem			mItemPreviewYellow;
     private MenuItem			mItemPreviewBlue;
     private MenuItem			mItemPreviewGreen;
     private MenuItem			mItemPreviewCyan;
     private MenuItem			mItemPreviewViolet;
-    private MenuItem			mItemPreviewAll;
+
     
     private Sample1View         mView;
 
@@ -108,6 +110,7 @@ public class Sample1Java extends Activity {
         Log.i(TAG, "onCreateOptionsMenu");
         mItemPreviewRGBA = menu.add("RGBA");
         mItemPreviewAll = menu.add("A");
+        mItemPreviewFingers = menu.add("F");
         mItemPreviewBlue = menu.add("B");        
         mItemPreviewYellow = menu.add("Y");    
         mItemPreviewRed = menu.add("R");
@@ -124,6 +127,8 @@ public class Sample1Java extends Activity {
         	mView.setViewMode(Sample1View.VIEW_MODE_RGBA);
         } else if (item == mItemPreviewAll){
         	mView.setViewMode(Sample1View.VIEW_MODE_ALL);
+        } else if (item == mItemPreviewFingers) {
+        	mView.setViewMode(Sample1View.VIEW_MODE_FINGERS);
         } else if (item == mItemPreviewBlue) {
         	mView.setViewMode(Sample1View.VIEW_MODE_BLUE);
         } else if (item == mItemPreviewYellow) {
