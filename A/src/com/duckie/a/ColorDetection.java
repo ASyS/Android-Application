@@ -20,9 +20,14 @@ public class ColorDetection {
 //	private static Mat mYellow;
 	private static Mat mSrc;
 	
+	private static final double nearThresh = 22.0;
 	
 	
-	
+	public static boolean isNearOf(Point is, Point of){
+		if ( (Math.abs(is.x - of.x) < nearThresh) & (Math.abs(is.y - of.y) < nearThresh) )
+			return true;
+		return false;
+	}
 	
 	
 	
@@ -103,19 +108,15 @@ public class ColorDetection {
 	}
 	
 	
-	
-	
-	
-	
-	public static boolean isVisible(Point p){
+	public static boolean isNotVisible(Point p){
 		if (p.x == 0 & p.y ==0){
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean isNotVisible(Point p){
-		return !(isVisible(p));
+	public static boolean isVisible(Point p){
+		return !(isNotVisible(p));
 	}
 	
 	

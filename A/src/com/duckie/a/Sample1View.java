@@ -194,32 +194,72 @@ class Sample1View extends SampleViewBase {
         	Core.putText(mYuv, "B", p_blue, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
         	Core.putText(mYuv, "Y", p_yellow, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
         	Core.putText(mYuv, "C", p_cyan, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        
         	
         	
-        	if ( ColorDetection.isEastOf(p_yellow, p_green) &
-        			ColorDetection.isEastOf(p_green, p_blue) &
-        			ColorDetection.isEastOf(p_blue, p_red) &
-        			ColorDetection.isEastOf(p_red, p_cyan)){
-        		Core.putText(mYuv, "A", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
-        	}
-        	
-        	else if (ColorDetection.isEastOf(p_green, p_blue) &
-        			ColorDetection.isEastOf(p_blue, p_red) &
-        			ColorDetection.isEastOf(p_red, p_cyan) &
-        			
-        			(ColorDetection.isSouthOf(p_yellow,p_cyan) &
-        					ColorDetection.isSouthOf(p_yellow,p_green) &
-        					ColorDetection.isSouthOf(p_yellow,p_red) &
-        					ColorDetection.isSouthOf(p_yellow,p_blue) )
-        			
-        			){
-        		Core.putText(mYuv, "B", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
-        	}
+        	String t = "x=" + (p_yellow.x - p_green.x) + " y=" + (p_yellow.y - p_green.y);
+        	Core.putText(mYuv, t, new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
         	
         	
         	
-        	
-
+//        	if ( ColorDetection.isNorthEastOf(p_yellow, p_green) &
+//        			ColorDetection.isEastOf(p_green, p_blue) &
+//        			ColorDetection.isEastOf(p_blue, p_red) &
+//        			ColorDetection.isEastOf(p_red, p_cyan) 
+//        			
+//        			
+//        			){
+//        		Core.putText(mYuv, "A", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
+//        	}
+//        	
+//        	else if (ColorDetection.isEastOf(p_green, p_blue) &
+//        			ColorDetection.isEastOf(p_blue, p_red) &
+//        			ColorDetection.isNorthEastOf(p_red, p_cyan) &
+//        			
+//        			(ColorDetection.isSouthOf(p_yellow,p_cyan) &
+//        					ColorDetection.isSouthWestOf(p_yellow,p_green) &
+//        					ColorDetection.isSouthOf(p_yellow,p_red) &
+//        					ColorDetection.isSouthOf(p_yellow,p_blue) )
+//        			
+//        			){
+//        		Core.putText(mYuv, "B", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
+//        	}
+//        	
+//        	else if (ColorDetection.isEastOf(p_blue,p_red) &
+//        			ColorDetection.isEastOf(p_red,p_cyan)&
+//        			ColorDetection.isNorthEastOf(p_green,p_blue)&
+//        			ColorDetection.isNorthWestOf(p_green,p_yellow)&
+//        			!ColorDetection.isNearOf(p_green, p_blue)
+//        			
+//        			
+//        			){
+//        		
+//        		Core.putText(mYuv, "L", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
+//        	}
+//        	
+//        	else if ( ColorDetection.isSouthEastOf(p_yellow, p_green) &
+//        			ColorDetection.isEastOf(p_green, p_blue) &
+//        			ColorDetection.isEastOf(p_blue, p_red) &
+//        			ColorDetection.isEastOf(p_red, p_cyan)
+//        			){
+//        		Core.putText(mYuv, "E", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
+//        	}
+//        	
+//        	else if ( (ColorDetection.isNotVisible(p_red)&(ColorDetection.isNotVisible(p_cyan))) &
+//        			
+//        			ColorDetection.isNorthEastOf(p_blue, p_green) &
+//        			ColorDetection.isEastOf(p_yellow, p_green)
+//        			){
+//        		Core.putText(mYuv, "Q", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
+//        	}
+//
+//        	else if (ColorDetection.isNorthEastOf(p_red, p_cyan) &
+//        			ColorDetection.isEastOf(p_blue,p_red) &
+//        			ColorDetection.isNorthWestOf(p_blue, p_green) &
+//        			ColorDetection.isSouthOf(p_yellow, p_green) 
+//        			){
+//        		Core.putText(mYuv, "F", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
+//        	}        
         	
         	
         	
