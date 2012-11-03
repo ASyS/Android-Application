@@ -37,7 +37,7 @@ class Sample1View extends SampleViewBase {
 	private Bitmap mBitmap;
 	private int mViewMode;
 	
-	private Mat mColor,mYellow,mBlue,mRed,mGreen,mCyan,mViolet;
+	private Mat mColor,mYellow,mBlue,mRed,mGreen,mCyan,mViolet, mPink;
 	private Mat mResult;
 	
 	private Mat mRgb;
@@ -78,6 +78,7 @@ class Sample1View extends SampleViewBase {
         	mGreen = new Mat();
         	mCyan = new Mat();
         	mViolet = new Mat();
+        	mPink = new Mat();
         	mResult = new Mat();
         	
         	
@@ -133,7 +134,8 @@ class Sample1View extends SampleViewBase {
             	mHsv.release();
             if (mColor != null)
             	mColor.release();
-            
+            if (mPink != null)
+            	mPink.release();
             mColor = null;
             mBlue = null;
         	mYellow = null;
@@ -141,6 +143,7 @@ class Sample1View extends SampleViewBase {
         	mGreen =null;
         	mCyan = null;
         	mViolet = null;
+        	mPink = null;
         	mResult = null;
         	mRgb = null;
         	mHsv = null;
@@ -162,6 +165,9 @@ class Sample1View extends SampleViewBase {
         case VIEW_MODE_RGBA:
             Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
 //            Core.putText(mRgba, "OpenCV + Android", new Point(10, 100), 3/* CV_FONT_HERSHEY_COMPLEX */, 2, new Scalar(255, 0, 0, 255), 3);
+            printTextUL(mRgba, "UL");
+            printTextCL(mRgba, "CL");
+            printTextBL(mRgba, "BL");
             break;
             
         case VIEW_MODE_FINGERS:
@@ -311,11 +317,14 @@ class Sample1View extends SampleViewBase {
         	ColorDetection.getGreenMat(mHsv,mGreen);
         	ColorDetection.detectSingleBlob(mResult, mGreen, "G", mResult);
         	
-        	ColorDetection.getCyanMat(mHsv,mCyan);
-        	ColorDetection.detectSingleBlob(mResult, mCyan, "C", mResult);
+        	ColorDetection.getPinkMat(mHsv,mPink);
+        	ColorDetection.detectSingleBlob(mResult, mPink, "P", mResult);
         	
-        	ColorDetection.getVioletMat(mHsv,mViolet);
-        	ColorDetection.detectSingleBlob(mResult, mViolet, "V", mResult);
+        	//ColorDetection.getCyanMat(mHsv,mCyan);
+        	//ColorDetection.detectSingleBlob(mResult, mCyan, "C", mResult);
+        	
+        	//ColorDetection.getVioletMat(mHsv,mViolet);
+        	//ColorDetection.detectSingleBlob(mResult, mViolet, "V", mResult);
         	
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
         	long stopTime = System.currentTimeMillis();
@@ -415,5 +424,42 @@ class Sample1View extends SampleViewBase {
     public void setViewMode(int viewMode) {
     	mViewMode = viewMode;
     }
-
+    
+    public void printTextBL(Mat img, String text){
+    	final float bottom = 305.0f;		//320
+    	final float left = 5.0f;
+    	// Get the screen's density scale
+    	final float scale = getFrameHeight()/320.0f;
+    	// Convert the dps to pixels, based on density scale
+    	int iBottom = (int) (bottom * scale + 0.5f);
+    	int iLeft =  (int) (left * scale + 0.5f);
+    	Core.putText(img, text, new Point(iLeft, iBottom), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 3);
+    	Log.i(TAG, "scale: "+scale);
+    	Log.i(TAG, "height: "+getHeight());
+    	Log.i(TAG, "y: "+iBottom);
+    	//mini 2: 285
+    	//one x: 690
+    }
+    
+    public void printTextUL(Mat img, String text){
+    	final float top = 35.0f;
+    	final float left = 5.0f;
+    	// Get the screen's density scale
+    	final float scale = getFrameHeight()/320.0f;
+    	// Convert the dps to pixels, based on density scale
+    	int iTop = (int) (top * scale + 0.5f);
+    	int iLeft =  (int) (left * scale + 0.5f);
+    	Core.putText(img, text, new Point(iLeft, iTop), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 3);
+    }
+    
+    public void printTextCL(Mat img, String text){
+    	final float center = 170f;		//180
+    	final float left = 5.0f;
+    	// Get the screen's density scale
+    	final float scale = getFrameHeight()/320.0f;
+    	// Convert the dps to pixels, based on density scale
+    	int iCenter = (int) (center * scale + 0.5f);
+    	int iLeft =  (int) (left * scale + 0.5f);
+    	Core.putText(img, text, new Point(iLeft, iCenter), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 3);
+    }
 }

@@ -45,8 +45,7 @@ public abstract class SampleViewBase extends SurfaceView implements SurfaceHolde
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
             mCamera.setPreviewTexture( new SurfaceTexture(10) );
         else
-        	mCamera.setPreviewDisplay(null);
-        
+        	mCamera.setPreviewDisplay(null);       
 	}
     
     public boolean openCamera() {
@@ -110,7 +109,7 @@ public abstract class SampleViewBase extends SurfaceView implements SurfaceHolde
                 List<String> FocusModes = params.getSupportedFocusModes();
                 if (FocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO))
                 {
-                	params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+                	//params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
                 }            
                 
                 mCamera.setParameters(params);
