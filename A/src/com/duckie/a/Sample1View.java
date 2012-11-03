@@ -78,6 +78,7 @@ class Sample1View extends SampleViewBase {
         	mGreen = new Mat();
         	mCyan = new Mat();
         	mViolet = new Mat();
+        	mPink = new Mat();
         	mResult = new Mat();
         	
         	
@@ -133,7 +134,8 @@ class Sample1View extends SampleViewBase {
             	mHsv.release();
             if (mColor != null)
             	mColor.release();
-            
+            if (mPink != null)
+            	mPink.release();
             mColor = null;
             mBlue = null;
         	mYellow = null;
@@ -431,41 +433,40 @@ class Sample1View extends SampleViewBase {
     }
     
     public void printTextBL(Mat img, String text){
-    	final float bottom = 285.0f;		//320
+    	final float bottom = 305.0f;		//320
     	final float left = 5.0f;
     	// Get the screen's density scale
     	final float scale = getFrameHeight()/320.0f;
     	// Convert the dps to pixels, based on density scale
     	int iBottom = (int) (bottom * scale + 0.5f);
     	int iLeft =  (int) (left * scale + 0.5f);
-    	Core.putText(img, text, new Point(iLeft, iBottom), 4, 1, new Scalar(255, 0, 0, 255), 3);
+    	Core.putText(img, text, new Point(iLeft, iBottom), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 3);
     	Log.i(TAG, "scale: "+scale);
     	Log.i(TAG, "height: "+getHeight());
     	Log.i(TAG, "y: "+iBottom);
     	//mini 2: 285
-    	//one x: 670
+    	//one x: 690
     }
     
     public void printTextUL(Mat img, String text){
-    	final float top = 25.0f;
+    	final float top = 35.0f;
     	final float left = 5.0f;
     	// Get the screen's density scale
     	final float scale = getFrameHeight()/320.0f;
     	// Convert the dps to pixels, based on density scale
     	int iTop = (int) (top * scale + 0.5f);
     	int iLeft =  (int) (left * scale + 0.5f);
-    	Core.putText(img, text, new Point(iLeft, iTop), 4, 1, new Scalar(255, 0, 0, 255), 3);
+    	Core.putText(img, text, new Point(iLeft, iTop), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 3);
     }
     
     public void printTextCL(Mat img, String text){
-    	final float center = 155.0f;		//180
+    	final float center = 170f;		//180
     	final float left = 5.0f;
     	// Get the screen's density scale
     	final float scale = getFrameHeight()/320.0f;
     	// Convert the dps to pixels, based on density scale
     	int iCenter = (int) (center * scale + 0.5f);
     	int iLeft =  (int) (left * scale + 0.5f);
-    	Core.putText(img, text, new Point(iLeft, iCenter), 4, 1, new Scalar(255, 0, 0, 255), 3);
+    	Core.putText(img, text, new Point(iLeft, iCenter), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 3);
     }
-
 }
