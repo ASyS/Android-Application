@@ -264,6 +264,18 @@ public class ColorDetection {
         }
         return boundRect;
 	}
+	/**
+	 * Please q convert to c++
+	 */
+//	public double getDist(Point2f pt1, Point2f pt2){
+//		Mat dist;
+//		Point2f diff = pt1[1]-pt2[0];
+//		magnitude(diff.x, diff.y, dist);
+//		cout<<diff<<endl;
+//		cout<<dist.at<double>(0,0)<<endl;
+//		return dist.at<double>(0,0);
+//	}
+	
 }
 	
 //public static void XgetVioletMat(Mat src, Mat dst){
