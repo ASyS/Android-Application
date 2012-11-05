@@ -37,7 +37,7 @@ class Sample1View extends SampleViewBase {
 	private Bitmap mBitmap;
 	private int mViewMode;
 	
-	private Mat mColor,mYellow,mBlue,mRed,mGreen,mCyan,mViolet;
+	private Mat mColor,mYellow,mBlue,mRed,mGreen,mCyan,mViolet,mPink;
 	private Mat mResult;
 	
 	private Mat mRgb;

@@ -239,6 +239,8 @@ public class ColorDetection {
 					isLowDistanceTo(p_green, p_blue) &
 					isLowDistanceTo(p_blue,p_red)&
 					isLowDistanceTo(p_red,p_cyan)
+//					&
+//					!isVisible(p_yellow)
 					){
 				
 				if (isNorthOf(p_red,p_blue)){
@@ -323,18 +325,22 @@ public class ColorDetection {
 	}
 
 	public static void getCyanMat(Mat src, Mat dst){
-		Mat c1 = new Mat();
+		/*Mat c1 = new Mat();
 		Mat c2 = new Mat();
     	Core.inRange(src, new Scalar(88, 144, 161), new Scalar(94, 255, 179), c1); //177-200-120---183-255-255
     	Core.inRange(src, new Scalar(85, 144, 180), new Scalar(96, 255, 255), c2);
-    	Core.bitwise_or(c1,c2,dst);
+    	Core.bitwise_or(c1,c2,dst);*/
+		
+		Core.inRange(src, new Scalar(84, 60, 60), new Scalar(96, 255, 255), dst);	
 		//Core.inRange(src, new Scalar(84, 144, 180), new Scalar(96, 255, 255), dst); //[85-98],[131-255],[125-255]
     	//Core.inRange(src, new Scalar(85, 131, 125), new Scalar(105, 255, 255), dst); //[85-98],[131-255],[125-255]
 	}
 
 	public static void getGreenMat(Mat src, Mat dst){
 		//Core.inRange(src, new Scalar(50, 145, 90), new Scalar(75, 255, 255), dst);	//49-109-61---70-255-255
-    	Core.inRange(src, new Scalar(44, 135, 160), new Scalar(69, 255, 255), dst);	//(50, 145, 90)(75, 255, 255) //49-109-61---70-255-255
+		
+		//							44	135	160									11/03/X2
+    	Core.inRange(src, new Scalar(44, 135, 100), new Scalar(69, 255, 255), dst);	//(50, 145, 90)(75, 255, 255) //49-109-61---70-255-255
 	}
 
 	public static void getBlueMat(Mat src, Mat dst){
@@ -343,7 +349,8 @@ public class ColorDetection {
 
 
 	public static void getYellowMat(Mat src, Mat dst){
-    	Core.inRange(src, new Scalar(28, 126, 180), new Scalar(34, 255, 255), dst); //(20, 100, 100), new Scalar(30, 255, 255)
+		//							28	126	180									11/03/X2
+    	Core.inRange(src, new Scalar(24, 126, 100), new Scalar(34, 255, 255), dst); //(20, 100, 100), new Scalar(30, 255, 255)
 	}
 	
 	public static void getPinkMat(Mat src, Mat dst){
