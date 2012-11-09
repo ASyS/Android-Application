@@ -317,6 +317,7 @@ class Sample1View extends SampleViewBase {
         	
         	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
         	
+
         	ColorDetection.getBlueMat(mHsv,mBlue);
         	ColorDetection.detectSingleBlob(mYuv, mBlue, "B", mResult);
         	
@@ -334,6 +335,10 @@ class Sample1View extends SampleViewBase {
         	
         	ColorDetection.getVioletMat(mHsv,mViolet);
         	ColorDetection.detectSingleBlob(mResult, mViolet, "V", mResult);
+        	
+        	ColorDetection.getPinkMat(mHsv,mPink);
+        	ColorDetection.detectSingleBlob(mResult, mPink, "P", mResult);
+        
         	
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
 

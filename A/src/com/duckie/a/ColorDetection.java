@@ -26,7 +26,10 @@ public class ColorDetection {
 
 	public static void testIdentifyHandGesture(Point p_cyan, Point p_red,
 			Point p_blue, Point p_green, Point p_yellow, Mat mYuv) {
-
+//		Point[] r = {p_green, p_blue};
+//		
+//		if ( isEastOf(, p_red));
+		
 		if ( (isNotVisible(p_red)&(isNotVisible(p_cyan))) &
 				isNorthEastOf(p_blue, p_green) &
 				isSouthOf(p_yellow, p_blue) &
@@ -315,8 +318,17 @@ public class ColorDetection {
 
 		Mat c1 = new Mat();
 		Mat c2 = new Mat();
-		Core.inRange(src, new Scalar(0, 100, 100), new Scalar(10, 255, 255), c1); //0-130-179---6-255-255
-		Core.inRange(src, new Scalar(170, 100, 100), new Scalar(180, 255, 255), c2); //177-200-120---183-255-255
+//		Core.inRange(src, new Scalar(0, 100, 100), new Scalar(10, 255, 255), c1); //0-130-179---6-255-255
+//		Core.inRange(src, new Scalar(170, 100, 100), new Scalar(180, 255, 255), c2); //177-200-120---183-255-255
+//		Core.inRange(src, new Scalar(0, 176, 145), new Scalar(6, 255, 255), c1);		// 11/07/12
+//		Core.inRange(src, new Scalar(170, 164, 100), new Scalar(181, 255, 255), c2);	// 11/07/12
+//		Core.inRange(src, new Scalar(0, 120, 70), new Scalar(4, 255, 255), c1); 		//	11/08/X2 dean
+//		Core.inRange(src, new Scalar(178, 120, 70), new Scalar(180, 255, 255), c2); 	//	11/08/X2 dean
+		Core.inRange(src, new Scalar(0, 170, 40), new Scalar(6, 255, 255), c1); 		//	11/09/X2 dean
+		Core.inRange(src, new Scalar(178, 170, 40), new Scalar(184, 255, 255), c2); 	//	11/09/X2 dean
+
+		
+		
 		Core.bitwise_or(c1,c2,dst);
 	}
 
@@ -330,27 +342,47 @@ public class ColorDetection {
     	Core.inRange(src, new Scalar(88, 144, 161), new Scalar(94, 255, 179), c1); //177-200-120---183-255-255
     	Core.inRange(src, new Scalar(85, 144, 180), new Scalar(96, 255, 255), c2);
     	Core.bitwise_or(c1,c2,dst);*/
+		//Core.inRange(src, new Scalar(84, 60, 60), new Scalar(96, 255, 255), dst);		before 11/07/12
+//		Core.inRange(src, new Scalar(84, 100, 100), new Scalar(93, 255, 255), dst);		//	11/07/12
+//		Core.inRange(src, new Scalar(73, 90, 80), new Scalar(90, 255, 255), dst);		//	11/08/X2 dean
+		Core.inRange(src, new Scalar(85, 70, 70), new Scalar(92, 255, 225), dst);		//	11/09/X2 dean
 		
-		Core.inRange(src, new Scalar(84, 60, 60), new Scalar(96, 255, 255), dst);	
 		//Core.inRange(src, new Scalar(84, 144, 180), new Scalar(96, 255, 255), dst); //[85-98],[131-255],[125-255]
     	//Core.inRange(src, new Scalar(85, 131, 125), new Scalar(105, 255, 255), dst); //[85-98],[131-255],[125-255]
 	}
 
+//	public static void getLightGreenMat(Mat src, Mat dst){	//	11/09/X2
+//		Core.inRange(src, new Scalar(40, 100, 140), new Scalar(76, 255, 255), dst);		//	11/09/X2 dean
+//	}
+//	
+//	public static void getDarkGreenMat(Mat src, Mat dst){	//	11/09/X2
+//		Core.inRange(src, new Scalar(40, 100, 50), new Scalar(76, 255, 140), dst);		//	11/09/X2 dean
+//	}
+	
+	
 	public static void getGreenMat(Mat src, Mat dst){
 		//Core.inRange(src, new Scalar(50, 145, 90), new Scalar(75, 255, 255), dst);	//49-109-61---70-255-255
 		
 		//							44	135	160									11/03/X2
-    	Core.inRange(src, new Scalar(44, 135, 100), new Scalar(69, 255, 255), dst);	//(50, 145, 90)(75, 255, 255) //49-109-61---70-255-255
+//    	Core.inRange(src, new Scalar(44, 135, 100), new Scalar(69, 255, 255), dst);	//(50, 145, 90)(75, 255, 255) //49-109-61---70-255-255
+//		Core.inRange(src, new Scalar(38, 100, 140), new Scalar(68, 255, 255), dst);	// 38 100 100, 75 255 255	11/07/12
+//		Core.inRange(src, new Scalar(40, 80, 80), new Scalar(70, 255, 255), dst);		//	11/08/X2 dean
+		Core.inRange(src, new Scalar(40, 120, 30), new Scalar(75, 255, 255), dst);		//	11/09/X2 dean
+		
 	}
 
 	public static void getBlueMat(Mat src, Mat dst){
-    	Core.inRange(src, new Scalar(100, 100, 100), new Scalar(120, 255, 255), dst); //[106-125],[100-255],[100-255]
+//    	Core.inRange(src, new Scalar(100, 100, 100), new Scalar(120, 255, 255), dst); //[106-125],[100-255],[100-255]
+		Core.inRange(src, new Scalar(100, 80, 60), new Scalar(125, 255, 255), dst); //	11/08/X2 dean
 	}
 
 
 	public static void getYellowMat(Mat src, Mat dst){
-		//							28	126	180									11/03/X2
-    	Core.inRange(src, new Scalar(24, 126, 100), new Scalar(34, 255, 255), dst); //(20, 100, 100), new Scalar(30, 255, 255)
+		//							24	126	100									11/03/X2
+//    	Core.inRange(src, new Scalar(28, 126, 180), new Scalar(34, 255, 255), dst); //(20, 100, 100), new Scalar(30, 255, 255)
+//		Core.inRange(src, new Scalar(23, 180, 206), new Scalar(30, 255, 255), dst);		// 11/07/12
+//		Core.inRange(src, new Scalar(22, 120, 120), new Scalar(35, 255, 255), dst);		//	11/08/X2 dean
+		Core.inRange(src, new Scalar(22, 140, 60), new Scalar(35, 255, 255), dst);		//	11/09/X2 dean
 	}
 	
 	public static void getPinkMat(Mat src, Mat dst){
@@ -412,6 +444,12 @@ public class ColorDetection {
 		}
 		return false;
 	}
+	
+	
+	public static boolean isEastOf(Point[] is, Point of){
+		return false;
+	}
+	
 
 	/**
 	 * "of" is reference point
