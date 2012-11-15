@@ -7,6 +7,7 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 //import org.opencv.core.Point;
 //import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -37,7 +38,7 @@ class Sample1View extends SampleViewBase {
 	private Bitmap mBitmap;
 	private int mViewMode;
 	
-	private Mat mColor,mYellow,mBlue,mRed,mGreen,mCyan,mViolet,mPink;
+	private Mat mColor,mYellow,mBlue,mRed,mGreen,mCyan,mViolet,mPink,mOrange;
 	private Mat mResult;
 	
 	private Mat mRgb;
@@ -80,6 +81,8 @@ class Sample1View extends SampleViewBase {
         	mViolet = new Mat();
         	mPink = new Mat();
         	mResult = new Mat();
+        	
+        	mOrange = new Mat();
         	
         	
         	p_yellow = new Point();
@@ -136,6 +139,8 @@ class Sample1View extends SampleViewBase {
             	mColor.release();
             if (mPink != null)
             	mPink.release();
+            if (mOrange != null)
+            	mOrange.release();
             mColor = null;
             mBlue = null;
         	mYellow = null;
@@ -155,6 +160,7 @@ class Sample1View extends SampleViewBase {
     	 * Mat mYellow,mBlue,mRed,mGreen,mCyan,mViolet;
 		Mat mResult;*/
         mYuv.put(0, 0, data);
+//        Imgproc.blur(mYuv, mYuv, new Size(3,3));
         
 //        ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
         
@@ -330,20 +336,22 @@ class Sample1View extends SampleViewBase {
         	ColorDetection.getGreenMat(mHsv,mGreen);
         	ColorDetection.detectSingleBlob(mResult, mGreen, "G", mResult);
         	
-        	ColorDetection.getCyanMat(mHsv,mCyan);
-        	ColorDetection.detectSingleBlob(mResult, mCyan, "C", mResult);
+//        	ColorDetection.getCyanMat(mHsv,mCyan);
+//        	ColorDetection.detectSingleBlob(mResult, mCyan, "C", mResult);
         	
-        	ColorDetection.getVioletMat(mHsv,mViolet);
-        	ColorDetection.detectSingleBlob(mResult, mViolet, "V", mResult);
+//        	ColorDetection.getVioletMat(mHsv,mViolet);
+//        	ColorDetection.detectSingleBlob(mResult, mViolet, "V", mResult);
         	
-        	ColorDetection.getPinkMat(mHsv,mPink);
-        	ColorDetection.detectSingleBlob(mResult, mPink, "P", mResult);
+//        	ColorDetection.getPinkMat(mHsv,mPink);
+//        	ColorDetection.detectSingleBlob(mResult, mPink, "P", mResult);
         
+        	ColorDetection.getOrangeMat(mHsv,mOrange);
+        	ColorDetection.detectSingleBlob(mResult, mOrange, "O", mResult);
         	
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
 
             
-        	
+//        	Imgproc.blur(mRgba, mRgba, new Size(3,3));
             break;
           
         case VIEW_MODE_YELLOW:
@@ -400,8 +408,11 @@ class Sample1View extends SampleViewBase {
 //        	ColorDetection.XgetCyanMat(mYuv,mCyan);
         	
         	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
-        	ColorDetection.getCyanMat(mHsv,mColor);
-        	ColorDetection.detectSingleBlob(mYuv, mColor, "C", mResult);
+//        	ColorDetection.getCyanMat(mHsv,mColor);
+//        	ColorDetection.detectSingleBlob(mYuv, mColor, "C", mResult);
+        	
+        	ColorDetection.getOrangeMat(mHsv,mColor);
+        	ColorDetection.detectSingleBlob(mYuv, mColor, "O", mResult);
         	Imgproc.cvtColor(mResult, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
         	
         	

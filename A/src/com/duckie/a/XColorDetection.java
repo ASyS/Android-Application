@@ -9,14 +9,13 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.opencv.core.*;
 import android.util.Log;
 
 
-public class ColorDetection {
+public class XColorDetection {
 	private static final String TAG = "CD";
 	//	private static Mat mYellow;
 	private static Mat mSrc;
@@ -27,7 +26,10 @@ public class ColorDetection {
 
 	public static void testIdentifyHandGesture(Point p_cyan, Point p_red,
 			Point p_blue, Point p_green, Point p_yellow, Mat mYuv) {
-
+//		Point[] r = {p_green, p_blue};
+//		
+//		if ( isEastOf(, p_red));
+		
 		if ( (isNotVisible(p_red)&(isNotVisible(p_cyan))) &
 				isNorthEastOf(p_blue, p_green) &
 				isSouthOf(p_yellow, p_blue) &
@@ -299,86 +301,108 @@ public class ColorDetection {
 		Rect boundRect = setContourRect(contours, k);
 		getCenterPoint(boundRect.tl(), boundRect.br(), center);
 	}
+
+
+
+	/* 10/27/X2edit: added */
 	public static void cvt_YUVtoRGBtoHSV(Mat src, Mat dst){
 		mSrc = new Mat();
 		src.copyTo(mSrc); 
 		Imgproc.cvtColor(mSrc,dst,Imgproc.COLOR_YUV420sp2RGB);
-//		Imgproc.blur(dst, dst, new Size(8,8));
 		Imgproc.cvtColor(dst,dst, Imgproc.COLOR_RGB2HSV);
 	}
 
-	public static void getOrangeMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(9, 70, 70), new Scalar(18, 255, 255), dst);		//	new
-	}
-	
-	
-	public static void getPinkMat(Mat src, Mat dst){
-	//		Core.inRange(src, new Scalar(148, 141, 231), new Scalar(163, 255, 255), dst); //177-200-120---183-255-255
-			Core.inRange(src, new Scalar(148, 50, 80), new Scalar(163, 255, 255), dst);		//11/09/X2
-		}
-
-	//ok! -mini2
 	public static void getRedMat(Mat src, Mat dst){
 		//		mSrc = new Mat(); // added: oct25 11am
 		//		src.copyTo(mSrc); // added: oct25 11am
 
 		Mat c1 = new Mat();
 		Mat c2 = new Mat();
-//		Core.inRange(src, new Scalar(0, 150, 140), new Scalar(6, 255, 255), c1); 		//	11/09/X2 dean
-//		Core.inRange(src, new Scalar(178, 170, 120), new Scalar(184, 255, 255), c2); 	//	11/09/X2 dean				
-//		Core.bitwise_or(c1,c2,dst);
-		//Shirley
-		Core.inRange(src, new Scalar(0, 180, 70), new Scalar(6, 255, 255), c1);		// 11/10/12
-		Core.inRange(src, new Scalar(175, 180, 70), new Scalar(178, 255, 255), c2);	// 11/10/12
+//		Core.inRange(src, new Scalar(0, 100, 100), new Scalar(10, 255, 255), c1); //0-130-179---6-255-255
+//		Core.inRange(src, new Scalar(170, 100, 100), new Scalar(180, 255, 255), c2); //177-200-120---183-255-255
+//		Core.inRange(src, new Scalar(0, 176, 145), new Scalar(6, 255, 255), c1);		// 11/07/12
+//		Core.inRange(src, new Scalar(170, 164, 100), new Scalar(181, 255, 255), c2);	// 11/07/12
+//		Core.inRange(src, new Scalar(0, 120, 70), new Scalar(4, 255, 255), c1); 		//	11/08/X2 dean
+//		Core.inRange(src, new Scalar(178, 120, 70), new Scalar(180, 255, 255), c2); 	//	11/08/X2 dean
+//		Core.inRange(src, new Scalar(0, 170, 40), new Scalar(6, 255, 255), c1); 		//	11/09/X2 dean
+//		Core.inRange(src, new Scalar(178, 170, 40), new Scalar(184, 255, 255), c2); 	//	11/09/X2 dean
+//		Core.inRange(src, new Scalar(0, 170, 40), new Scalar(6, 255, 255), c1); 		//	11/10/X2 dean
+//		Core.inRange(src, new Scalar(178, 170, 40), new Scalar(184, 255, 255), c2); 	//	11/10/X2 dean
+		Core.inRange(src, new Scalar(0, 120, 70), new Scalar(4, 255, 255), c1); 		//	11/13/X2 dean
+		Core.inRange(src, new Scalar(178, 120, 70), new Scalar(180, 255, 255), c2); 	//	11/13/X2 dean
+		
+		
 		Core.bitwise_or(c1,c2,dst);
-//		Core.inRange(src, new Scalar(175, 54, 76), new Scalar(180, 255, 255), dst);	// 11/08/12
 	}
 	
-	public static void getVioletMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(130, 100, 40), new Scalar(143, 255, 255), dst);		// 11/08/12
-		//Core.inRange(src, new Scalar(130, 40, 40), new Scalar(150, 255, 255), dst);	//131-170-108---142-255-255
-	}
-
-	public static void getCyanMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(78, 70, 70), new Scalar(91, 255, 225), dst);		//	11/09/X2 dean
-		//							85, 70, 70				92, 255, 225
-		//Shirley
-		//Core.inRange(src, new Scalar(84, 100, 100), new Scalar(93, 255, 255), dst);		// 11/07/12
-		//Core.inRange(src, new Scalar(84, 60, 60), new Scalar(96, 255, 255), dst);		before 11/07/12
-		//Core.inRange(src, new Scalar(84, 144, 180), new Scalar(96, 255, 255), dst); //[85-98],[131-255],[125-255]
-    	//Core.inRange(src, new Scalar(85, 131, 125), new Scalar(105, 255, 255), dst); //[85-98],[131-255],[125-255]
-	}
-
 	public static void getGreenMat(Mat src, Mat dst){
-		//								130
-//		Core.inRange(src, new Scalar(38, 90, 61), new Scalar(50, 255, 255), dst);		//	11/09/X2 dean
-		//							40, 120, 30				75, 255, 255
 		//Core.inRange(src, new Scalar(50, 145, 90), new Scalar(75, 255, 255), dst);	//49-109-61---70-255-255
 		
 		//							44	135	160									11/03/X2
-    	//Core.inRange(src, new Scalar(44, 135, 100), new Scalar(69, 255, 255), dst);	//(50, 145, 90)(75, 255, 255) //49-109-61---70-255-255
-		//Shirley
-		//Core.inRange(src, new Scalar(43, 100, 140), new Scalar(65, 255, 255), dst);	// 38 100 140, 68 255 255	11/07/12
-		Core.inRange(src, new Scalar(40, 90, 70), new Scalar(91, 255, 255), dst);		//	11/13/X2 dean
+//    	Core.inRange(src, new Scalar(44, 135, 100), new Scalar(69, 255, 255), dst);	//(50, 145, 90)(75, 255, 255) //49-109-61---70-255-255
+//		Core.inRange(src, new Scalar(38, 100, 140), new Scalar(68, 255, 255), dst);	// 38 100 100, 75 255 255	11/07/12
+//		Core.inRange(src, new Scalar(40, 80, 80), new Scalar(70, 255, 255), dst);		//	11/08/X2 dean
+//		Core.inRange(src, new Scalar(40, 120, 30), new Scalar(75, 255, 255), dst);		//	11/09/X2 dean
+		Core.inRange(src, new Scalar(40, 70, 30), new Scalar(84, 255, 255), dst);		//	11/13/X2 dean
 		
-	
 	}
 
 	public static void getBlueMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(100, 80, 60), new Scalar(125, 255, 255), dst); //	11/08/X2 dean
-		//Core.inRange(src, new Scalar(103, 100, 100), new Scalar(120, 255, 255), dst);	// 11/08/12 shirley
-    	//Core.inRange(src, new Scalar(100, 100, 100), new Scalar(120, 255, 255), dst); //[106-125],[100-255],[100-255]
+//    	Core.inRange(src, new Scalar(100, 100, 100), new Scalar(120, 255, 255), dst); //[106-125],[100-255],[100-255]
+//		Core.inRange(src, new Scalar(100, 80, 60), new Scalar(125, 255, 255), dst); 	//	11/08/X2 dean
+		Core.inRange(src, new Scalar(100, 70, 50), new Scalar(125, 255, 255), dst); 	//	11/13/X2 dean
 	}
 
 
 	public static void getYellowMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(20, 140, 80), new Scalar(33, 255, 255), dst);		//	11/09/X2 dean
-		//							22, 140, 60			33, 255, 255
 		//							24	126	100									11/03/X2
-    	//Core.inRange(src, new Scalar(28, 126, 180), new Scalar(34, 255, 255), dst); //(20, 100, 100), new Scalar(30, 255, 255)
-		//Shirley
-		//Core.inRange(src, new Scalar(23, 180, 206), new Scalar(30, 255, 255), dst);		// 11/07/12
+//    	Core.inRange(src, new Scalar(28, 126, 180), new Scalar(34, 255, 255), dst); //(20, 100, 100), new Scalar(30, 255, 255)
+//		Core.inRange(src, new Scalar(23, 180, 206), new Scalar(30, 255, 255), dst);		// 11/07/12
+//		Core.inRange(src, new Scalar(22, 120, 120), new Scalar(35, 255, 255), dst);		//	11/08/X2 dean
+//		Core.inRange(src, new Scalar(22, 140, 60), new Scalar(35, 255, 255), dst);		//	11/09/X2 dean
+		Core.inRange(src, new Scalar(22, 100, 60), new Scalar(35, 255, 255), dst);		//	11/13/X2 dean
+
 	}
+	
+	public static void getOrangeMat(Mat src, Mat dst){
+		Core.inRange(src, new Scalar(10, 80, 80), new Scalar(18, 255, 255), dst); 	//	11/13/X2 dean
+	}
+	
+	public static void getPinkMat(Mat src, Mat dst){
+		Core.inRange(src, new Scalar(148, 141, 231), new Scalar(163, 255, 255), dst); //177-200-120---183-255-255
+	}
+	
+
+	public static void getVioletMat(Mat src, Mat dst){
+		Core.inRange(src, new Scalar(130, 40, 40), new Scalar(150, 255, 255), dst);	//131-170-108---142-255-255
+	}
+
+	public static void getCyanMat(Mat src, Mat dst){
+		/*Mat c1 = new Mat();
+		Mat c2 = new Mat();
+    	Core.inRange(src, new Scalar(88, 144, 161), new Scalar(94, 255, 179), c1); //177-200-120---183-255-255
+    	Core.inRange(src, new Scalar(85, 144, 180), new Scalar(96, 255, 255), c2);
+    	Core.bitwise_or(c1,c2,dst);*/
+		//Core.inRange(src, new Scalar(84, 60, 60), new Scalar(96, 255, 255), dst);		before 11/07/12
+//		Core.inRange(src, new Scalar(84, 100, 100), new Scalar(93, 255, 255), dst);		//	11/07/12
+//		Core.inRange(src, new Scalar(73, 90, 80), new Scalar(90, 255, 255), dst);		//	11/08/X2 dean
+		Core.inRange(src, new Scalar(85, 70, 70), new Scalar(92, 255, 225), dst);		//	11/09/X2 dean
+		
+		//Core.inRange(src, new Scalar(84, 144, 180), new Scalar(96, 255, 255), dst); //[85-98],[131-255],[125-255]
+    	//Core.inRange(src, new Scalar(85, 131, 125), new Scalar(105, 255, 255), dst); //[85-98],[131-255],[125-255]
+	}
+
+
+
+//	public static void getLightGreenMat(Mat src, Mat dst){	//	11/09/X2
+//		Core.inRange(src, new Scalar(40, 100, 140), new Scalar(76, 255, 255), dst);		//	11/09/X2 dean
+//	}
+//	
+//	public static void getDarkGreenMat(Mat src, Mat dst){	//	11/09/X2
+//		Core.inRange(src, new Scalar(40, 100, 50), new Scalar(76, 255, 140), dst);		//	11/09/X2 dean
+//	}
+	
+
 	
 	public static void detectAllBlobs(Mat mYuv, Mat mHsv, Mat dst) {
 		Mat mColor = new Mat();
@@ -435,6 +459,12 @@ public class ColorDetection {
 		}
 		return false;
 	}
+	
+	
+	public static boolean isEastOf(Point[] is, Point of){
+		return false;
+	}
+	
 
 	/**
 	 * "of" is reference point
@@ -509,7 +539,7 @@ public class ColorDetection {
 		Core.rectangle(dst, boundRect.tl(), boundRect.br(), new Scalar(255, 255, 0), 2, 8, 0 );
 		//        Core.putText(dst, center.x+"|"+center.y, new Point(10, 200), 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
 
-		Core.putText(dst, text, boundRect.tl(), 0/*font*/, 1, new Scalar(255, 255, 255, 255), 3);
+		Core.putText(dst, text, boundRect.tl(), 0/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
 		//        Log.i(TAG, "x="+boundRect.tl().x+" y="+boundRect.tl().y);
 
 	}
@@ -550,11 +580,6 @@ public class ColorDetection {
 			j++;
 		}
 		return boundRect;
-	}
-	
-	public boolean isVertical(Rect wrist){
-		if(wrist.height>wrist.width) return true;
-		return false;
 	}
 }
 	
