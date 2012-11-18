@@ -115,8 +115,8 @@ public class Sample1Java extends Activity {
         mItemPreviewYellow = menu.add("Y");    
         mItemPreviewRed = menu.add("R");
         mItemPreviewGreen = menu.add("G");
-        mItemPreviewCyan = menu.add("C");
-        mItemPreviewViolet = menu.add("V");
+        mItemPreviewCyan = menu.add("O");
+        mItemPreviewViolet = menu.add("W");
         return true;
     }
 
