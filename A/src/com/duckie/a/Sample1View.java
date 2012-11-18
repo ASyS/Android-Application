@@ -45,7 +45,7 @@ class Sample1View extends SampleViewBase {
 	private Mat mHsv;
 	
 
-	private Point p_yellow, p_blue, p_red, p_green, p_cyan;
+	private Point p_thumb, p_middle, p_ring, p_index, p_pinky;
 	
 	char letter;
 	
@@ -85,11 +85,11 @@ class Sample1View extends SampleViewBase {
         	mOrange = new Mat();
         	
         	
-        	p_yellow = new Point();
-        	p_blue = new Point();
-        	p_red = new Point();
-        	p_green = new Point();
-        	p_cyan = new Point();
+        	p_thumb = new Point();
+        	p_middle = new Point();
+        	p_ring = new Point();
+        	p_index = new Point();
+        	p_pinky = new Point();
         	
     	    }
 	}
@@ -188,68 +188,68 @@ class Sample1View extends SampleViewBase {
         	ColorDetection.cvt_YUVtoRGBtoHSV(mYuv,mHsv);
 
 
-
+        	// this is the area to assign what color is assigned to a finger
         	ColorDetection.getGreenMat(mHsv,mColor);
-        	ColorDetection.detectSinglePoint(mColor,p_green);
+        	ColorDetection.detectSinglePoint(mColor,p_index);
 
         	ColorDetection.getRedMat(mHsv,mColor);
-        	ColorDetection.detectSinglePoint(mColor,p_red);
+        	ColorDetection.detectSinglePoint(mColor,p_ring);
 
         	ColorDetection.getYellowMat(mHsv,mColor);
-        	ColorDetection.detectSinglePoint(mColor,p_yellow);
+        	ColorDetection.detectSinglePoint(mColor,p_thumb);
 
         	ColorDetection.getBlueMat(mHsv,mColor);
-        	ColorDetection.detectSinglePoint(mColor,p_blue);
+        	ColorDetection.detectSinglePoint(mColor,p_middle);
 
         	ColorDetection.getCyanMat(mHsv,mColor);
-        	ColorDetection.detectSinglePoint(mColor,p_cyan);
+        	ColorDetection.detectSinglePoint(mColor,p_pinky);
 
-        	Core.putText(mYuv, "G", p_green, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
-        	Core.putText(mYuv, "R", p_red, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
-        	Core.putText(mYuv, "B", p_blue, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
-        	Core.putText(mYuv, "Y", p_yellow, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
-        	Core.putText(mYuv, "C", p_cyan, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        	Core.putText(mYuv, "G", p_index, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        	Core.putText(mYuv, "R", p_ring, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        	Core.putText(mYuv, "B", p_middle, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        	Core.putText(mYuv, "Y", p_thumb, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
+        	Core.putText(mYuv, "C", p_pinky, 4/*font*/, 1, new Scalar(255, 0, 0, 255), 3);
 
         	
 ////        	
-//        	String t = "" + Math.hypot( (p_cyan.x - p_yellow.x) , (p_cyan.y - p_yellow.y));
-//        	String t = "x=" + (p_yellow.x - p_cyan.x) + " y=" + (p_yellow.y - p_cyan.y);
+//        	String t = "" + Math.hypot( (p_pinky.x - p_thumb.x) , (p_pinky.y - p_thumb.y));
+//        	String t = "x=" + (p_thumb.x - p_pinky.x) + " y=" + (p_thumb.y - p_pinky.y);
 //        	Core.putText(mYuv, t, new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 //        	
         	
         	
-        	ColorDetection.testIdentifyHandGesture(p_cyan, p_red, p_blue, p_green, p_yellow, mYuv);
+        	ColorDetection.testIdentifyHandGesture(p_pinky, p_ring, p_middle, p_index, p_thumb, mYuv);
         	
 
         	
-//        	if ( ColorDetection.isNorthEastOf(p_yellow, p_green) &
-//        			ColorDetection.isEastOf(p_green, p_blue) &
-//        			ColorDetection.isEastOf(p_blue, p_red) &
-//        			ColorDetection.isEastOf(p_red, p_cyan) 
+//        	if ( ColorDetection.isNorthEastOf(p_thumb, p_index) &
+//        			ColorDetection.isEastOf(p_index, p_middle) &
+//        			ColorDetection.isEastOf(p_middle, p_ring) &
+//        			ColorDetection.isEastOf(p_ring, p_pinky) 
 //        			
 //        			
 //        			){
 //        		Core.putText(mYuv, "A", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 //        	}
 //        	
-//        	else if (ColorDetection.isEastOf(p_green, p_blue) &
-//        			ColorDetection.isEastOf(p_blue, p_red) &
-//        			ColorDetection.isNorthEastOf(p_red, p_cyan) &
+//        	else if (ColorDetection.isEastOf(p_index, p_middle) &
+//        			ColorDetection.isEastOf(p_middle, p_ring) &
+//        			ColorDetection.isNorthEastOf(p_ring, p_pinky) &
 //        			
-//        			(ColorDetection.isSouthOf(p_yellow,p_cyan) &
-//        					ColorDetection.isSouthWestOf(p_yellow,p_green) &
-//        					ColorDetection.isSouthOf(p_yellow,p_red) &
-//        					ColorDetection.isSouthOf(p_yellow,p_blue) )
+//        			(ColorDetection.isSouthOf(p_thumb,p_pinky) &
+//        					ColorDetection.isSouthWestOf(p_thumb,p_index) &
+//        					ColorDetection.isSouthOf(p_thumb,p_ring) &
+//        					ColorDetection.isSouthOf(p_thumb,p_middle) )
 //        			
 //        			){
 //        		Core.putText(mYuv, "B", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 //        	}
 //        	
-//        	else if (ColorDetection.isEastOf(p_blue,p_red) &
-//        			ColorDetection.isEastOf(p_red,p_cyan)&
-//        			ColorDetection.isNorthEastOf(p_green,p_blue)&
-//        			ColorDetection.isNorthWestOf(p_green,p_yellow)&
-//        			!ColorDetection.isNearOf(p_green, p_blue)
+//        	else if (ColorDetection.isEastOf(p_middle,p_ring) &
+//        			ColorDetection.isEastOf(p_ring,p_pinky)&
+//        			ColorDetection.isNorthEastOf(p_index,p_middle)&
+//        			ColorDetection.isNorthWestOf(p_index,p_thumb)&
+//        			!ColorDetection.isNearOf(p_index, p_middle)
 //        			
 //        			
 //        			){
@@ -257,26 +257,26 @@ class Sample1View extends SampleViewBase {
 //        		Core.putText(mYuv, "L", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 //        	}
 //        	
-//        	else if ( ColorDetection.isSouthEastOf(p_yellow, p_green) &
-//        			ColorDetection.isEastOf(p_green, p_blue) &
-//        			ColorDetection.isEastOf(p_blue, p_red) &
-//        			ColorDetection.isEastOf(p_red, p_cyan)
+//        	else if ( ColorDetection.isSouthEastOf(p_thumb, p_index) &
+//        			ColorDetection.isEastOf(p_index, p_middle) &
+//        			ColorDetection.isEastOf(p_middle, p_ring) &
+//        			ColorDetection.isEastOf(p_ring, p_pinky)
 //        			){
 //        		Core.putText(mYuv, "E", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 //        	}
 //        	
-//        	else if ( (ColorDetection.isNotVisible(p_red)&(ColorDetection.isNotVisible(p_cyan))) &
+//        	else if ( (ColorDetection.isNotVisible(p_ring)&(ColorDetection.isNotVisible(p_pinky))) &
 //        			
-//        			ColorDetection.isNorthEastOf(p_blue, p_green) &
-//        			ColorDetection.isEastOf(p_yellow, p_green)
+//        			ColorDetection.isNorthEastOf(p_middle, p_index) &
+//        			ColorDetection.isEastOf(p_thumb, p_index)
 //        			){
 //        		Core.putText(mYuv, "Q", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 //        	}
 //
-//        	else if (ColorDetection.isNorthEastOf(p_red, p_cyan) &
-//        			ColorDetection.isEastOf(p_blue,p_red) &
-//        			ColorDetection.isNorthWestOf(p_blue, p_green) &
-//        			ColorDetection.isSouthOf(p_yellow, p_green) 
+//        	else if (ColorDetection.isNorthEastOf(p_ring, p_pinky) &
+//        			ColorDetection.isEastOf(p_middle,p_ring) &
+//        			ColorDetection.isNorthWestOf(p_middle, p_index) &
+//        			ColorDetection.isSouthOf(p_thumb, p_index) 
 //        			){
 //        		Core.putText(mYuv, "F", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 //        	}        

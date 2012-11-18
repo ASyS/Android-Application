@@ -25,200 +25,200 @@ public class ColorDetection {
 	private static final double highThresh = 90.0;
 
 
-	public static void testIdentifyHandGesture(Point p_cyan, Point p_red,
-			Point p_blue, Point p_green, Point p_yellow, Mat mYuv) {
+	public static void testIdentifyHandGesture(Point p_pinky, Point p_ring,
+			Point p_middle, Point p_index, Point p_thumb, Mat mYuv) {
 
-		if ( (isNotVisible(p_red)&(isNotVisible(p_cyan))) &
-				isNorthEastOf(p_blue, p_green) &
-				isSouthOf(p_yellow, p_blue) &
-				isWestOf(p_green, p_yellow)
+		if ( (isNotVisible(p_ring)&(isNotVisible(p_pinky))) &
+				isNorthEastOf(p_middle, p_index) &
+				isSouthOf(p_thumb, p_middle) &
+				isWestOf(p_index, p_thumb)
 		){
 			Core.putText(mYuv, "Q", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 		}
 		
-		else if ( isNotVisible(p_yellow)){
-			if (isNorthEastOf(p_green,p_blue) &
-					isEastOf(p_blue, p_red) &
-					isEastOf(p_red, p_cyan)
+		else if ( isNotVisible(p_thumb)){
+			if (isNorthEastOf(p_index,p_middle) &
+					isEastOf(p_middle, p_ring) &
+					isEastOf(p_ring, p_pinky)
 					){
 				Core.putText(mYuv, "X", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 		}
 		
-		else if ( isNotVisible(p_green) ){
-			if (isLowDistanceTo(p_yellow,p_red)){
+		else if ( isNotVisible(p_index) ){
+			if (isLowDistanceTo(p_thumb,p_ring)){
 				Core.putText(mYuv, "O", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
-			} else if (isMidDistanceTo(p_yellow,p_red)){
+			} else if (isMidDistanceTo(p_thumb,p_ring)){
 				Core.putText(mYuv, "C", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 		}
 		
-		else if (isSouthEastOf(p_blue, p_green) &
-				isSouthEastOf(p_yellow, p_green) &
-				isSouthOf(p_blue, p_yellow) &
-				!isLowDistanceTo(p_green, p_blue) &
-				!isLowDistanceTo(p_yellow, p_blue)){
+		else if (isSouthEastOf(p_middle, p_index) &
+				isSouthEastOf(p_thumb, p_index) &
+				isSouthOf(p_middle, p_thumb) &
+				!isLowDistanceTo(p_index, p_middle) &
+				!isLowDistanceTo(p_thumb, p_middle)){
 			Core.putText(mYuv, "P", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 		}
 
-		else if (isSouthEastOf(p_blue, p_green) &
-				isSouthEastOf(p_yellow, p_green) &
-				!isLowDistanceTo(p_green, p_blue)){
+		else if (isSouthEastOf(p_middle, p_index) &
+				isSouthEastOf(p_thumb, p_index) &
+				!isLowDistanceTo(p_index, p_middle)){
 			Core.putText(mYuv, "G", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 		}
 		
-		else if (isSouthEastOf(p_yellow, p_blue) &
-				isSouthEastOf(p_yellow, p_green) &
-				isSouthEastOf(p_red, p_blue) &
-				isSouthEastOf(p_red, p_green) &
-				isSouthEastOf(p_cyan, p_blue) &
-				isSouthEastOf(p_cyan, p_green) &
-				isLowDistanceTo(p_green, p_blue) &
-				!isLowDistanceTo(p_green, p_yellow)){
+		else if (isSouthEastOf(p_thumb, p_middle) &
+				isSouthEastOf(p_thumb, p_index) &
+				isSouthEastOf(p_ring, p_middle) &
+				isSouthEastOf(p_ring, p_index) &
+				isSouthEastOf(p_pinky, p_middle) &
+				isSouthEastOf(p_pinky, p_index) &
+				isLowDistanceTo(p_index, p_middle) &
+				!isLowDistanceTo(p_index, p_thumb)){
 			Core.putText(mYuv, "H", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 		}
 		
-		else if (isNorthEastOf(p_green,p_red) &
-				isNorthEastOf(p_green,p_cyan) &
-				isEastOf(p_red, p_cyan) &
-				isSouthOf(p_yellow,p_green) &
-				isEastOf(p_blue,p_green) &
-				isLowDistanceTo(p_green, p_blue) &
-				!isLowDistanceTo(p_green, p_yellow)){
+		else if (isNorthEastOf(p_index,p_ring) &
+				isNorthEastOf(p_index,p_pinky) &
+				isEastOf(p_ring, p_pinky) &
+				isSouthOf(p_thumb,p_index) &
+				isEastOf(p_middle,p_index) &
+				isLowDistanceTo(p_index, p_middle) &
+				!isLowDistanceTo(p_index, p_thumb)){
 			Core.putText(mYuv, "R", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 		}
 		
-		else if (isNorthEastOf(p_blue,p_red) &
-				isNorthEastOf(p_blue,p_cyan) &
-				isEastOf(p_red, p_cyan) &
-				isSouthOf(p_yellow,p_green) &
-				isEastOf(p_green,p_blue) &
-				isLowDistanceTo(p_green, p_blue) &
-				!isLowDistanceTo(p_green, p_yellow)&
-				isLowDistanceTo(p_yellow, p_red)){
+		else if (isNorthEastOf(p_middle,p_ring) &
+				isNorthEastOf(p_middle,p_pinky) &
+				isEastOf(p_ring, p_pinky) &
+				isSouthOf(p_thumb,p_index) &
+				isEastOf(p_index,p_middle) &
+				isLowDistanceTo(p_index, p_middle) &
+				!isLowDistanceTo(p_index, p_thumb)&
+				isLowDistanceTo(p_thumb, p_ring)){
 			Core.putText(mYuv, "U", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 		}
 
-		else if (isVisible(p_cyan) & isVisible(p_red) & isVisible(p_blue) & isVisible(p_green) & isVisible(p_yellow)){
-			if (isNorthWestOf(p_cyan, p_red) &
-				isNorthEastOf(p_yellow, p_green) &
-				isEastOf(p_green,p_blue) &
-				isEastOf(p_blue, p_red) &
-				!isLowDistanceTo(p_cyan, p_red)){
+		else if (isVisible(p_pinky) & isVisible(p_ring) & isVisible(p_middle) & isVisible(p_index) & isVisible(p_thumb)){
+			if (isNorthWestOf(p_pinky, p_ring) &
+				isNorthEastOf(p_thumb, p_index) &
+				isEastOf(p_index,p_middle) &
+				isEastOf(p_middle, p_ring) &
+				!isLowDistanceTo(p_pinky, p_ring)){
 				Core.putText(mYuv, "Y", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 			
-			else if (isNorthEastOf(p_yellow, p_green) &
-					isEastOf(p_green, p_blue) &
-					isEastOf(p_blue, p_red) & 
-					isEastOf(p_red, p_cyan)&
-					!isHighDistanceTo(p_yellow, p_green)){
+			else if (isNorthEastOf(p_thumb, p_index) &
+					isEastOf(p_index, p_middle) &
+					isEastOf(p_middle, p_ring) & 
+					isEastOf(p_ring, p_pinky)&
+					!isHighDistanceTo(p_thumb, p_index)){
 				Core.putText(mYuv, "A", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 			
 			
-			else if (isNorthWestOf(p_cyan, p_red) &
-					isEastOf(p_yellow, p_green)&
-					isEastOf(p_green, p_blue) &
-					isEastOf(p_blue, p_red) & 
+			else if (isNorthWestOf(p_pinky, p_ring) &
+					isEastOf(p_thumb, p_index)&
+					isEastOf(p_index, p_middle) &
+					isEastOf(p_middle, p_ring) & 
 					
-					!isLowDistanceTo(p_cyan, p_red)){
+					!isLowDistanceTo(p_pinky, p_ring)){
 				Core.putText(mYuv, "I", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 			
 			
-			else if (isNorthWestOf(p_blue, p_yellow) &
-					isNorthEastOf(p_green, p_yellow)&
-					isSouthWestOf(p_red, p_yellow) &
-					isSouthWestOf(p_cyan, p_yellow) &
-					!isLowDistanceTo(p_yellow, p_red)){
+			else if (isNorthWestOf(p_middle, p_thumb) &
+					isNorthEastOf(p_index, p_thumb)&
+					isSouthWestOf(p_ring, p_thumb) &
+					isSouthWestOf(p_pinky, p_thumb) &
+					!isLowDistanceTo(p_thumb, p_ring)){
 				Core.putText(mYuv, "K", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 			
-			else if (isNorthWestOf(p_blue, p_yellow) &
-					isNorthEastOf(p_green, p_yellow)&
-					isEastOf(p_yellow, p_red) &
-					isEastOf(p_red, p_cyan) &
-					isLowDistanceTo(p_yellow, p_red) &
-					!isLowDistanceTo(p_blue,p_red)){
+			else if (isNorthWestOf(p_middle, p_thumb) &
+					isNorthEastOf(p_index, p_thumb)&
+					isEastOf(p_thumb, p_ring) &
+					isEastOf(p_ring, p_pinky) &
+					isLowDistanceTo(p_thumb, p_ring) &
+					!isLowDistanceTo(p_middle,p_ring)){
 				Core.putText(mYuv, "V", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 			
 			
-			else if (isEastOf(p_green, p_blue) &
-					isEastOf(p_blue, p_red)&
+			else if (isEastOf(p_index, p_middle) &
+					isEastOf(p_middle, p_ring)&
 					
-					isEastOf(p_yellow, p_cyan) &
-					isSouthOf(p_yellow,p_red) &
-					isSouthOf(p_yellow,p_blue) &
-					isSouthOf(p_yellow,p_green) &
+					isEastOf(p_thumb, p_pinky) &
+					isSouthOf(p_thumb,p_ring) &
+					isSouthOf(p_thumb,p_middle) &
+					isSouthOf(p_thumb,p_index) &
 					
-					isSouthOf(p_cyan,p_red) &
-					isSouthOf(p_cyan,p_blue) &
-					isSouthOf(p_cyan,p_green) &
+					isSouthOf(p_pinky,p_ring) &
+					isSouthOf(p_pinky,p_middle) &
+					isSouthOf(p_pinky,p_index) &
 				
-					isLowDistanceTo(p_cyan, p_yellow) 
+					isLowDistanceTo(p_pinky, p_thumb) 
 //					isHighDistanceTo(p_yellow, p_green) &
 //					!isHighDistanceTo(p_yellow,p_cyan)
 					){
 				Core.putText(mYuv, "W", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 			
-			else if (isNorthWestOf(p_yellow,p_green) &
-					isNorthEastOf(p_yellow,p_blue) &
+			else if (isNorthWestOf(p_thumb,p_index) &
+					isNorthEastOf(p_thumb,p_middle) &
 					
-					isEastOf(p_blue,p_red) &
-					isEastOf(p_red,p_cyan) &
+					isEastOf(p_middle,p_ring) &
+					isEastOf(p_ring,p_pinky) &
 					
-					isLowDistanceTo(p_green, p_yellow) &
-					!isLowDistanceTo(p_blue, p_yellow)){
+					isLowDistanceTo(p_index, p_thumb) &
+					!isLowDistanceTo(p_middle, p_thumb)){
 				Core.putText(mYuv, "T", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 			
 			
-			else if (isNorthEastOf(p_green, p_cyan) &
-					isNorthEastOf(p_green, p_red) &
-					isNorthEastOf(p_green, p_blue) &
-					isNorthOf(p_green, p_yellow)
+			else if (isNorthEastOf(p_index, p_pinky) &
+					isNorthEastOf(p_index, p_ring) &
+					isNorthEastOf(p_index, p_middle) &
+					isNorthOf(p_index, p_thumb)
 				
 					){
 				
-				if (isLowDistanceTo(p_yellow, p_blue)){
+				if (isLowDistanceTo(p_thumb, p_middle)){
 					Core.putText(mYuv, "D", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
-				} else if (!isLowDistanceTo(p_yellow, p_blue) & isWestOf(p_green,p_yellow) & !isLowDistanceTo(p_blue,p_green)){
+				} else if (!isLowDistanceTo(p_thumb, p_middle) & isWestOf(p_index,p_thumb) & !isLowDistanceTo(p_middle,p_index)){
 					Core.putText(mYuv, "L", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 				}
 			}
 			
-			else if (isSouthOf(p_yellow,p_cyan) &
-					isSouthOf(p_yellow,p_red) &
-					isSouthOf(p_yellow,p_blue) &
-					isSouthOf(p_yellow,p_green) &
-					isEastOf(p_yellow,p_cyan) &
-					isWestOf(p_yellow,p_green) &
-					!isLowDistanceTo(p_cyan,p_red)
+			else if (isSouthOf(p_thumb,p_pinky) &
+					isSouthOf(p_thumb,p_ring) &
+					isSouthOf(p_thumb,p_middle) &
+					isSouthOf(p_thumb,p_index) &
+					isEastOf(p_thumb,p_pinky) &
+					isWestOf(p_thumb,p_index) &
+					!isLowDistanceTo(p_pinky,p_ring)
 					
 					){
 				Core.putText(mYuv, "B", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 			
-			else if (isSouthOf(p_yellow,p_cyan) &
-					isSouthOf(p_yellow,p_red) &
-					isSouthOf(p_yellow,p_blue) &
-					isSouthWestOf(p_yellow,p_green) &
-					isEastOf(p_yellow,p_cyan) &
-					isLowDistanceTo(p_cyan,p_red)
+			else if (isSouthOf(p_thumb,p_pinky) &
+					isSouthOf(p_thumb,p_ring) &
+					isSouthOf(p_thumb,p_middle) &
+					isSouthWestOf(p_thumb,p_index) &
+					isEastOf(p_thumb,p_pinky) &
+					isLowDistanceTo(p_pinky,p_ring)
 					
 					){
 				Core.putText(mYuv, "E", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 			}
 			
-			else if (isSouthEastOf(p_green,p_cyan) &
-					isSouthEastOf(p_green,p_red) &
-					isSouthEastOf(p_green,p_blue) &
-					isSouthEastOf(p_yellow,p_cyan) &
+			else if (isSouthEastOf(p_index,p_pinky) &
+					isSouthEastOf(p_index,p_ring) &
+					isSouthEastOf(p_index,p_middle) &
+					isSouthEastOf(p_thumb,p_pinky) &
 					
-					isLowDistanceTo(p_green,p_yellow)
+					isLowDistanceTo(p_index,p_thumb)
 					
 					){
 				Core.putText(mYuv, "F", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
@@ -234,17 +234,17 @@ public class ColorDetection {
 //			}
 			
 			
-			else if (isEastOf(p_green,p_blue) &
-					isEastOf(p_blue,p_red) &
-					isEastOf(p_red,p_cyan) &
-					isLowDistanceTo(p_green, p_blue) &
-					isLowDistanceTo(p_blue,p_red)&
-					isLowDistanceTo(p_red,p_cyan)
+			else if (isEastOf(p_index,p_middle) &
+					isEastOf(p_middle,p_ring) &
+					isEastOf(p_ring,p_pinky) &
+					isLowDistanceTo(p_index, p_middle) &
+					isLowDistanceTo(p_middle,p_ring)&
+					isLowDistanceTo(p_ring,p_pinky)
 //					&
 //					!isVisible(p_yellow)
 					){
 				
-				if (isNorthOf(p_red,p_blue)){
+				if (isNorthOf(p_ring,p_middle)){
 					Core.putText(mYuv, "M", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 				}else {
 					Core.putText(mYuv, "N", new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
