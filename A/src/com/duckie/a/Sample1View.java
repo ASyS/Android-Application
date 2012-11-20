@@ -394,9 +394,9 @@ class Sample1View extends SampleViewBase {
     	int iBottom = (int) (bottom * scale + 0.5f);
     	int iLeft =  (int) (left * scale + 0.5f);
     	Core.putText(img, text, new Point(iLeft, iBottom), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 3);
-    	Log.i(TAG, "scale: "+scale);
-    	Log.i(TAG, "height: "+getHeight());
-    	Log.i(TAG, "y: "+iBottom);
+//    	Log.i(TAG, "scale: "+scale);
+//    	Log.i(TAG, "height: "+getHeight());
+//    	Log.i(TAG, "y: "+iBottom);
     	//mini 2: 285
     	//one x: 690
     }

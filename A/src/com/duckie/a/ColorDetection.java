@@ -53,8 +53,8 @@ public class ColorDetection {
 		
 		else if (isVisible(new Point[] {p_pinky, p_ring, p_middle, p_index, p_thumb})) {
 		
-			if (isLetterA(p_pinky, p_ring, p_middle, p_index, p_thumb,mHsv))	{ letter = "A";}	
-			else if (isLetterB(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "B";}	
+			if (isLetterA(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "A";}	
+			else if (isLetterB(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "B";}	
 				
 //			else if (isLetterC(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "C";}
 //			else if (isLetterS(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "S";}
@@ -62,7 +62,7 @@ public class ColorDetection {
 //			else if (isLetterP(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "P";}
 //			
 //			
-//			else if (isLetterD(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "D";}	
+			else if (isLetterD(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "D";}	
 //			else if (isLetterE(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "E";}	
 //			else if (isLetterF(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "F";}		
 //			else if (isLetterG(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "G";}
@@ -87,44 +87,45 @@ public class ColorDetection {
 	}
 	
 	
-	public static void checkHsvValue(Point p, Mat hsv){
-		double[] x = hsv.get(0, 0);
-		Log.i(TAG, "a=" + x[0] + " b=" + x[1]+ " c=" + x[2]);
-	}
-	
-	public static void getWhiteMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(0, 0, 180), new Scalar(255, 20, 255), dst);
-	}
-	
-	public static boolean isWhiteNorthOf(Point p, Mat mHsv){
-		int py = (int) p.y;
-		int px = (int) p.x;
-		
-		
-//		double[] x = hsv.get( py, px);
-//		double[] x = hsv.get( 0, 0);
-//		Log.i(TAG, "p.x=" + px + " p.y=" + py+ " a=" + x[0] + " b=" + x[1]+ " c=" + x[2]);
-//		Core.inRange(src, new Scalar(0, 0, 220), new Scalar(255, 15, 255), dst);
-		while (py != 0){
-			double[] x = mHsv.get( py, px);
-			//						15			220				255
-			if (x[1] >= 0 & x[1] <= 20 & x[2] >= 180 & x[2] <= 255){
-				return true;
-			}
-			py--;
+	public static boolean isLetterD(Point p_pinky, Point p_ring,
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
+		if (
+				isEastOf(p_ring, p_pinky) &
+				isEastOf(p_middle, p_ring) &
+				isEastOf(p_thumb, p_middle) &
+				
+				isNorthEastOf(p_index, new Point[] {p_pinky, p_ring, p_middle, p_thumb}) &
+				isWhiteNorthOf(new Point[] {p_pinky, p_ring, p_middle, p_thumb}, mHsv) &
+				!isWhiteNorthOf(p_index, mHsv)
+				){
+			return true;
 		}
 		return false;
 	}
-	
-	public static boolean isWhiteNorthOf(Point[] p, Mat mHsv){
-		for (int i = 0; i < p.length; i++){
-			if (!isWhiteNorthOf(p[i], mHsv)){	//	if one is false, returns false
-				return false;
-			}
+
+
+	public static boolean isLetterB(Point p_pinky, Point p_ring,
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
+		
+		if (
+				
+				isEastOf(p_ring, p_pinky) &
+				isEastOf(p_middle, p_ring) &
+				isEastOf(p_index, p_middle) &
+
+				isSouthOf(p_thumb, new Point[] {p_pinky, p_ring, p_middle, p_index}) &
+				
+//				isEastOf(p_thumb,p_pinky) &
+				isWestOf(p_thumb,p_index) &
+				isWhiteSouthOf(new Point[] {p_pinky, p_ring, p_middle, p_index}, mHsv) &
+				!isWhiteNorthOf(new Point[] {p_pinky, p_ring, p_middle, p_index}, mHsv)
+				){
+			return true;
 		}
-		return true;
+		return false;
 	}
-	
+
+
 	public static boolean isLetterA(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
@@ -132,15 +133,22 @@ public class ColorDetection {
 				isEastOf(p_index, p_middle) &
 				isEastOf(p_middle, p_ring) & 
 				isEastOf(p_ring, p_pinky)&				
-//				isWhiteNorthOf(p_pinky,mHsv)&
-//				isWhiteNorthOf(p_ring,mHsv)&
-//				isWhiteNorthOf(p_middle,mHsv)&
-//				isWhiteNorthOf(p_index,mHsv) &
-				
 				isWhiteNorthOf(new Point[] {p_pinky,p_ring,p_middle,p_index}, mHsv)
 				
 				
 				){
+			return true;
+		}
+		return false;
+	}
+
+
+	public static boolean isLetterQ(Point p_pinky, Point p_ring,
+			Point p_middle, Point p_index, Point p_thumb){
+		
+		if (isNorthEastOf(p_middle, p_index) &
+				isSouthOf(p_thumb, p_middle) &
+				isWestOf(p_index, p_thumb)){
 			return true;
 		}
 		return false;
@@ -254,18 +262,6 @@ public class ColorDetection {
 				isEastOf(p_middle,p_index) &
 				isLowDistanceTo(p_index, p_middle) &
 				!isLowDistanceTo(p_index, p_thumb)){
-			return true;
-		}
-		return false;
-	}
-	
-	public static boolean isLetterQ(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
-		
-		if ((isNotVisible(p_ring)&(isNotVisible(p_pinky))) &
-				isNorthEastOf(p_middle, p_index) &
-				isSouthOf(p_thumb, p_middle) &
-				isWestOf(p_index, p_thumb)){
 			return true;
 		}
 		return false;
@@ -421,19 +417,6 @@ public class ColorDetection {
 		return false;
 	}
 	
-	public static boolean isLetterD(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
-		
-		if (isNorthEastOf(p_index, p_pinky) &
-				isNorthEastOf(p_index, p_ring) &
-				isNorthEastOf(p_index, p_middle) &
-				isNorthOf(p_index, p_thumb) &
-				isLowDistanceTo(p_thumb, p_middle)){
-			return true;
-		}
-		return false;
-	}
-	
 	public static boolean isLetterC(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb){
 		
@@ -444,23 +427,73 @@ public class ColorDetection {
 		return false;
 	}
 	
-	public static boolean isLetterB(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+	/** check the HSV value of the color at Point (0,0) */
+	public static void checkHsvValue(Point p, Mat hsv){
+		double[] x = hsv.get(0, 0);
+		Log.i(TAG, "a=" + x[0] + " b=" + x[1]+ " c=" + x[2]);
+	}
+	
+	public static void getWhiteMat(Mat src, Mat dst){
+		Core.inRange(src, new Scalar(0, 0, 180), new Scalar(255, 20, 255), dst);
+	}
+
+	/** starting from Point p, is there any white pixel in the North? */
+	public static boolean isWhiteNorthOf(Point p, Mat mHsv){
+			int py = (int) p.y;
+			int px = (int) p.x;
 		
-		if (isSouthOf(p_thumb,p_pinky) &
-				isSouthOf(p_thumb,p_ring) &
-				isSouthOf(p_thumb,p_middle) &
-				isSouthOf(p_thumb,p_index) &
-				isEastOf(p_thumb,p_pinky) &
-				isWestOf(p_thumb,p_index) &
-				!isLowDistanceTo(p_pinky,p_ring)
-				
-				){
-			return true;
+	//		double[] x = hsv.get( py, px);
+	//		double[] x = hsv.get( 0, 0);
+	//		Log.i(TAG, "p.x=" + px + " p.y=" + py+ " a=" + x[0] + " b=" + x[1]+ " c=" + x[2]);
+	//		Core.inRange(src, new Scalar(0, 0, 220), new Scalar(255, 15, 255), dst);
+			while (py != 0){
+				double[] x = mHsv.get( py, px);
+				//						15			220				255
+				if (x[1] >= 0 & x[1] <= 20 & x[2] >= 180 & x[2] <= 255){
+					return true;
+				}
+				py--;
+			}
+			return false;
+		}
+
+	/** from an array of Points p, are there any white pixels in the North? */
+	public static boolean isWhiteNorthOf(Point[] p, Mat mHsv){
+		for (int i = 0; i < p.length; i++){
+			if (!isWhiteNorthOf(p[i], mHsv)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/** starting from Point p, is there any white pixel in the South? */
+	public static boolean isWhiteSouthOf(Point p, Mat mHsv){
+		int py = (int) p.y;
+		int px = (int) p.x;
+	
+		while (py != mHsv.height()){
+			double[] x = mHsv.get( py, px);
+			//						15			220				255
+			if (x[1] >= 0 & x[1] <= 20 & x[2] >= 180 & x[2] <= 255){
+				return true;
+			}
+			py++;
 		}
 		return false;
 	}
-	
+
+	/** from an array of Points p, are there any white pixels in the South? */
+	public static boolean isWhiteSouthOf(Point[] p, Mat mHsv){
+		for (int i = 0; i < p.length; i++){
+			if (!isWhiteSouthOf(p[i], mHsv)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/** is the Point p visible in the screen? --- parameter p is the point of the color */
 	public static boolean isVisible(Point p){
 		if (p.x == 0 & p.y ==0){
 			return false;
@@ -468,6 +501,7 @@ public class ColorDetection {
 		return true;
 	}
 
+	/** are all the points p visible in the screen? */
 	public static boolean isVisible(Point[] p){
 		for (int i = 0; i < p.length; i++){
 			if (!isVisible(p[i])){	//	if one is false, returns false
@@ -477,10 +511,7 @@ public class ColorDetection {
 		return true;
 	}
 
-	/**
-	 *  if wala ba ang point
-	 * 
-	 */
+	/** if wala ba ang point */
 	public static boolean isNotVisible(Point p){
 		if (p.x == 0 & p.y ==0){
 			return true;
@@ -488,6 +519,7 @@ public class ColorDetection {
 		return false;
 	}
 	
+	/** are the array of Point p not visible in the screen?*/
 	public static boolean isNotVisible(Point[] p){
 		for (int i = 0; i < p.length; i++){
 			if (isVisible(p[i])){	//	if one is false, returns false
@@ -512,9 +544,20 @@ public class ColorDetection {
 		return false;
 	}
 
+	/** are the array of Point "is" EAST of Point "of" */
 	public static boolean isEastOf(Point[] is, Point of){
 		for (int i = 0; i < is.length; i++){
 			if (!isEastOf(is[i],of)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/** is Point "is" EAST of the array of Point "of" */
+	public static boolean isEastOf(Point is, Point[] of){
+		for (int i = 0; i < of.length; i++){
+			if (!isEastOf(is,of[i])){	//	if one is false, returns false
 				return false;
 			}
 		}
@@ -533,6 +576,26 @@ public class ColorDetection {
 		}
 		return false;
 	}
+	
+	/** are the array of Point "is" WEST of Point "of" */
+	public static boolean isWestOf(Point[] is, Point of){
+		for (int i = 0; i < is.length; i++){
+			if (!isWestOf(is[i],of)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/** is Point "is" WEST of the array of Point "of" */
+	public static boolean isWestOf(Point is, Point[] of){
+		for (int i = 0; i < of.length; i++){
+			if (!isWestOf(is,of[i])){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/** "of" is reference point. is "is" North of "of"? */	
 	public static boolean isNorthOf(Point is, Point of){
@@ -546,6 +609,26 @@ public class ColorDetection {
 			return true;
 		}
 		return false;
+	}
+	
+	/** are the array of Point "is" NORTH of Point "of" */
+	public static boolean isNorthOf(Point[] is, Point of){
+		for (int i = 0; i < is.length; i++){
+			if (!isNorthOf(is[i],of)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/** is Point "is" NORTH of the array of Point "of" */
+	public static boolean isNorthOf(Point is, Point[] of){
+		for (int i = 0; i < of.length; i++){
+			if (!isNorthOf(is,of[i])){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/** "of" is reference point. is "is" South of "of"? */	
@@ -561,15 +644,104 @@ public class ColorDetection {
 		}
 		return false;
 	}
+	
+	/** are the array of Point "is" SOUTH of Point "of" */
+	public static boolean isSouthOf(Point[] is, Point of){
+		for (int i = 0; i < is.length; i++){
+			if (!isSouthOf(is[i],of)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/** is Point "is" SOUTH of the array of Point "of" */
+	public static boolean isSouthOf(Point is, Point[] of){
+		for (int i = 0; i < of.length; i++){
+			if (!isSouthOf(is,of[i])){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
 
 	public static boolean isNorthEastOf(Point is, Point of){return isNorthOf(is,of) & isEastOf(is,of);}
-
+	public static boolean isNorthEastOf(Point[] is, Point of){
+		for (int i = 0; i < is.length; i++){
+			if (!isNorthEastOf(is[i],of)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	public static boolean isNorthEastOf(Point is, Point[] of){
+		for (int i = 0; i < of.length; i++){
+			if (!isNorthEastOf(is,of[i])){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
 	public static boolean isNorthWestOf(Point is, Point of){return isNorthOf(is,of) & isWestOf(is,of);}
-
+	public static boolean isNorthWestOf(Point[] is, Point of){
+		for (int i = 0; i < is.length; i++){
+			if (!isNorthWestOf(is[i],of)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	public static boolean isNorthWestOf(Point is, Point[] of){
+		for (int i = 0; i < of.length; i++){
+			if (!isNorthWestOf(is,of[i])){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
 	public static boolean isSouthEastOf(Point is, Point of){return isSouthOf(is,of) & isEastOf(is,of);}
-
+	public static boolean isSouthEastOf(Point[] is, Point of){
+		for (int i = 0; i < is.length; i++){
+			if (!isSouthEastOf(is[i],of)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	public static boolean isSouthEastOf(Point is, Point[] of){
+		for (int i = 0; i < of.length; i++){
+			if (!isSouthEastOf(is,of[i])){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
 	public static boolean isSouthWestOf(Point is, Point of){return isSouthOf(is,of) & isWestOf(is,of);}
-
+	public static boolean isSouthWestOf(Point[] is, Point of){
+		for (int i = 0; i < is.length; i++){
+			if (!isSouthWestOf(is[i],of)){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	public static boolean isSouthWestOf(Point is, Point[] of){
+		for (int i = 0; i < of.length; i++){
+			if (!isSouthWestOf(is,of[i])){	//	if one is false, returns false
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+	/** try not to use this anymore, use the isWhiteNorthOf() or isWhiteSouthOf() function */
 	public static boolean isLowDistanceTo(Point is, Point to){
 		double temp = Math.hypot( (is.x - to.x) , (is.y - to.y));
 		if (temp < lowThresh)
@@ -577,6 +749,7 @@ public class ColorDetection {
 		return false;
 	}
 
+	/** try not to use this anymore, use the isWhiteNorthOf() or isWhiteSouthOf() function */
 	public static boolean isMidDistanceTo(Point is, Point to){
 		double temp = Math.hypot( (is.x - to.x) , (is.y - to.y));
 		if (temp >= lowThresh & temp <= highThresh)
@@ -584,6 +757,7 @@ public class ColorDetection {
 		return false;
 	}
 	
+	/** try not to use this anymore, use the isWhiteNorthOf() or isWhiteSouthOf() function */
 	public static boolean isHighDistanceTo(Point is, Point to){
 		if ( (Math.abs(is.x - to.x) > highThresh) & (Math.abs(is.y - to.y) > highThresh) )
 			return true;
@@ -600,6 +774,8 @@ public class ColorDetection {
 		Rect boundRect = setContourRect(contours, k);
 		getCenterPoint(boundRect.tl(), boundRect.br(), center);
 	}
+	
+	/** convert YUV image to RGB then HSV colorspace */
 	public static void cvt_YUVtoRGBtoHSV(Mat src, Mat dst){
 		mSrc = new Mat();
 		src.copyTo(mSrc); 
@@ -608,7 +784,7 @@ public class ColorDetection {
 		Imgproc.cvtColor(dst,dst, Imgproc.COLOR_RGB2HSV);
 	}
 
-	
+	/** detect all the biggest blob of each color */
 	public static void detectAllColorBlobs(Mat mYuv, Mat mHsv, Mat dst) {
 		Mat mColor = new Mat();
 		Mat mResult = new Mat();
@@ -723,6 +899,7 @@ public class ColorDetection {
 		return k;
 	}
 
+	/** not used at the moment */
 	public boolean isVertical(Rect wrist){
 		if(wrist.height>wrist.width) return true;
 		return false;
