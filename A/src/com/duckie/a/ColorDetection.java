@@ -31,24 +31,24 @@ public class ColorDetection {
 		
 		if ( isNotVisible(new Point[] {p_pinky, p_ring}) &
 				isVisible(new Point[] {p_index, p_thumb})){
-			if (isLetterQ(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "Q";}
+			if (isLetterQ(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "Q";}
 		}
 		
 		else if (isNotVisible(p_index) &
 				isVisible(new Point[] {p_pinky, p_ring, p_middle, p_thumb})){
-			if (isLetterX(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "X";}
+			if (isLetterX(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "X";}
 		}
 		
 		else if (isNotVisible(p_index) &
 				isVisible(new Point[] {p_pinky, p_ring, p_middle, p_thumb})){
-			if (isLetterC(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "C";}	// duplicate
-			else if (isLetterS(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "S";}	// duplicate
-			else if (isLetterO(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "O";}	// duplicate
+			if (isLetterC(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "C";}	// duplicate
+			else if (isLetterS(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "S";}	// duplicate
+			else if (isLetterO(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "O";}	// duplicate
 		}
 		
 		else if (isNotVisible(p_pinky) &
 				isVisible(new Point[] {p_ring, p_middle, p_index, p_thumb})) {
-			if (isLetterP(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "P";}	// duplicate
+			if (isLetterP(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "P";}	// duplicate
 		}
 		
 		else if (isVisible(new Point[] {p_pinky, p_ring, p_middle, p_index, p_thumb})) {
@@ -56,31 +56,31 @@ public class ColorDetection {
 			if (isLetterA(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "A";}	
 			else if (isLetterB(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "B";}	
 				
-//			else if (isLetterC(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "C";}
-//			else if (isLetterS(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "S";}
-//			else if (isLetterO(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "O";}
-//			else if (isLetterP(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "P";}
-//			
-//			
+			else if (isLetterC(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "C";}
+			else if (isLetterS(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "S";}
+			else if (isLetterO(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "O";}
+			else if (isLetterP(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "P";}
+			
+			
 			else if (isLetterD(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "D";}	
-//			else if (isLetterE(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "E";}	
-//			else if (isLetterF(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "F";}		
-//			else if (isLetterG(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "G";}
-//			else if (isLetterH(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "H";}	
-//			else if (isLetterI(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "I";}	
-//			else if (isLetterK(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "K";}
-//			else if (isLetterL(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "L";}
-//			else if (isLetterM(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "M";}
-//			else if (isLetterN(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "N";}
-//		
-//			else if (isLetterR(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "R";}
-//			
-//			else if (isLetterT(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "T";}
-//			else if (isLetterU(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "U";}
-//			else if (isLetterV(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "V";}
-//			else if (isLetterW(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "W";}
-//			
-//			else if (isLetterY(p_pinky, p_ring, p_middle, p_index, p_thumb))	{ letter = "Y";}
+			else if (isLetterE(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "E";}	
+			else if (isLetterF(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "F";}		
+			else if (isLetterG(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "G";}
+			else if (isLetterH(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "H";}	
+			else if (isLetterI(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "I";}	
+			else if (isLetterK(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "K";}
+			else if (isLetterL(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "L";}
+			else if (isLetterM(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "M";}
+			else if (isLetterN(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "N";}
+		
+			else if (isLetterR(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "R";}
+			
+			else if (isLetterT(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "T";}
+			else if (isLetterU(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "U";}
+			else if (isLetterV(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "V";}
+			else if (isLetterW(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "W";}
+			
+			else if (isLetterY(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "Y";}
 		}
 		
 		Core.putText(mYuv, letter, new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
@@ -144,7 +144,7 @@ public class ColorDetection {
 
 
 	public static boolean isLetterQ(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthEastOf(p_middle, p_index) &
 				isSouthOf(p_thumb, p_middle) &
@@ -156,7 +156,7 @@ public class ColorDetection {
 
 
 	public static boolean isLetterY(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthWestOf(p_pinky, p_ring) &
 				isNorthEastOf(p_thumb, p_index) &
@@ -169,7 +169,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterX(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthEastOf(p_index,p_middle) &
 				isEastOf(p_middle, p_ring) &
@@ -180,7 +180,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterW(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isEastOf(p_index, p_middle) &
 				isEastOf(p_middle, p_ring)&
@@ -201,7 +201,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterV(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthWestOf(p_middle, p_thumb) &
 				isNorthEastOf(p_index, p_thumb)&
@@ -215,7 +215,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterU(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthEastOf(p_middle,p_ring) &
 				isNorthEastOf(p_middle,p_pinky) &
@@ -231,7 +231,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterT(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthWestOf(p_thumb,p_index) &
 				isNorthEastOf(p_thumb,p_middle) &
@@ -247,13 +247,13 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterS(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		return false;
 	}
 	
 	public static boolean isLetterR(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthEastOf(p_index,p_ring) &
 				isNorthEastOf(p_index,p_pinky) &
@@ -268,7 +268,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterP(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isSouthEastOf(p_middle, p_index) &
 				isSouthEastOf(p_thumb, p_index) &
@@ -281,7 +281,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterO(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNotVisible(p_index) &
 				isLowDistanceTo(p_thumb,p_ring)){
@@ -291,7 +291,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterN(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isEastOf(p_index,p_middle) &
 				isEastOf(p_middle,p_ring) &
@@ -306,7 +306,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterM(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isEastOf(p_index,p_middle) &
 				isEastOf(p_middle,p_ring) &
@@ -321,7 +321,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterL(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthEastOf(p_index, p_pinky) &
 				isNorthEastOf(p_index, p_ring) &
@@ -336,7 +336,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterK(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthWestOf(p_middle, p_thumb) &
 				isNorthEastOf(p_index, p_thumb)&
@@ -349,7 +349,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterI(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNorthWestOf(p_pinky, p_ring) &
 				isEastOf(p_thumb, p_index)&
@@ -363,7 +363,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterH(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isSouthEastOf(p_thumb, p_middle) &
 				isSouthEastOf(p_thumb, p_index) &
@@ -379,7 +379,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterG(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isSouthEastOf(p_middle, p_index) &
 				isSouthEastOf(p_thumb, p_index) &
@@ -390,7 +390,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterF(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isSouthEastOf(p_index,p_pinky) &
 				isSouthEastOf(p_index,p_ring) &
@@ -404,7 +404,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterE(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isSouthOf(p_thumb,p_pinky) &
 				isSouthOf(p_thumb,p_ring) &
@@ -418,7 +418,7 @@ public class ColorDetection {
 	}
 	
 	public static boolean isLetterC(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb){
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
 		if (isNotVisible(p_index) &
 				isMidDistanceTo(p_thumb,p_ring)){
@@ -428,8 +428,8 @@ public class ColorDetection {
 	}
 	
 	/** check the HSV value of the color at Point (0,0) */
-	public static void checkHsvValue(Point p, Mat hsv){
-		double[] x = hsv.get(0, 0);
+	public static void checkHsvValue(Point p, Mat mHsv){
+		double[] x = mHsv.get(0, 0);
 		Log.i(TAG, "a=" + x[0] + " b=" + x[1]+ " c=" + x[2]);
 	}
 	
