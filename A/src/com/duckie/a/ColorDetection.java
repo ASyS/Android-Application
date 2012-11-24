@@ -34,8 +34,8 @@ public class ColorDetection {
 			if (isLetterQ(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "Q";}
 		}
 		
-		else if (isNotVisible(p_index) &
-				isVisible(new Point[] {p_pinky, p_ring, p_middle, p_thumb})){
+		else if (isNotVisible(p_thumb) &
+				isVisible(new Point[] {p_pinky, p_ring, p_middle, p_index})){
 			if (isLetterX(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "X";}
 		}
 		
