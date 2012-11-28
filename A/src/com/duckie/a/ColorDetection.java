@@ -290,6 +290,7 @@ public class ColorDetection {
 		return false;
 	}
 	
+//ngano gani exactly dli ni xa mo.work?	
 	public static boolean isLetterN(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
@@ -305,6 +306,7 @@ public class ColorDetection {
 		return false;
 	}
 	
+//ngano gani exactly dli ni xa mo.work?	
 	public static boolean isLetterM(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
@@ -319,7 +321,8 @@ public class ColorDetection {
 		}
 		return false;
 	}
-	
+
+//ngano gani exactly dli ni xa mo.work?	
 	public static boolean isLetterL(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
 		
