@@ -15,7 +15,7 @@ import org.opencv.core.*;
 import android.util.Log;
 
 
-public class ColorDetection {
+public class YColorDetection {
 	private static final String TAG = "CD";
 	private static Mat mSrc;
 
@@ -34,21 +34,21 @@ public class ColorDetection {
 			if (isLetterQ(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "Q";}
 		}
 		
-		else if (isNotVisible(p_index) &
-				isVisible(new Point[] {p_pinky, p_ring, p_middle, p_thumb})){
+		else if (isNotVisible(p_thumb) &
+				isVisible(new Point[] {p_pinky, p_ring, p_middle, p_index})){
 			if (isLetterX(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "X";}
 		}
 		
 		else if (isNotVisible(p_index) &
 				isVisible(new Point[] {p_pinky, p_ring, p_middle, p_thumb})){
-			if (isLetterC(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv, 0))	{ letter = "C";Log.i(TAG, "firstC");}	// duplicate
-			else if (isLetterS(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "S";}						// duplicate
-			else if (isLetterO(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "O";}						// duplicate
+			if (isLetterC(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "C";}	// duplicate
+			else if (isLetterS(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "S";}	// duplicate
+			else if (isLetterO(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "O";}	// duplicate
 		}
 		
 		else if (isNotVisible(p_pinky) &
 				isVisible(new Point[] {p_ring, p_middle, p_index, p_thumb})) {
-			if (isLetterP(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "P";}							// duplicate
+			if (isLetterP(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "P";}	// duplicate
 		}
 		
 		else if (isVisible(new Point[] {p_pinky, p_ring, p_middle, p_index, p_thumb})) {
@@ -56,137 +56,64 @@ public class ColorDetection {
 			if (isLetterA(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "A";}	
 			else if (isLetterB(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "B";}	
 				
-			else if (isLetterC(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv, 1))	{ letter = "C";Log.i(TAG, "secondC");}
-//			else if (isLetterS(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "S";}
-//			else if (isLetterO(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "O";}
-//			else if (isLetterP(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "P";}
+			else if (isLetterC(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "C";}
+			else if (isLetterS(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "S";}
+			else if (isLetterO(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "O";}
+			else if (isLetterP(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "P";}
 			
 			
 			else if (isLetterD(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "D";}	
 			else if (isLetterE(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "E";}	
-//			else if (isLetterF(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "F";}		
-//			else if (isLetterG(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "G";}
-//			else if (isLetterH(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "H";}	
-//			else if (isLetterI(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "I";}	
-//			else if (isLetterK(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "K";}
-//			else if (isLetterL(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "L";}
-//			else if (isLetterM(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "M";}
-//			else if (isLetterN(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "N";}
-//		
-//			else if (isLetterR(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "R";}
-//			
-//			else if (isLetterT(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "T";}
-//			else if (isLetterU(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "U";}
-//			else if (isLetterV(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "V";}
-//			else if (isLetterW(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "W";}
-//			
-//			else if (isLetterY(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "Y";}
+			else if (isLetterF(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "F";}		
+			else if (isLetterG(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "G";}
+			else if (isLetterH(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "H";}	
+			else if (isLetterI(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "I";}	
+			else if (isLetterK(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "K";}
+			else if (isLetterL(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "L";}
+			else if (isLetterM(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "M";}
+			else if (isLetterN(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "N";}
+		
+			else if (isLetterR(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "R";}
+			
+			else if (isLetterT(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "T";}
+			else if (isLetterU(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "U";}
+			else if (isLetterV(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "V";}
+			else if (isLetterW(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "W";}
+			
+			else if (isLetterY(p_pinky, p_ring, p_middle, p_index, p_thumb, mHsv))	{ letter = "Y";}
 		}
 		
 		Core.putText(mYuv, letter, new Point(10, 250), 4, 1, new Scalar(255, 0, 0, 255), 3);
 	}
 	
-	/** mao ni ang check para sa D. ang naa sa sulod sa if-statement kay mao ang ilisun.
-	 *  paghimu ug if-statements sa letters nga assigned ninyu. naa nay statements daan
-	 *  ang mga letters pero mao na ang daan. dapat di na mugamit ug aning tulo ka functions:
-	 *  
-	 *     X        isLowDistanceTo
-	 *     X        isMidDistanceTo
-	 *     X        isHighDistanceTo
-	 *     
-	 *  tungod kay lahi2x ang pixels sa mga phone. ang mga gamitun nga functions sud sa
-	 *  if-statement kay kani, pili lang mu depende sa characteristics sa letter:
-	 *  
-	 *  1)	isWhiteNorthOf(Point, Mat)
-	 *  		mangita ug White pixel at the given Point of a given Mat image pasaka
-	 *  
-	 *  2)	isWhiteNorthOf(Point[], Mat)
-	 *  		same as above pero makaaccept ug array of Point
-	 *  
-	 *  3)	isWhiteNotNorthOf(Point, Mat)
-	 *  		reverse of isWhiteNorthOf(Point, Mat)
-	 *  		NOTE: use this instead of !isWhiteNorthOf(Point, Mat)
-	 *  
-	 *  4)	isWhiteNotNorthOf(Point[], Mat)			if array, always use this
-	 *  		same as above pero makaaccept ug array of Point
-	 *  		NOTE: use this instead of !isWhiteNorthOf(Point[], Mat)
-	 *  
-	 *  5)	isWhiteSouthOf(Point, Mat)
-	 *  6)	isWhiteSouthOf(Point[], Mat)
-	 *  7)	isWhiteNotSouthOf(Point, Mat)
-	 *  8)	isWhiteNotSouthOf(Point[], Mat)			if array, always use this
-	 *  9)	isVisible(Point)
-	 *  		is the Point parameter visible?
-	 *  10)	isNotVisible(Point)
-	 *  		opposite of isVisible(Point)
-	 *  
-	 *  11) isEastOf(Point, Point)
-	 *  12) isEastOf(Point[], Point)
-	 *  13) isEastOf(Point, Point[])
-	 *  
-	 *  14) isWestOf(Point, Point)
-	 *  15) isWestOf(Point[], Point)
-	 *  16) isWestOf(Point, Point[])
-	 *  
-	 *  17) isNorthOf(Point, Point)
-	 *  18) isNorthOf(Point[], Point)
-	 *  19) isNorthOf(Point, Point[])
-	 *  
-	 *  20) isSouthOf(Point, Point)
-	 *  21) isSouthOf(Point[], Point)
-	 *  21) isSouthOf(Point, Point[])
-	 *  
-	 *  22) isNorthEastOf(Point, Point)
-	 *  23) isNorthEastOf(Point[], Point)
-	 *  24) isNorthEastOf(Point, Point[])
-	 *  
-	 *  25) isNorthWestOf(Point, Point)
-	 *  26) isNorthWestOf(Point[], Point)
-	 *  27) isNorthWestOf(Point, Point[])
-	 *   
-	 *  28) isSouthEastOf(Point, Point)
-	 *  29) isSouthEastOf(Point[], Point)
-	 *  30) isSouthEastOf(Point, Point[])
-	 *  
-	 *  31) isSouthWestOf(Point, Point)
-	 *  32) isSouthWestOf(Point[], Point)
-	 *  33) isSouthWestOf(Point, Point[])
-	 *  
-	 *  Do not use
-	 *  	isLowDistanceTo
-	 *  	isMidDistanceTo
-	 *  	isHighDistanceTo
-	 * 
-	 *  
-	 * */
-	public static boolean isLetterD(Point p_pinky, Point p_ring,
+	
+	public static boolean isLetterE(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** ok na ni*/
-		if (
-				isEastOf(p_ring, p_pinky)
-				&&isEastOf(p_middle, p_ring)
-				&&isEastOf(p_thumb, p_pinky)
-				&&isNorthOf(p_index, new Point[] {p_middle,p_thumb})
-				&&isNorthEastOf(p_index, new Point[] {p_pinky, p_ring})
-				&&isWhiteNorthOf(new Point[] {p_pinky, p_ring, p_middle, p_thumb}, mHsv)
-				&&isWhiteNotNorthOf(p_index, mHsv)
-				){
+		
+		if (isSouthOf(p_thumb,p_pinky)
+				&isSouthOf(p_thumb,p_ring)
+				&isSouthOf(p_thumb,p_middle)
+				&isSouthWestOf(p_thumb,p_index) 
+				&isEastOf(p_thumb,p_pinky)
+				&isWhiteNorthOf(new Point[]{p_pinky, p_ring, p_middle, p_index, p_thumb}, mHsv)
+				&isWhiteSouthOf(new Point[]{p_pinky, p_ring, p_middle, p_index, p_thumb}, mHsv)){
 			return true;
 		}
 		return false;
 	}
 
 
-	public static boolean isLetterE(Point p_pinky, Point p_ring,
+	public static boolean isLetterD(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** ok na ni*/
-		if (isEastOf(p_ring, p_pinky)
-				&&isEastOf(p_middle, p_ring)
-				&&isEastOf(p_index, p_middle)
-				&&isSouthOf(p_thumb, new Point[] {p_pinky, p_ring, p_middle, p_index})
-				&&isWestOf(p_thumb,p_index)
-				&&isWhiteSouthOf(new Point[] {p_pinky, p_ring, p_middle, p_index}, mHsv)
-				&&isWhiteNorthOf(new Point[] {p_pinky, p_ring, p_middle, p_index}, mHsv)){
+		if (
+				isEastOf(p_ring, p_pinky) &
+				isEastOf(p_middle, p_ring) &
+				isEastOf(p_thumb, p_pinky) &
+				
+				isNorthEastOf(p_index, new Point[] {p_pinky, p_ring, p_middle, p_thumb}) &
+				isWhiteNorthOf(new Point[] {p_pinky, p_ring, p_middle, p_thumb}, mHsv) &
+				isWhiteNotNorthOf(p_index, mHsv)
+				){
 			return true;
 		}
 		return false;
@@ -195,14 +122,19 @@ public class ColorDetection {
 
 	public static boolean isLetterB(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** ok na ni*/
-		if (isEastOf(p_ring, p_pinky)
-				&&isEastOf(p_middle, p_ring)
-				&&isEastOf(p_index, p_middle)
-				&&isSouthOf(p_thumb, new Point[] {p_pinky, p_ring, p_middle, p_index})
-				&&isWestOf(p_thumb,p_index)
-				&&isWhiteSouthOf(new Point[] {p_pinky, p_ring, p_middle, p_index}, mHsv)
-				&&isWhiteNotNorthOf(new Point[] {p_pinky, p_ring, p_middle, p_index}, mHsv)
+		
+		if (
+				
+				isEastOf(p_ring, p_pinky) &
+				isEastOf(p_middle, p_ring) &
+				isEastOf(p_index, p_middle) &
+
+				isSouthOf(p_thumb, new Point[] {p_pinky, p_ring, p_middle, p_index}) &
+				
+//				isEastOf(p_thumb,p_pinky) &
+				isWestOf(p_thumb,p_index) &
+				isWhiteSouthOf(new Point[] {p_pinky, p_ring, p_middle, p_index}, mHsv) &
+				isWhiteNotNorthOf(new Point[] {p_pinky, p_ring, p_middle, p_index}, mHsv)
 				){
 			return true;
 		}
@@ -212,13 +144,13 @@ public class ColorDetection {
 
 	public static boolean isLetterA(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** ok na ni*/
-		if (isNorthEastOf(p_thumb, p_index)
-				&&isEastOf(p_index, p_middle)
-				&&isEastOf(p_middle, p_ring)
-				&&isEastOf(p_ring, p_pinky)
-				&&isWhiteNorthOf(new Point[] {p_pinky,p_ring,p_middle,p_index}, mHsv)
-				&isWhiteNotNorthOf(p_thumb, mHsv)
+		
+		if (isNorthEastOf(p_thumb, p_index) &
+				isEastOf(p_index, p_middle) &
+				isEastOf(p_middle, p_ring) & 
+				isEastOf(p_ring, p_pinky)&				
+				isWhiteNorthOf(new Point[] {p_pinky,p_ring,p_middle,p_index}, mHsv)
+				
 				
 				){
 			return true;
@@ -227,77 +159,9 @@ public class ColorDetection {
 	}
 
 
-	public static boolean isLetterC(Point p_pinky, Point p_ring,
-				Point p_middle, Point p_index, Point p_thumb, Mat mHsv, int flag){
-		/** not working*/
-			if (flag == 1){				// not visible index
-				
-				if (isSouthOf(p_thumb, new Point[] {p_pinky, p_ring, p_middle}) &
-						
-						isLowDistanceTo(p_pinky, p_ring) &
-						isLowDistanceTo(p_ring, p_middle) &
-	//					!isLowDistanceTo(p_thumb, new Point[] {p_pinky, p_ring, p_thumb}) 
-						
-						isWhiteNotNorthOf(new Point[] {p_thumb,   p_ring,p_middle}, mHsv) &
-						!isWhiteSouthOf(p_thumb, mHsv)
-						){
-					return true;
-				}
-			} else {					// visible index
-				
-				if (isSouthOf(p_thumb, new Point[] {p_pinky, p_ring, p_middle, p_index}) &
-						isLowDistanceTo(p_pinky, p_ring) &
-						isLowDistanceTo(p_ring, p_middle) &
-						isLowDistanceTo(p_ring, p_index) &
-	//					!isLowDistanceTo(p_thumb, new Point[] {p_pinky, p_ring, p_thumb, p_index})
-						isWhiteNotNorthOf(new Point[] {p_thumb,   p_ring,p_middle,p_index}, mHsv) &
-						!isWhiteSouthOf(p_thumb, mHsv)
-						){
-					return true;
-				}
-				
-				
-				
-			} 
-			return false;
-		}
-
-
-	public static boolean isLetterO(Point p_pinky, Point p_ring,
-			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
-		if (isNotVisible(p_index)){				// not visible index
-			
-			if (
-					isLowDistanceTo(p_pinky, p_ring) &
-					isLowDistanceTo(p_ring, p_middle)  &
-					isLowDistanceTo(p_thumb, new Point[] {p_pinky, p_ring, p_thumb}) 
-					
-					){
-				return true;
-			}
-		}
-		 else if (isVisible(p_index)){					// visible index
-	
-			if (
-					isLowDistanceTo(p_pinky, p_ring) &
-					isLowDistanceTo(p_ring, p_middle) &
-					isLowDistanceTo(p_ring, p_index) &
-					isLowDistanceTo(p_thumb, new Point[] {p_pinky, p_ring, p_thumb, p_index}) 
-					){
-				return true;
-			}
-	
-	
-	
-		}
-		return false;
-	}
-
-
 	public static boolean isLetterQ(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** ok na ni*/
+		
 		if (isNorthEastOf(p_middle, p_index) &
 				isSouthOf(p_thumb, p_middle) &
 				isWestOf(p_index, p_thumb)){
@@ -309,7 +173,7 @@ public class ColorDetection {
 
 	public static boolean isLetterY(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isNorthWestOf(p_pinky, p_ring) &
 				isNorthEastOf(p_thumb, p_index) &
 				isEastOf(p_index,p_middle) &
@@ -322,7 +186,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterX(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** ok na ni*/
+		
 		if (isNorthEastOf(p_index,p_middle) &
 				isEastOf(p_middle, p_ring) &
 				isEastOf(p_ring, p_pinky)){
@@ -333,7 +197,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterW(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isEastOf(p_index, p_middle) &
 				isEastOf(p_middle, p_ring)&
 				
@@ -354,7 +218,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterV(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isNorthWestOf(p_middle, p_thumb) &
 				isNorthEastOf(p_index, p_thumb)&
 				isEastOf(p_thumb, p_ring) &
@@ -368,7 +232,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterU(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isNorthEastOf(p_middle,p_ring) &
 				isNorthEastOf(p_middle,p_pinky) &
 				isEastOf(p_ring, p_pinky) &
@@ -384,7 +248,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterT(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isNorthWestOf(p_thumb,p_index) &
 				isNorthEastOf(p_thumb,p_middle) &
 				
@@ -400,13 +264,13 @@ public class ColorDetection {
 	
 	public static boolean isLetterS(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		return false;
 	}
 	
 	public static boolean isLetterR(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isNorthEastOf(p_index,p_ring) &
 				isNorthEastOf(p_index,p_pinky) &
 				isEastOf(p_ring, p_pinky) &
@@ -421,7 +285,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterP(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isSouthEastOf(p_middle, p_index) &
 				isSouthEastOf(p_thumb, p_index) &
 				isSouthOf(p_middle, p_thumb) &
@@ -432,19 +296,20 @@ public class ColorDetection {
 		return false;
 	}
 	
-	// mu work ra man pero dapat di mu gamit ug
-	//		isLowDistanceTo(Point,Point)
-	//		isMidDistanceTo(Point,Point)
-	//		isHighDistanceTo(Point,Point)
-	// since screen size dependent ni sila
-	// instead use these
-	//		isWhiteNorthOf(Point, Mat)
-	//		isWhiteNotNorthOf(Point, Mat)
-	//		isWhiteSouthOf(Point, Mat)
-	//		isWhiteNotSouthOf(Point, Mat)
+	public static boolean isLetterO(Point p_pinky, Point p_ring,
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
+		
+		if (isNotVisible(p_index) &
+				isLowDistanceTo(p_thumb,p_ring)){
+			return true;
+		}
+		return false;
+	}
+	
+//ngano gani exactly dli ni xa mo.work?	
 	public static boolean isLetterN(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isEastOf(p_index,p_middle) &
 				isEastOf(p_middle,p_ring) &
 				isEastOf(p_ring,p_pinky) &
@@ -457,19 +322,10 @@ public class ColorDetection {
 		return false;
 	}
 	
-	// mu work ra man pero dapat di mu gamit ug
-	//		isLowDistanceTo(Point,Point)
-	//		isMidDistanceTo(Point,Point)
-	//		isHighDistanceTo(Point,Point)
-	// since screen size dependent ni sila
-	// instead use these
-	//		isWhiteNorthOf(Point, Mat)
-	//		isWhiteNotNorthOf(Point, Mat)
-	//		isWhiteSouthOf(Point, Mat)
-	//		isWhiteNotSouthOf(Point, Mat)
+//ngano gani exactly dli ni xa mo.work?	
 	public static boolean isLetterM(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isEastOf(p_index,p_middle) &
 				isEastOf(p_middle,p_ring) &
 				isEastOf(p_ring,p_pinky) &
@@ -481,20 +337,11 @@ public class ColorDetection {
 		}
 		return false;
 	}
-	
-	// mu work ra man pero dapat di mu gamit ug
-	//		isLowDistanceTo(Point,Point)
-	//		isMidDistanceTo(Point,Point)
-	//		isHighDistanceTo(Point,Point)
-	// since screen size dependent ni sila
-	// instead use these
-	//		isWhiteNorthOf(Point, Mat)
-	//		isWhiteNotNorthOf(Point, Mat)
-	//		isWhiteSouthOf(Point, Mat)
-	//		isWhiteNotSouthOf(Point, Mat)
+
+//ngano gani exactly dli ni xa mo.work?	
 	public static boolean isLetterL(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isNorthEastOf(p_index, p_pinky) &
 				isNorthEastOf(p_index, p_ring) &
 				isNorthEastOf(p_index, p_middle) &
@@ -509,7 +356,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterK(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isNorthWestOf(p_middle, p_thumb) &
 				isNorthEastOf(p_index, p_thumb)&
 				isSouthWestOf(p_ring, p_thumb) &
@@ -522,7 +369,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterI(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isNorthWestOf(p_pinky, p_ring) &
 				isEastOf(p_thumb, p_index)&
 				isEastOf(p_index, p_middle) &
@@ -536,7 +383,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterH(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isSouthEastOf(p_thumb, p_middle) &
 				isSouthEastOf(p_thumb, p_index) &
 				isSouthEastOf(p_ring, p_middle) &
@@ -552,7 +399,7 @@ public class ColorDetection {
 	
 	public static boolean isLetterG(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isSouthEastOf(p_middle, p_index) &
 				isSouthEastOf(p_thumb, p_index) &
 				!isLowDistanceTo(p_index, p_middle)){
@@ -563,13 +410,23 @@ public class ColorDetection {
 	
 	public static boolean isLetterF(Point p_pinky, Point p_ring,
 			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
-		/** not working*/
+		
 		if (isSouthEastOf(p_index,p_pinky) &
 				isSouthEastOf(p_index,p_ring) &
 				isSouthEastOf(p_index,p_middle) &
 				isSouthEastOf(p_thumb,p_pinky) &
 				
 				isLowDistanceTo(p_index,p_thumb)){
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isLetterC(Point p_pinky, Point p_ring,
+			Point p_middle, Point p_index, Point p_thumb, Mat mHsv){
+		
+		if (isNotVisible(p_index) &
+				isMidDistanceTo(p_thumb,p_ring)){
 			return true;
 		}
 		return false;
@@ -604,18 +461,7 @@ public class ColorDetection {
 			}
 			return false;
 		}
-
-	/** from an array of Points p, are there any white pixels in the North? */
-	public static boolean isWhiteNorthOf(Point[] p, Mat mHsv){
-		for (int i = 0; i < p.length; i++){
-			if (!isWhiteNorthOf(p[i], mHsv)){	//	if one is false, returns false
-				return false;
-			}
-		}
-		return true;
-	}
 	
-
 	public static boolean isWhiteNotNorthOf(Point p, Mat mHsv){
 		int py = (int) p.y;
 		int px = (int) p.x;
@@ -627,6 +473,16 @@ public class ColorDetection {
 				return false;
 			}
 			py--;
+		}
+		return true;
+	}
+
+	/** from an array of Points p, are there any white pixels in the North? */
+	public static boolean isWhiteNorthOf(Point[] p, Mat mHsv){
+		for (int i = 0; i < p.length; i++){
+			if (!isWhiteNorthOf(p[i], mHsv)){	//	if one is false, returns false
+				return false;
+			}
 		}
 		return true;
 	}
@@ -660,30 +516,6 @@ public class ColorDetection {
 	public static boolean isWhiteSouthOf(Point[] p, Mat mHsv){
 		for (int i = 0; i < p.length; i++){
 			if (!isWhiteSouthOf(p[i], mHsv)){	//	if one is false, returns false
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	public static boolean isWhiteNotSouthOf(Point p, Mat mHsv){
-		int py = (int) p.y;
-		int px = (int) p.x;
-	
-		while (py != mHsv.height()){
-			double[] x = mHsv.get( py, px);
-			//						15			220				255
-			if (x[1] >= 0 & x[1] <= 20 & x[2] >= 180 & x[2] <= 255){
-				return false;
-			}
-			py++;
-		}
-		return true;
-	}
-	
-	public static boolean isWhiteNotSouthOf(Point[] p, Mat mHsv){
-		for (int i = 0; i < p.length; i++){
-			if (!isWhiteNotSouthOf(p[i], mHsv)){	//	if one is false, returns false
 				return false;
 			}
 		}
@@ -945,26 +777,6 @@ public class ColorDetection {
 			return true;
 		return false;
 	}
-	
-	public static boolean isLowDistanceTo(Point is, Point[] to){
-		for (int i = 0; i < to.length; i++){
-			if (!isLowDistanceTo(is,to[i])){	//	if one is false, returns false
-				return false;
-			}
-		}
-		return true;
-		
-	}
-	
-	public static boolean isLowDistanceTo(Point[] is, Point to){
-		for (int i = 0; i < is.length; i++){
-			if (!isLowDistanceTo(is[i],to)){	//	if one is false, returns false
-				return false;
-			}
-		}
-		return true;
-		
-	}
 
 	/** try not to use this anymore, use the isWhiteNorthOf() or isWhiteSouthOf() function */
 	public static boolean isMidDistanceTo(Point is, Point to){
@@ -1123,45 +935,80 @@ public class ColorDetection {
 	}
 	
 	
+	
+
 	public static void getOrangeMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(9, 70, 70), new Scalar(18, 255, 255), dst);		// orig
-//		Core.inRange(src, new Scalar(9, 70, 70), new Scalar(17, 255, 255), dst);		// 11/24/X2 -dean
+		Core.inRange(src, new Scalar(9, 70, 70), new Scalar(18, 255, 255), dst);		//	new
 	}
 	
+	
+	
 	public static void getPinkMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(148, 50, 80), new Scalar(163, 255, 255), dst);
-	}
+	//		Core.inRange(src, new Scalar(148, 141, 231), new Scalar(163, 255, 255), dst); //177-200-120---183-255-255
+			Core.inRange(src, new Scalar(148, 50, 80), new Scalar(163, 255, 255), dst);		//11/09/X2
+		}
 
+	//ok! -mini2
 	public static void getRedMat(Mat src, Mat dst){
+		//		mSrc = new Mat(); // added: oct25 11am
+		//		src.copyTo(mSrc); // added: oct25 11am
+
 		Mat c1 = new Mat();
 		Mat c2 = new Mat();
-		Core.inRange(src, new Scalar(0, 180, 70), new Scalar(6, 255, 255), c1);			// orig
-//		Core.inRange(src, new Scalar(0, 180, 70), new Scalar(4, 255, 255), c1);			// 11/24/X2 -dean
-		Core.inRange(src, new Scalar(175, 180, 70), new Scalar(178, 255, 255), c2);		// orig
-		
+//		Core.inRange(src, new Scalar(0, 150, 140), new Scalar(6, 255, 255), c1); 		//	11/09/X2 dean
+//		Core.inRange(src, new Scalar(178, 170, 120), new Scalar(184, 255, 255), c2); 	//	11/09/X2 dean				
+//		Core.bitwise_or(c1,c2,dst);
+		//Shirley
+		Core.inRange(src, new Scalar(0, 180, 70), new Scalar(6, 255, 255), c1);		// 11/10/12
+		Core.inRange(src, new Scalar(175, 180, 70), new Scalar(178, 255, 255), c2);	// 11/10/12
 		Core.bitwise_or(c1,c2,dst);
+//		Core.inRange(src, new Scalar(175, 54, 76), new Scalar(180, 255, 255), dst);	// 11/08/12
 	}
 	
 	public static void getVioletMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(130, 100, 40), new Scalar(143, 255, 255), dst);
+		Core.inRange(src, new Scalar(130, 100, 40), new Scalar(143, 255, 255), dst);		// 11/08/12
+		//Core.inRange(src, new Scalar(130, 40, 40), new Scalar(150, 255, 255), dst);	//131-170-108---142-255-255
 	}
 
 	public static void getCyanMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(78, 70, 70), new Scalar(91, 255, 225), dst);
+		Core.inRange(src, new Scalar(78, 70, 70), new Scalar(91, 255, 225), dst);		//	11/09/X2 dean
+		//							85, 70, 70				92, 255, 225
+		//Shirley
+		//Core.inRange(src, new Scalar(84, 100, 100), new Scalar(93, 255, 255), dst);		// 11/07/12
+		//Core.inRange(src, new Scalar(84, 60, 60), new Scalar(96, 255, 255), dst);		before 11/07/12
+		//Core.inRange(src, new Scalar(84, 144, 180), new Scalar(96, 255, 255), dst); //[85-98],[131-255],[125-255]
+    	//Core.inRange(src, new Scalar(85, 131, 125), new Scalar(105, 255, 255), dst); //[85-98],[131-255],[125-255]
 	}
 
 	public static void getGreenMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(40, 90, 70), new Scalar(91, 255, 255), dst);
+		//								130
+//		Core.inRange(src, new Scalar(38, 90, 61), new Scalar(50, 255, 255), dst);		//	11/09/X2 dean
+		//							40, 120, 30				75, 255, 255
+		//Core.inRange(src, new Scalar(50, 145, 90), new Scalar(75, 255, 255), dst);	//49-109-61---70-255-255
+		
+		//							44	135	160									11/03/X2
+    	//Core.inRange(src, new Scalar(44, 135, 100), new Scalar(69, 255, 255), dst);	//(50, 145, 90)(75, 255, 255) //49-109-61---70-255-255
+		//Shirley
+		//Core.inRange(src, new Scalar(43, 100, 140), new Scalar(65, 255, 255), dst);	// 38 100 140, 68 255 255	11/07/12
+		Core.inRange(src, new Scalar(40, 90, 70), new Scalar(91, 255, 255), dst);		//	11/13/X2 dean
+		
+	
 	}
 
 	public static void getBlueMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(100, 80, 60), new Scalar(125, 255, 255), dst);
+		Core.inRange(src, new Scalar(100, 80, 60), new Scalar(125, 255, 255), dst); //	11/08/X2 dean
+		//Core.inRange(src, new Scalar(103, 100, 100), new Scalar(120, 255, 255), dst);	// 11/08/12 shirley
+    	//Core.inRange(src, new Scalar(100, 100, 100), new Scalar(120, 255, 255), dst); //[106-125],[100-255],[100-255]
 	}
 
 
 	public static void getYellowMat(Mat src, Mat dst){
-		Core.inRange(src, new Scalar(20, 140, 80), new Scalar(33, 255, 255), dst);		// orig
-		Core.inRange(src, new Scalar(20, 160, 80), new Scalar(33, 255, 255), dst);		// 11/24/X2 -dean
+		Core.inRange(src, new Scalar(20, 140, 80), new Scalar(33, 255, 255), dst);		//	11/09/X2 dean
+		//							22, 140, 60			33, 255, 255
+		//							24	126	100									11/03/X2
+    	//Core.inRange(src, new Scalar(28, 126, 180), new Scalar(34, 255, 255), dst); //(20, 100, 100), new Scalar(30, 255, 255)
+		//Shirley
+		//Core.inRange(src, new Scalar(23, 180, 206), new Scalar(30, 255, 255), dst);		// 11/07/12
 	}
 	
 	
