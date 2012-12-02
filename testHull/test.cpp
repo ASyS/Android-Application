@@ -12,15 +12,22 @@ using namespace cv;
 using namespace std;
 
 Mat subtractBG(Mat image);
-int findObjectHull(Mat src, Mat image);
+vector<Point> findObjectHull(Mat src, Mat image);
 
 int main(){
 	Mat binary;
-	Mat src = imread("Box.png");
+	vector<vector<Point> > handTemplate(24);
+	Mat src = imread("Hand.png");
 	imshow("Box", src);
 	Mat processMe = src.clone();
 	binary = subtractBG(processMe);
-	findObjectHull(src, binary);
+	handTemplate[0] = findObjectHull(src, binary);
+	Mat src2 = imread("XHand.png");
+	processMe = src2.clone();
+	binary = subtractBG(processMe);
+	handTemplate[1] = findObjectHull(src2, binary);
+
+	//Mat src3 = imread("src3.png");
 	waitKey(0);
 	return 0;
 }
@@ -34,7 +41,7 @@ Mat subtractBG(Mat image){
 	return image;
 }
 
-int findObjectHull(Mat src, Mat image){
+vector<Point> findObjectHull(Mat src, Mat image){
 	vector<vector<Point> > hull(1);
 	vector<vector<Point> > contours;
 	vector<Vec4i> hierarchy;
@@ -56,5 +63,6 @@ int findObjectHull(Mat src, Mat image){
 	convexHull(Mat(contours[indexOfBiggestContour]), hull[0], false);
 	drawContours(src, hull, indexOfBiggestContour, Scalar(0,255,0), 1, 8, vector<Vec4i>(), 0, Point() );
 	imshow("Hull", src);
-	return indexOfBiggestContour;
+	waitKey(0);
+	return hull[0];
 }
