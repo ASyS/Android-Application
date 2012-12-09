@@ -29,13 +29,13 @@ int main() {
 			"F1.jpg", "G0.jpg", "G1_0.jpg", "G1_1.jpg", "H0_0.jpg", "H0_1.jpg",
 			"H1_0.jpg", "H1_1.jpg", "H1_2.jpg", "I0.jpg", "I1.jpg", "K0.jpg",
 			"K1.jpg", "L0.jpg", "L1.jpg", "M0.jpg", "M1_0.jpg", "M1_1.jpg",
-			"N1.jpg", "O0.jpg", "O1_0.jpg", "O1_1.jpg", "P0.jpg", "P1_0.jpg",
-			"P1_1.jpg", "P1_2.jpg", "Q0.jpg", "Q1_0.jpg", "Q1_1.jpg", "R0.jpg",
-			"R1.jpg", "S0.jpg", "S1.jpg", "T0.jpg", "T1.jpg", "U0.jpg",
-			"U1_0.jpg", "U1_1.jpg", "V0.jpg", "V1.jpg", "W0.jpg", "W1_0.jpg",
-			"W1_1.jpg", "X0_0.jpg", "X0_1.jpg", "X1_0.jpg", "X1_1.jpg",
-			"Y0.jpg", "Y1_0.jpg", "Y1_1.jpg" };
-	for (int i = 0; i < 66; i++) {
+			"N0.jpg", "N1.jpg", "O0.jpg", "O1_0.jpg", "O1_1.jpg", "P0.jpg",
+			"P1_0.jpg", "P1_1.jpg", "P1_2.jpg", "Q0.jpg", "Q1_0.jpg",
+			"Q1_1.jpg", "R0.jpg", "R1.jpg", "S0.jpg", "S1.jpg", "T0.jpg",
+			"T1.jpg", "U0.jpg", "U1_0.jpg", "U1_1.jpg", "V0.jpg", "V1.jpg",
+			"W0.jpg", "W1_0.jpg", "W1_1.jpg", "X0_0.jpg", "X0_1.jpg",
+			"X1_0.jpg", "X1_1.jpg", "Y0.jpg", "Y1_0.jpg", "Y1_1.jpg" };
+	for (int i = 0; i < 67; i++) {
 		Mat src = imread(samples[i]);
 		int imgHeight = src.rows;
 
@@ -52,13 +52,12 @@ int main() {
 			cout << samples[i] << ": height classification" << endl;
 //			cout << samples[i] << "\t" << src.cols << "\t" << handHeight << "\t"
 //					<< centroid.x << "\t" << centroid.y << "\tvertical" << "\t"<<handHeight<<endl;
-		}
-		else {
+		} else {
 //			cout << samples[i] << ": horizontal classification" << endl;
-			if(isCentroidClass(src))
-				cout <<  samples[i] << ": centroid classification" << endl;
+			if (isCentroidClass(src))
+				cout << samples[i] << ": centroid classification" << endl;
 			else
-				cout <<  samples[i] << ": width classification" << endl;
+				cout << samples[i] << ": width classification" << endl;
 //			cout << samples[i] << "\t" << src.cols << "\t" << handHeight << "\t"
 //					<< centroid.x << "\t" << centroid.y << "\thorizontal" << "\t"<<handHeight<< endl;
 //			cout<<"height: "<<handHeight<<endl;
@@ -169,7 +168,7 @@ Mat furtherClean(Mat image) {
 
 bool isHeightClass(int imgHeight, int handHeight) {
 	float thresh = 0.8;
-	if ((float)handHeight/imgHeight > thresh)
+	if ((float) handHeight / imgHeight > thresh)
 		return true;
 	else
 		return false;
@@ -204,7 +203,7 @@ bool isCentroidClass(Mat image) {
 	imshow("centroid", image);
 	waitKey(0);
 
-	if((float)mc.x/handWidth < 0.55)
+	if ((float) mc.x / handWidth < 0.55)
 		return true;
 	else
 		return false;
