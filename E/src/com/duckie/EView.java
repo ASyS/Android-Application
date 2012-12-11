@@ -85,7 +85,8 @@ class EView extends EViewBase {
         case VIEW_MODE_GRAY:
 			// Subtract external background from hand
         	mHand = Filter.subtractBG(mYuv, mRgba);
-        	Core.putText(mRgba, Classification.classify(mRgba, mHand), new Point(10, 100), 3/* CV_FONT_HERSHEY_COMPLEX */, 2, new Scalar(255, 0, 0, 255), 3);
+        	printTextUL(mRgba, Classification.classify(mRgba, mHand));
+//        	Core.putText(mRgba, Classification.classify(mRgba, mHand), new Point(10, 100), 3/* CV_FONT_HERSHEY_COMPLEX */, 2, new Scalar(255, 0, 0, 255), 3);
             break;
         case VIEW_MODE_RGBA:
             Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
@@ -111,6 +112,17 @@ class EView extends EViewBase {
 
     public void setViewMode(int viewMode) {
     	mViewMode = viewMode;
+    }
+    
+    public void printTextUL(Mat img, String text){
+    	final float top = 35.0f;
+    	final float left = 5.0f;
+    	// Get the screen's density scale
+    	final float scale = getFrameHeight()/320.0f;
+    	// Convert the dps to pixels, based on density scale
+    	int iTop = (int) (top * scale + 0.5f);
+    	int iLeft =  (int) (left * scale + 0.5f);
+    	Core.putText(img, text, new Point(iLeft, iTop), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 1);
     }
 
 }

@@ -8,14 +8,18 @@ import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
+import android.util.Log;
+
 public class Classification {	
 	
 	public static String classify(Mat src, Mat object) {
 		// Find height of frame and hand
 		int imgHeight = src.rows();
 		int handHeight = object.rows();
-
-		if (isHeightClass(imgHeight, handHeight)) {
+		
+		if (object.size().area() == 0)
+			return "Input Hand";
+		else if (isHeightClass(imgHeight, handHeight)) {
 			return "Height";
 		}
 		else {
