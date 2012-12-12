@@ -19,6 +19,9 @@ public class Classification {
 		
 		if (object.size().area() == 0)
 			return "Input Hand";
+		else if(isMotionClass(object)){			
+			return "Motion";
+		}
 		else if (isHeightClass(imgHeight, handHeight)) {
 			return "Height";
 		}
@@ -41,6 +44,23 @@ public class Classification {
 		return cleaned;
 	}
 
+	public static boolean isMotionClass(Mat image){
+		Mat imagecopy = new Mat();
+		image.copyTo(imagecopy);
+		
+		// Convert to B&W image
+		Imgproc.threshold(imagecopy, imagecopy, 0, 255, Imgproc.THRESH_BINARY);
+
+		// Convert to binary image, 1 channel
+		Imgproc.cvtColor(imagecopy, imagecopy, Imgproc.COLOR_RGB2GRAY);
+		
+		Motion.detectMotion(imagecopy);
+		if(Motion.getCurrentDirection() != 0){
+			return true;
+		}
+		return false;
+	}
+	
 	public static boolean isHeightClass(int imgHeight, int handHeight) {
 		float thresh = 0.8f;
 		if ((float) handHeight / imgHeight > thresh)
