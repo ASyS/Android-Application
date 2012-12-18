@@ -10,7 +10,9 @@ import org.opencv.imgproc.Imgproc;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.duckie.Filter;
 import com.duckie.Classification;
@@ -28,7 +30,7 @@ class EView extends EViewBase {
     private Mat mHand;
 	private Bitmap mBitmap;
 	private int mViewMode;
-
+ 
     public EView(Context context) {
         super(context);
         mViewMode = VIEW_MODE_GRAY;
@@ -85,16 +87,43 @@ class EView extends EViewBase {
         case VIEW_MODE_GRAY:
 			// Subtract external background from hand
         	mHand = Filter.subtractBG(mYuv, mRgba);
-        	printTextUL(mRgba, Classification.classify(mRgba, mHand));
+        	// Classify hand signal
+        	int group = Classification.classify(mRgba, mHand);
+        	if(group == 0)
+        		printTextUL(mRgba, "Input Hand");
+        	else if(group == 1){
+        		printTextUL(mRgba, "Motion");
+        		Motion.getASLMotionLetter();
+        	}
+        	else if(group == 2){
+        		printTextUL(mRgba, "Height");
+//        		Log.i("size", ""+mHand.rows());
+        		printTextBL(mRgba, HeightClass.findTips(mHand));
+        	}
+        	else if(group == 3)
+        		printTextUL(mRgba, "Mid");
+        	else if(group == 4)
+        		printTextUL(mRgba, "Centroid");
+        	else if(group == 5)
+        		printTextUL(mRgba, "Width");
+//       	try {
+//			Thread.sleep(300);//in ms
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 //        	Core.putText(mRgba, Classification.classify(mRgba, mHand), new Point(10, 100), 3/* CV_FONT_HERSHEY_COMPLEX */, 2, new Scalar(255, 0, 0, 255), 3);
             break;
         case VIEW_MODE_RGBA:
             Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
             Core.putText(mRgba, "OpenCV + Android", new Point(10, 100), 3/* CV_FONT_HERSHEY_COMPLEX */, 2, new Scalar(255, 0, 0, 255), 3);
             break;
+            
         case VIEW_MODE_CANNY:
-            Imgproc.Canny(mGraySubmat, mIntermediateMat, 80, 100);
-            Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2BGRA, 4);
+//            Imgproc.Canny(mGraySubmat, mIntermediateMat, 80, 100);
+//            Imgproc.cvtColor(mIntermediateMat, mRgba, Imgproc.COLOR_GRAY2BGRA, 4);
+        	
+        	
             break;
         }
 
@@ -123,6 +152,17 @@ class EView extends EViewBase {
     	int iTop = (int) (top * scale + 0.5f);
     	int iLeft =  (int) (left * scale + 0.5f);
     	Core.putText(img, text, new Point(iLeft, iTop), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 1);
+    }
+
+    public void printTextBL(Mat img, String text){
+    	final float bottom = 305.0f;		//320
+    	final float left = 5.0f;
+    	// Get the screen's density scale
+    	final float scale = getFrameHeight()/320.0f;
+    	// Convert the dps to pixels, based on density scale
+    	int iBottom = (int) (bottom * scale + 0.5f);
+    	int iLeft =  (int) (left * scale + 0.5f);
+    	Core.putText(img, text, new Point(iLeft, iBottom), 4, 1.0f*scale, new Scalar(255, 0, 0, 255), 1);
     }
 
 }

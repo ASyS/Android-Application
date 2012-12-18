@@ -19,28 +19,21 @@ public class Motion {
 	private static int lastY = -1;
 	private static double LAST_STEPx = -1;
 	private static double LAST_STEPy = -1;
-	private static int STEP_X = 20;
-	private static int STEP_Y = 20;
+ 
+	private static int STEP_X = 40;
+	private static int STEP_Y = 40;
 	private static int direction_counter = 0;
 	private static int current_direction = 0;
+							//	2 right
+							//	1 left
+							//	4 down
+							//	3 up
 	private static int prev_direction = 0;
+	private static char direction_pattern = '?';
 
 	//private static final String TAG = "CD";
 	private static Mat mSrc, mThresh, mHierarchy;
 
-	//tracking parameters (in sec)
-	//number of cyclic frame buffer used for motion detection
-	//depend on FPS
-	
-	//ring image buffer
-
-	
-	
-	//temporary images
-	public static void update_mhi(Mat img, Mat dst, int diff_threshold){
-		
-	}
-	
 	public static void draw_opticflow(Mat flow, Mat cflowmap, int step, Scalar color){
 		int i=0,j = 0;
 		for(int y=0; y<cflowmap.rows(); y+= step){
@@ -253,6 +246,169 @@ public class Motion {
 		//hullPoints - set of HULL POINTS CALCULATED from convexHull
 		//Imgproc.drawContours( dst, hullPoints, -1,  new Scalar(255,0,0, 255), 1);
 		return hullPeak;
+	}
+
+	public static String checkJMotionPath(){
+		String motion_letter = null;
+		switch(direction_counter){
+			case 0:
+				if(prev_direction != current_direction){
+					if(current_direction == 4){
+						//moving down : possible motion for J
+						direction_pattern = 'J';
+						direction_counter++;
+						motion_letter = " ";
+					}
+					else if(current_direction == 0){
+						direction_counter = 0;
+						//motion_letter = ' ';
+					}
+					else{
+						direction_counter = 0;
+						motion_letter = "?";
+						/*putText(img, motion_letter, Point(0,100),
+								FONT_HERSHEY_SIMPLEX, 3,
+								Scalar(255,255,255), 2, 8, false);*/
+					}
+					prev_direction = current_direction;
+				}
+				break;
+			case 1:
+				if(prev_direction != current_direction){
+					if(current_direction == 3){
+						//moving up : possible motion for J
+						motion_letter = "J";
+						/*putText(img, motion_letter, Point(0,100),
+								FONT_HERSHEY_SIMPLEX, 3,
+								Scalar(255,255,255), 2, 8, false);*/
+						//direction_counter = 0;
+						break;
+					}
+					else{
+						direction_counter = 0;
+						motion_letter = "?";
+					}
+					prev_direction = current_direction;
+				}
+				break;
+			default:
+				direction_counter = 0;
+				break;
+		}	
+		return motion_letter;
+	}
+	
+	public static String checkZMotionPath(){
+		String motion_letter = null;
+		switch(direction_counter){
+		case 0:
+			if(prev_direction != current_direction){
+				if(current_direction == 2){
+					//moving right : possible motion for Z
+					//direction_pattern = 'Z';
+					direction_counter++;
+					motion_letter = " ";
+				}
+				else if(current_direction == 0){
+					direction_counter = 0;
+					motion_letter = " ";
+				}
+				else{
+					direction_counter = 0;
+					motion_letter = "?";
+					/*putText(img, motion_letter, Point(0,100),
+							FONT_HERSHEY_SIMPLEX, 3,
+							Scalar(255,255,255), 2, 8, false);*/
+				}
+				prev_direction = current_direction;
+			}
+			break;
+		case 1:
+			if(prev_direction != current_direction){
+				if(current_direction == 1){
+					//moving left : possible motion for Z
+					//direction_pattern = 'Z';
+					direction_counter++;
+					motion_letter = " ";
+				}
+				else{
+					direction_counter = 0;
+					motion_letter = "?";
+				}
+				prev_direction = current_direction;
+			}
+			break;
+		case 2:
+			if(prev_direction != current_direction){
+				if(current_direction == 2){
+					//moving left down : possible motion for Z
+					motion_letter = "Z";
+					/*putText(img, motion_letter, Point(0,100),
+							FONT_HERSHEY_SIMPLEX, 3,
+							Scalar(255,255,255), 2, 8, false);*/
+					direction_counter = 0;
+					break;
+				}
+				else{
+					direction_counter = 0;
+					motion_letter = "?";
+				}
+				prev_direction = current_direction;
+			}
+			break;
+		default:
+			direction_counter = 0;
+			break;
+		}
+		return motion_letter;
+	}
+	
+	public static String getASLMotionLetter(){
+		String letter = null;
+		if(direction_pattern == 'J'){			
+			//return "J";
+			//return Integer.toString(current_direction);
+			letter = checkJMotionPath();
+		}
+		else if(direction_pattern == 'Z'){
+			//return "Z";
+			//return Integer.toString(current_direction);
+			letter = checkZMotionPath();
+		}
+		else{
+			letter = "?";
+		}
+		return letter;
+	}	
+	
+	public static void detectMotion(Mat src, Mat dst){
+		Point center, peak;
+//		temp = prevgray;
+//		prevgray = gray;
+//		gray = temp;		
+//    	cvt_YUVtoGRAY(src, Sample1View.gray);
+		center = trackCenter(src);
+		peak = detectHull(src);
+		
+		if(peak.x != 0){
+			if(peak.x<center.x){
+				//pinky finger
+				direction_pattern = 'J';
+				getDirection(center, 1);
+			}
+			else if(peak.x>center.x){	
+				//index finger
+				direction_pattern = 'Z';
+				getDirection(center, 0);
+			}
+		}
+		else{
+			direction_pattern = '?';
+		}
+	}
+	//temporary images
+	public static void update_mhi(Mat img, Mat dst, int diff_threshold){
+		
 	}
 	
 	public static void detectMotion(Mat src){

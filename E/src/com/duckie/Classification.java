@@ -9,28 +9,31 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
 import android.util.Log;
-
+ 
 public class Classification {	
 	
-	public static String classify(Mat src, Mat object) {
+	public static int classify(Mat src, Mat object) {
 		// Find height of frame and hand
 		int imgHeight = src.rows();
 		int handHeight = object.rows();
 		
 		if (object.size().area() == 0)
-			return "Input Hand";
-		else if(isMotionClass(object)){			
-			return "Motion";
+			return 0;
+		else if(isMotionClass(object, src)){			
+			return 1;
 		}
 		else if (isHeightClass(imgHeight, handHeight)) {
-			return "Height";
+			return 2;
+		}
+		else if (isMidHeightClass(imgHeight, handHeight)){
+			return 3;
 		}
 		else {
 			if (isCentroidClass(object)){
-				return "Centroid";
+				return 4;
 			}
 			else
-				return "Width";
+				return 5;
 		}
 	}
 
@@ -44,7 +47,8 @@ public class Classification {
 		return cleaned;
 	}
 
-	public static boolean isMotionClass(Mat image){
+
+	public static boolean isMotionClass(Mat image, Mat src){
 		Mat imagecopy = new Mat();
 		image.copyTo(imagecopy);
 		
@@ -54,7 +58,7 @@ public class Classification {
 		// Convert to binary image, 1 channel
 		Imgproc.cvtColor(imagecopy, imagecopy, Imgproc.COLOR_RGB2GRAY);
 		
-		Motion.detectMotion(imagecopy);
+		Motion.detectMotion(imagecopy, src);
 		if(Motion.getCurrentDirection() != 0){
 			return true;
 		}
@@ -69,6 +73,14 @@ public class Classification {
 			return false;
 	}
 
+	public static boolean isMidHeightClass(int imgHeight, int handHeight) {
+		float thresh = 0.65f;
+		if ((float) handHeight / imgHeight > thresh)
+			return true;
+		else
+			return false;
+	}
+	
 	public static boolean isCentroidClass(Mat image) {
 		Mat binary = new Mat();
 		// Find contours from binary image
