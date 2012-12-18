@@ -25,9 +25,9 @@ public class Classification {
 		else if (isHeightClass(imgHeight, handHeight)) {
 			return 2;
 		}
-		else if (isMidHeightClass(imgHeight, handHeight)){
-			return 3;
-		}
+//		else if (isMidHeightClass(imgHeight, handHeight)){
+//			return 3;
+//		}
 		else {
 			if (isCentroidClass(object)){
 				return 4;

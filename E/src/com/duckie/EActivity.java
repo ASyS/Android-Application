@@ -8,22 +8,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.TextView;
- 
+
 public class EActivity extends Activity {
     private static final String TAG = "Sample::Activity";
 
     private MenuItem            mItemPreviewRGBA;
     private MenuItem            mItemPreviewGray;
     private MenuItem            mItemPreviewCanny;
-    private EView         		mView;
-    
+    private EView         mView;
+
     private BaseLoaderCallback  mOpenCVCallBack = new BaseLoaderCallback(this) {
     	@Override
     	public void onManagerConnected(int status) {
@@ -33,6 +31,7 @@ public class EActivity extends Activity {
 					Log.i(TAG, "OpenCV loaded successfully");
 					// Create and set View
 					mView = new EView(mAppContext);
+					mView.loadData();
 					setContentView(mView);
 					// Check native OpenCV camera
 					if( !mView.openCamera() ) {
