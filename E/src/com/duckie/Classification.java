@@ -9,68 +9,102 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
 import android.util.Log;
- 
-public class Classification {	
-	
+
+public class Classification {
+
+	static int pX;
+	static int pY;
+	static Mat binary = new Mat();
+
 	public static int classify(Mat src, Mat object) {
 		// Find height of frame and hand
 		int imgHeight = src.rows();
 		int handHeight = object.rows();
-		
+
 		if (object.size().area() == 0)
 			return 0;
-		else if(isMotionClass(object, src)){			
+		else if (isMotionClass(object, src)) {
 			return 1;
-		}
-		else if (isHeightClass(imgHeight, handHeight)) {
+		} else if (isHeightClass(imgHeight, handHeight)) {
 			return 2;
 		}
-//		else if (isMidHeightClass(imgHeight, handHeight)){
-//			return 3;
-//		}
-		else {
-			if (isCentroidClass(object)){
+		// else if (isMidHeightClass(imgHeight, handHeight)){
+		// return 3;
+		// }
+		else if (isBGClass(object)) {
+			return 3;
+		} else {
+			if (isCentroidClass(object)) {
 				return 4;
-			}
-			else
+			} else
 				return 5;
 		}
 	}
 
-	Mat furtherClean(Mat image) {
-		Mat mask = image.clone();
-		Mat cleaned = Mat.zeros(image.size(), CvType.CV_8UC3);
-		Imgproc.cvtColor(mask, mask, Imgproc.COLOR_RGB2HSV);
-		Core.inRange(mask, new Scalar(90, 50, 50), new Scalar(160, 255, 255), mask);
-		Imgproc.threshold(mask, mask, 0, 255, Imgproc.THRESH_BINARY_INV);
-		image.copyTo(cleaned, mask);
-		return cleaned;
-	}
-
-
-	public static boolean isMotionClass(Mat image, Mat src){
+	public static boolean isMotionClass(Mat image, Mat src) {
 		Mat imagecopy = new Mat();
 		image.copyTo(imagecopy);
-		
+
 		// Convert to B&W image
 		Imgproc.threshold(imagecopy, imagecopy, 0, 255, Imgproc.THRESH_BINARY);
 
 		// Convert to binary image, 1 channel
 		Imgproc.cvtColor(imagecopy, imagecopy, Imgproc.COLOR_RGB2GRAY);
-		
+
 		Motion.detectMotion(imagecopy, src);
-		if(Motion.getCurrentDirection() != 0){
+		if (Motion.getCurrentDirection() != 0) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public static boolean isHeightClass(int imgHeight, int handHeight) {
-		float thresh = 0.8f;
+		float thresh = 0.85f;
 		if ((float) handHeight / imgHeight > thresh)
 			return true;
 		else
 			return false;
+	}
+
+	public static boolean isBGClass(Mat img) {
+		Mat image = Filter.furtherClean(img);
+
+		// Convert to B&W image
+		Imgproc.threshold(image, binary, 0, 255, Imgproc.THRESH_BINARY);
+
+		// Convert to binary image, 1 channel
+		Imgproc.cvtColor(binary, binary, Imgproc.COLOR_RGB2GRAY);
+
+		int x = image.cols() * 2 / 3;
+		int y = image.rows() / 3;
+		pX = x;
+		pY = y;
+		// Core.circle(rgb, new Point(UL.x+x, UL.y+y), 5, new Scalar(0, 255, 0),
+		// -1);
+
+		double pixel[] = binary.get(y, x);
+		if (pixel[0] == 0.0) {
+			for (int i = y; i >= 0; i--) {
+				pixel = binary.get(i, x);
+				if (pixel[0] != 0.0) {
+					// int upperPt = i;
+					// for(int j = y; j < binary.rows(); j++){
+					// pixel = binary.get(j, x);
+					// if(pixel[0] != 0.0){
+					// int lowerPt = j;
+					// pX = x;
+					// pY = (upperPt+lowerPt)/2;
+					// Core.circle(rgb, new Point(UL.x+pX, UL.y+pY), 5, new
+					// Scalar(255, 0, 0), -1);
+					// return "background";
+					// }
+					// }
+					return true;
+				}
+
+			}
+		}
+		return false;
 	}
 
 	public static boolean isMidHeightClass(int imgHeight, int handHeight) {
@@ -80,7 +114,7 @@ public class Classification {
 		else
 			return false;
 	}
-	
+
 	public static boolean isCentroidClass(Mat image) {
 		Mat binary = new Mat();
 		// Find contours from binary image
@@ -102,23 +136,33 @@ public class Classification {
 		Moments mu = new Moments();
 		Iterator<MatOfPoint> each = contours.iterator();
 		int ctr = 0;
-		while (each.hasNext()){
+		while (each.hasNext()) {
 			MatOfPoint wrapper = each.next();
-			if (ctr==0)
+			if (ctr == 0)
 				mu = Imgproc.moments(wrapper, false);
 			ctr++;
 		}
-		
-		//  Get the centroid or mass center
-		Point mc;
-		mc =  new Point(mu.get_m10() / mu.get_m00(), mu.get_m01() / mu.get_m00());
 
-//		// Plot centroid
-//		Core.circle(image, mc, 4, new Scalar(0, 255, 0), -1, 8, 0);
-	
+		// Get the centroid or mass center
+		Point mc;
+		mc = new Point(mu.get_m10() / mu.get_m00(), mu.get_m01() / mu.get_m00());
+
+		// // Plot centroid
+		// Core.circle(image, mc, 4, new Scalar(0, 255, 0), -1, 8, 0);
+
 		if ((float) mc.x / handWidth < 0.55)
 			return true;
 		else
 			return false;
+	}
+
+	public static String checkCurve() {
+		for (int j = pX; j < binary.cols(); j++) {
+			double pixel[] = binary.get(pY, j);
+			Log.i("CHECKpixel", "" + pixel[0]);
+			if (pixel[0] != 0.0)
+				return "O";
+		}
+		return "C";
 	}
 }

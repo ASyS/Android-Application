@@ -19,9 +19,8 @@ public class Motion {
 	private static int lastY = -1;
 	private static double LAST_STEPx = -1;
 	private static double LAST_STEPy = -1;
- 
 	private static int STEP_X = 40;
-	private static int STEP_Y = 40;
+	private static int STEP_Y = 30;
 	private static int direction_counter = 0;
 	private static int current_direction = 0;
 							//	2 right
@@ -265,7 +264,7 @@ public class Motion {
 					}
 					else{
 						direction_counter = 0;
-						motion_letter = "?";
+						//motion_letter = "?";
 						/*putText(img, motion_letter, Point(0,100),
 								FONT_HERSHEY_SIMPLEX, 3,
 								Scalar(255,255,255), 2, 8, false);*/
@@ -282,11 +281,12 @@ public class Motion {
 								FONT_HERSHEY_SIMPLEX, 3,
 								Scalar(255,255,255), 2, 8, false);*/
 						//direction_counter = 0;
+						current_direction = 0;
 						break;
 					}
 					else{
 						direction_counter = 0;
-						motion_letter = "?";
+						//motion_letter = "?";
 					}
 					prev_direction = current_direction;
 				}
@@ -315,7 +315,7 @@ public class Motion {
 				}
 				else{
 					direction_counter = 0;
-					motion_letter = "?";
+					//motion_letter = "?";
 					/*putText(img, motion_letter, Point(0,100),
 							FONT_HERSHEY_SIMPLEX, 3,
 							Scalar(255,255,255), 2, 8, false);*/
@@ -333,7 +333,7 @@ public class Motion {
 				}
 				else{
 					direction_counter = 0;
-					motion_letter = "?";
+					//motion_letter = "?";
 				}
 				prev_direction = current_direction;
 			}
@@ -347,11 +347,12 @@ public class Motion {
 							FONT_HERSHEY_SIMPLEX, 3,
 							Scalar(255,255,255), 2, 8, false);*/
 					direction_counter = 0;
+					current_direction = 0;
 					break;
 				}
 				else{
 					direction_counter = 0;
-					motion_letter = "?";
+					//motion_letter = "?";
 				}
 				prev_direction = current_direction;
 			}
@@ -383,6 +384,8 @@ public class Motion {
 	
 	public static void detectMotion(Mat src, Mat dst){
 		Point center, peak;
+		int flag = 0;
+		
 //		temp = prevgray;
 //		prevgray = gray;
 //		gray = temp;		
@@ -395,67 +398,24 @@ public class Motion {
 				//pinky finger
 				direction_pattern = 'J';
 				getDirection(center, 1);
+				flag = 1;
 			}
 			else if(peak.x>center.x){	
 				//index finger
-				direction_pattern = 'Z';
-				getDirection(center, 0);
+				if(flag == 1){
+					direction_pattern = 'J';
+					//getDirection(center, 1);
+					current_direction = 3;
+				}
+				else{
+					direction_pattern = 'Z';
+					getDirection(center, 0);
+				}
+				flag = 0;
 			}
 		}
 		else{
 			direction_pattern = '?';
 		}
-	}
-	//temporary images
-	public static void update_mhi(Mat img, Mat dst, int diff_threshold){
-		
-	}
-	
-	public static void detectMotion(Mat src){
-		Point center, peak;
-//		temp = prevgray;
-//		prevgray = gray;
-//		gray = temp;		
-//    	cvt_YUVtoGRAY(src, Sample1View.gray);
-		center = trackCenter(src);
-		peak = detectHull(src);		
-		getDirection(peak, 0);
-		
-//		Core.putText(dst, Integer.toString(current_direction), 
-//		new Point(10, 100), 
-//		3/* CV_FONT_HERSHEY_COMPLEX */, 2,
-//		new Scalar(255, 0, 0, 255), 3);
-		
-//		if(peak.x != 0){
-//			if(peak.x<center.x){
-//				//pinky finger
-//				Core.putText(dst, "Pinky", 
-//						new Point(10, 100), 
-//						3/* CV_FONT_HERSHEY_COMPLEX */, 2,
-//						new Scalar(255, 0, 0, 255), 3);
-//			}
-//			else if(peak.x>center.x){
-//				//index finger
-//				Core.putText(dst, "Index", 
-//						new Point(10, 100), 
-//						3/* CV_FONT_HERSHEY_COMPLEX */, 2,
-//						new Scalar(255, 0, 0, 255), 3);
-//			}
-//		}
-//		if(!Sample1View.prevgray.empty()){
-//			Video.calcOpticalFlowFarneback(Sample1View.prevgray, Sample1View.gray, Sample1View.flow, 0.5, 3, 15, 3, 5, 1.2, 0);
-//			Imgproc.cvtColor(Sample1View.prevgray, dst, Imgproc.COLOR_GRAY2RGB);
-//			//draw_opticflow(Sample1View.flow, dst, 36, new Scalar(0, 255, 0));
-////	    	cvt_YUVtoGRAY(src, dst);
-//		}
-////		gray.copyTo(prevgray);
-//		Sample1View.prevgray = Sample1View.gray;
-//    	try {
-//			Thread.sleep(20);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//    	cvt_YUVtoGRAY(src, dst);
 	}
 }
