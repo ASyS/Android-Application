@@ -25,8 +25,8 @@ public class Filter {
 		Imgproc.cvtColor(src, rgb, Imgproc.COLOR_YUV420sp2RGB);
 		Mat temp = rgb.clone();
 		Imgproc.cvtColor(temp, temp, Imgproc.COLOR_RGB2HSV);
-		Core.inRange(temp, new Scalar(90, 50, 50), new Scalar(160, 255, 255),
-				temp); // (100, 80, 60), new Scalar(125, 255, 255)
+		Core.inRange(temp, new Scalar(100, 80, 60), new Scalar(125, 255, 255),
+				temp); // (90, 50, 50), new Scalar(160, 255, 255)
 		Imgproc.threshold(temp, temp, 0, 255, Imgproc.THRESH_BINARY_INV);
 
 		// Find contours from binary image
@@ -81,6 +81,7 @@ public class Filter {
 		// Mat contourRegion2 = mask(roi);
 		Mat contourRegion = new Mat(mask, boundRect);
 
+		// Note: return mask if you want to view the uncropped image
 		return contourRegion;
 	}
 
@@ -88,7 +89,7 @@ public class Filter {
 		Mat mask = image.clone();
 		Mat cleaned = Mat.zeros(image.size(), CvType.CV_8UC3);
 		Imgproc.cvtColor(mask, mask, Imgproc.COLOR_RGB2HSV);
-		Core.inRange(mask, new Scalar(90, 50, 50), new Scalar(160, 255, 255),
+		Core.inRange(mask, new Scalar(100, 80, 60), new Scalar(125, 255, 255),
 				mask);
 		Imgproc.threshold(mask, mask, 0, 255, Imgproc.THRESH_BINARY_INV);
 		image.copyTo(cleaned, mask);

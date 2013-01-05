@@ -5,7 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.neuroph.contrib.imgrec.ImageRecognitionPlugin;
@@ -16,12 +18,14 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
@@ -51,9 +55,17 @@ class EView extends EViewBase {
 	private Mat mGraySubmat;
 	private Mat mIntermediateMat;
 	private Mat mHand;
+	private Mat mInput4NN;
 	// private Point p;
 	private Bitmap mBitmap;
 	private int mViewMode;
+
+	/* WidthClass */
+	MatOfPoint mopHand;
+	MatOfPoint mopImg;
+	static List<MatOfPoint> mopTemplates = new ArrayList<MatOfPoint>();
+	private static final int[] PHOTOS_RESOURCES = new int[] { R.raw.g1,
+			R.raw.g2, R.raw.h1, R.raw.h2, R.raw.p1, R.raw.p2 };
 
 	public EView(Context context) {
 		super(context);
@@ -75,11 +87,14 @@ class EView extends EViewBase {
 			mRgba = new Mat();
 			mIntermediateMat = new Mat();
 			mHand = new Mat();
+			mInput4NN = new Mat();
 
 			mBitmap = Bitmap.createBitmap(previewWidth, previewHeight,
 					Bitmap.Config.ARGB_8888); // each pixel is stored on 4
 												// bytes(R, G, B, alpha). hence,
 												// 4 channels
+			mopHand = new MatOfPoint();
+			mopImg = new MatOfPoint();
 		}
 	}
 
@@ -101,11 +116,19 @@ class EView extends EViewBase {
 				mIntermediateMat.release();
 			if (mHand != null)
 				mHand.release();
+			if (mopImg != null)
+				mopImg.release();
+			if (mInput4NN != null)
+				mInput4NN.release();
 			mYuv = null;
 			mRgba = null;
 			mGraySubmat = null;
 			mIntermediateMat = null;
 			mHand = null;
+			mInput4NN = null;
+
+			mopHand = null;
+			mopImg = null;
 		}
 	}
 
@@ -135,6 +158,7 @@ class EView extends EViewBase {
 				printTextBL(mRgba, Classification.checkCurve());
 			} else if (group == 4) { // Centroid
 				// these Centroid codes came from the D project
+				printTextUL(mRgba, "Centroid");
 				if (CentroidClass.isQ(mHand))
 					printTextBL(mRgba, "Q");
 				else {
@@ -143,16 +167,44 @@ class EView extends EViewBase {
 						printTextBL(mRgba, "Y");
 					else if (result == 2)
 						printTextBL(mRgba, "I");
-					else if (CentroidClass.isEX(mRgba, mHand))
-						printTextBL(mRgba, "EX");
+					else if (CentroidClass.isEX(mRgba, mHand)
+							&& CentroidClass.identify_E_X(mHand) == 1)
+						printTextBL(mRgba, "E");
+					else if (CentroidClass.isEX(mRgba, mHand)
+							&& CentroidClass.identify_E_X(mHand) == 2)
+						printTextBL(mRgba, "X");
+					else if (CentroidClass.isA(mHand))
+						printTextBL(mRgba, "A");
+					else if (CentroidClass.isT(mHand))
+						printTextBL(mRgba, "T");
 					else {
-						storeImage(mHand);
+						Imgproc.cvtColor(mHand, mHand, Imgproc.COLOR_RGBA2GRAY);
+						mInput4NN = CentroidClass.crop4NN(mHand);
+						storeImage(mInput4NN);
 						String textLetter = identifyStoredImage();
-						printTextUL(mRgba, "Cen " + textLetter);
+						printTextBL(mRgba, "Cen " + textLetter);
 					}
 				}
-			} else if (group == 5)
+			} else if (group == 5) {
 				printTextUL(mRgba, "Width");
+
+				double doubleres = 0;
+				String strResult = "";
+				// Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+				// mHand = Filter.subtractBG(mYuv, mRgba);
+				if (mHand.size().area() == 0) {
+					doubleres = 0;
+				} else {
+					Imgproc.threshold(mHand, mHand, 0, 255,
+							Imgproc.THRESH_BINARY_INV);
+					Imgproc.cvtColor(mHand, mHand, Imgproc.COLOR_RGB2GRAY);
+					mopHand = WidthClass.detectHull(mHand, mRgba);
+					doubleres = Imgproc.matchShapes(mopTemplates.get(0),
+							mopHand, Imgproc.CV_CONTOURS_MATCH_I3, 0);
+				}
+				strResult = matchToTemplate(mopHand);
+				printTextBL(mRgba, strResult);
+			}
 
 			break;
 		case VIEW_MODE_RGBA:
@@ -162,6 +214,7 @@ class EView extends EViewBase {
 					new Scalar(255, 0, 0, 255), 3);
 			// Core.putText(mRgba, "OpenCV + Android", new Point(10, 100), 3/*
 			// CV_FONT_HERSHEY_COMPLEX */, 2, new Scalar(255, 0, 0, 255), 3);
+
 			break;
 		case VIEW_MODE_CANNY:
 			Imgproc.Canny(mGraySubmat, mIntermediateMat, 80, 100);
@@ -292,11 +345,24 @@ class EView extends EViewBase {
 
 	public Runnable loadDataRunnable = new Runnable() {
 		public void run() {
+			/* Load templates for WidthClass */
+			Mat imgToProcess1 = new Mat();
+			for (int i = 0; i < 6; i++) {
+				Bitmap bmp0 = BitmapFactory.decodeResource(getResources(),
+						PHOTOS_RESOURCES[i]);
+				Utils.bitmapToMat(bmp0, imgToProcess1);
+				Imgproc.cvtColor(imgToProcess1, imgToProcess1,
+						Imgproc.COLOR_RGB2HSV);
+				WidthClass.getBlueMat(imgToProcess1, imgToProcess1);
+				mopImg = WidthClass.detectHull(imgToProcess1, imgToProcess1);
+				mopTemplates.add(mopImg);
+			}
+
 			// open neural network
 			// InputStream is =
 			// getResources().openRawResource(R.raw.animals_net);
-//			InputStream is = getResources().openRawResource(R.raw.cen01);
-			InputStream is = getResources().openRawResource(R.raw.cen02nl);
+			// InputStream is = getResources().openRawResource(R.raw.cen01);
+			InputStream is = getResources().openRawResource(R.raw.cen02jnl);
 			// load neural network
 			nnet = NeuralNetwork.load(is);
 			imageRecognition = (ImageRecognitionPlugin) nnet
@@ -322,6 +388,34 @@ class EView extends EViewBase {
 			}
 		}
 		return answer;
+	}
+
+	/**
+	 * WIDTH CLASS FUNCTION BELOW
+	 * 
+	 */
+
+	public static String matchToTemplate(MatOfPoint mObj) {
+		int indxOfMatch = 0;
+		double[] scores = new double[6];
+		double bestScore = 10;
+		int i = 0;
+		while (i < 6) {
+			scores[i] = Imgproc.matchShapes(mopTemplates.get(i), mObj,
+					Imgproc.CV_CONTOURS_MATCH_I3, 0);
+			if (scores[i] < bestScore) {
+				bestScore = scores[i];
+				indxOfMatch = i;
+			}
+			i++;
+		}
+		if (indxOfMatch <= 1) {
+			return "G";
+		} else if (indxOfMatch <= 3 && indxOfMatch > 1) {
+			return "H";
+		} else {
+			return "P";
+		}
 	}
 
 }

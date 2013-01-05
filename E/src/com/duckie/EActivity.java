@@ -31,6 +31,7 @@ public class EActivity extends Activity {
 					Log.i(TAG, "OpenCV loaded successfully");
 					// Create and set View
 					mView = new EView(mAppContext);
+					// Loads neural net
 					mView.loadData();
 					setContentView(mView);
 					// Check native OpenCV camera
@@ -102,8 +103,8 @@ public class EActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.i(TAG, "onCreateOptionsMenu");
-        mItemPreviewRGBA = menu.add("Preview RGBA");
-        mItemPreviewGray = menu.add("Preview GRAY");
+        mItemPreviewRGBA = menu.add("Load");
+        mItemPreviewGray = menu.add("DTCAA Final");
         mItemPreviewCanny = menu.add("Canny");
         return true;
     }
