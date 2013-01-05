@@ -41,21 +41,22 @@ public class Classification {
 		}
 	}
 
-	public static boolean isMotionClass(Mat image, Mat src) {
-		Mat imagecopy = new Mat();
-		image.copyTo(imagecopy);
-
-		// Convert to B&W image
-		Imgproc.threshold(imagecopy, imagecopy, 0, 255, Imgproc.THRESH_BINARY);
-
-		// Convert to binary image, 1 channel
-		Imgproc.cvtColor(imagecopy, imagecopy, Imgproc.COLOR_RGB2GRAY);
-
-		Motion.detectMotion(imagecopy, src);
-		if (Motion.getCurrentDirection() != 0) {
-			return true;
-		}
-		return false;
+	public static boolean isMotionClass(Mat object, Mat src) {
+    	Mat mHand = new Mat(), mHSV = new Mat();
+    	String currDir;
+		//Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
+    	Imgproc.cvtColor(src, mHSV, Imgproc.COLOR_RGB2HSV);
+    	//IP.getBlueMat(mHsv, mHand);   
+    	Core.inRange(mHSV, new Scalar(90, 50, 50), new Scalar(160, 255, 255), mHand);
+    	Imgproc.threshold(mHand, mHand, 0, 255, Imgproc.THRESH_BINARY_INV);
+    	MotionClass.detectMotion(mHand, src);
+    	currDir = MotionClass.getCurrentDirection();
+    	System.out.println("Motion: "+currDir.contains("Static"));
+    	if(currDir.contains("Static")){
+    		return false;
+    	}
+    	else
+    		return true;
 	}
 
 	public static boolean isHeightClass(int imgHeight, int handHeight) {

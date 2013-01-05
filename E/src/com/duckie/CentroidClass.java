@@ -91,7 +91,7 @@ public class CentroidClass {
 
 			if (angle >= -5.0 & angle < 25.0) {
 				return 1; // Y
-			} else if (angle >= 25.0 && angle < 45.0) {
+			} else if (angle >= 25.0 && angle < 50.0) {
 				return 2; // I
 			} else {
 				return 0;
@@ -101,7 +101,7 @@ public class CentroidClass {
 	}
 
 	public static boolean isEX(Mat rgb, Mat image) { // identifying Q
-		float thresh = 0.65f;
+		float thresh = 0.68f;
 		Log.i("THRESHOLDING EX", "" + (float) image.rows() / rgb.rows());
 		if ((float) image.rows() / rgb.rows() > thresh)
 			return true;
@@ -237,9 +237,9 @@ public class CentroidClass {
 		int width = (int)image.size().width ;
 		int height = (int)image.size().height ;
 
-		Rect quart1 = new Rect(0, 0, (int)(width*0.8), (int)(height/2));//Rect quart1(0, 0, width, height/2);
+		Rect quart1 = new Rect(0, 0, (int)(width), (int)(height/2));//Rect quart1(0, 0, width, height/2);
 		Mat quarter_1 = new Mat(image, quart1);
-		Imgproc.resize(quarter_1, quarter_1, new Size(50, 25));
+		Imgproc.resize(quarter_1, quarter_1, new Size(50, 40));
 
 		return quarter_1;
 	}

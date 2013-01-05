@@ -45,6 +45,7 @@ class EView extends EViewBase {
 
 	public static final String APP_PATH_SD = "/duckie";
 	public static final String IMAGE_NAME = "A.jpg";
+	public static String strClass = null, strLetter = null;
 
 	public static final int VIEW_MODE_RGBA = 0;
 	public static final int VIEW_MODE_GRAY = 1;
@@ -144,50 +145,66 @@ class EView extends EViewBase {
 			mHand = Filter.subtractBG(mYuv, mRgba);
 			// Classify hand signal
 			int group = Classification.classify(mRgba, mHand);
-			if (group == 0)
-				printTextUL(mRgba, "Input Hand");
-			else if (group == 1) {
-				printTextUL(mRgba, "Motion");
-				printTextBL(mRgba, Motion.getASLMotionLetter());
+			if (group == 0){
+				strClass = "Input Hand";
+				//printTextUL(mRgba, "Input Hand");				
+			} else if (group == 1) {
+				strClass = "Motion";
+				strLetter = MotionClass.getASLMotionLetter();
+				//printTextUL(mRgba, "Motion");
+				//printTextBL(mRgba, Motion.getASLMotionLetter());
 			} else if (group == 2) {
-				printTextUL(mRgba, "Height");
+				strClass = "Height";
+				//printTextUL(mRgba, "Height");
 				// Log.i("size", ""+mHand.rows());
+				strLetter = HeightClass.findTips(mHand);
 				printTextBL(mRgba, HeightClass.findTips(mHand));
 			} else if (group == 3) {
-				printTextUL(mRgba, "Background");
+				strClass = "Background";
+				//printTextUL(mRgba, "Background");
+				strLetter = Classification.checkCurve();
 				printTextBL(mRgba, Classification.checkCurve());
 			} else if (group == 4) { // Centroid
 				// these Centroid codes came from the D project
-				printTextUL(mRgba, "Centroid");
-				if (CentroidClass.isQ(mHand))
+				strClass = "Centroid";
+				//printTextUL(mRgba, "Centroid");
+				if (CentroidClass.isQ(mHand)){
+					strLetter = "Q";
 					printTextBL(mRgba, "Q");
-				else {
+				} else {
 					int result = CentroidClass.identify_I_Y(mHand);
-					if (result == 1)
+					if (result == 1){
+						strLetter = "Y";
 						printTextBL(mRgba, "Y");
-					else if (result == 2)
+					} else if (result == 2){
+						strLetter = "I";
 						printTextBL(mRgba, "I");
-					else if (CentroidClass.isEX(mRgba, mHand)
-							&& CentroidClass.identify_E_X(mHand) == 1)
+					} else if (CentroidClass.isEX(mRgba, mHand)
+							&& CentroidClass.identify_E_X(mHand) == 1){
+						strLetter = "E";
 						printTextBL(mRgba, "E");
-					else if (CentroidClass.isEX(mRgba, mHand)
-							&& CentroidClass.identify_E_X(mHand) == 2)
+					} else if (CentroidClass.isEX(mRgba, mHand)
+							&& CentroidClass.identify_E_X(mHand) == 2){
+						strLetter = "X";
 						printTextBL(mRgba, "X");
-					else if (CentroidClass.isA(mHand))
+					} else if (CentroidClass.isA(mHand)){
+						strLetter = "A";
 						printTextBL(mRgba, "A");
-					else if (CentroidClass.isT(mHand))
+					} else if (CentroidClass.isT(mHand)){
+						strLetter = "T";
 						printTextBL(mRgba, "T");
-					else {
+					} else {
 						Imgproc.cvtColor(mHand, mHand, Imgproc.COLOR_RGBA2GRAY);
 						mInput4NN = CentroidClass.crop4NN(mHand);
 						storeImage(mInput4NN);
 						String textLetter = identifyStoredImage();
+						strLetter = textLetter;
 						printTextBL(mRgba, "Cen " + textLetter);
 					}
 				}
 			} else if (group == 5) {
-				printTextUL(mRgba, "Width");
-
+				strClass = "Width";
+				//printTextUL(mRgba, "Width");
 				double doubleres = 0;
 				String strResult = "";
 				// Imgproc.cvtColor(mYuv, mRgba, Imgproc.COLOR_YUV420sp2RGB, 4);
@@ -203,6 +220,7 @@ class EView extends EViewBase {
 							mopHand, Imgproc.CV_CONTOURS_MATCH_I3, 0);
 				}
 				strResult = matchToTemplate(mopHand);
+				strLetter = strResult;
 				printTextBL(mRgba, strResult);
 			}
 
@@ -362,7 +380,7 @@ class EView extends EViewBase {
 			// InputStream is =
 			// getResources().openRawResource(R.raw.animals_net);
 			// InputStream is = getResources().openRawResource(R.raw.cen01);
-			InputStream is = getResources().openRawResource(R.raw.cen02jnl);
+			InputStream is = getResources().openRawResource(R.raw.cen02onl);
 			// load neural network
 			nnet = NeuralNetwork.load(is);
 			imageRecognition = (ImageRecognitionPlugin) nnet
